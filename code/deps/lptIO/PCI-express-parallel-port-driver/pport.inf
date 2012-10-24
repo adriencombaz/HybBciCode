@@ -1,0 +1,144 @@
+;**************************************************************************
+;* File:       PPort.inf                                                  *
+;*                                                                        *
+;* Description: Driver installer for PCIe840/952 PCI Express Parallel Port*
+;*                                                                        *
+;* (C) Copyright 2007 Oxford Semiconductor Ltd.                           *
+;**************************************************************************
+
+[Version]
+Signature="$CHICAGO$"
+Class=Ports
+ClassGuid= {4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%Mfg%
+CatalogFile=PPort.cat
+
+;#OxData#DriverVer=[[Date]],[[Version]]
+DriverVer=12/14/2007, 1.00.0000.05
+;#OxEndData
+
+; Drivers
+;*************************************************************************
+[Manufacturer]
+%Mfg%=Mfg,NTamd64
+
+[Mfg]          ; Windows 2K, XP32, 2003, Vista, 98SE and ME
+;#OxData#%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_[[VendorId]]&DEV_[[DeviceId]]
+; PCIe840: function 0, -GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C000
+; PCIe840: function 0, +GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C004
+
+; PCIe952, mode 0: function 0, -GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C100
+; PCIe952, mode 0: function 0, +GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C104
+
+; PCIe952, mode 1: function 0, -UART, -GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C110
+; PCIe952, mode 1: function 0, -UART, +GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C114
+; PCIe952, mode 1: function 0, +UART, -GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C118
+; PCIe952, mode 1: function 0, +UART, +GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C11C
+;#OxEndData
+
+[Mfg.NTamd64]  ; Windows XP64, Vista64
+;#OxData#%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_[[VendorId]]&DEV_[[DeviceId]]
+; PCIe840: function 0, -GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C000
+; PCIe840: function 0, +GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C004
+
+; PCIe952, mode 0: function 0, -GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C100
+; PCIe952, mode 0: function 0, +GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C104
+
+; PCIe952, mode 1: function 0, -UART, -GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C110
+; PCIe952, mode 1: function 0, -UART, +GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C114
+; PCIe952, mode 1: function 0, +UART, -GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C118
+; PCIe952, mode 1: function 0, +UART, +GPIO
+%PCIePPortDeviceDesc% = PCIePPort, PCI\VEN_1415&DEV_C11C
+;#OxEndData
+
+; Install PCI Express Parallel Port
+;*************************************************************************
+
+[PCIePPort.NT]
+AddReg=PCIePPort.NT.AddReg
+
+[PCIePPort.NT.AddReg]
+HKR,,PortSubClass,1,00
+HKR,,ECPDevice,1,01
+HKR,,EnumPropPages32,,"MsPorts.dll,ParallelPortPropPageProvider"
+
+; Service installation
+;*************************************************************************
+[PCIePPort.NT.Services]
+AddService = Parport, 0x00000002, Parport_Service_Inst, Parport_EventLog_Inst
+
+
+; Parallel Port Driver install sections
+;*************************************************************************
+[Parport_Service_Inst]
+DisplayName    = %Parport.SVCDESC%
+ServiceType    = 1                ; SERVICE_KERNEL_DRIVER
+StartType      = 3                ; SERVICE_DEMAND_START
+ErrorControl   = 1                ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\parport.sys
+LoadOrderGroup = Parallel arbitrator
+
+[Parport_EventLog_Inst]
+AddReg = Parport_EventLog_AddReg
+
+[Parport_EventLog_AddReg]
+HKR,,EventMessageFile,0x00020000,\
+"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\parport.sys"
+HKR,,TypesSupported,0x00010001,7
+
+;  Strings Section
+;*************************************************************************
+[Strings]
+PortsClassName="Ports (COM & LPT)"
+Parport.SVCDESC  = "Parallel port driver"
+;#OxData#Mfg="[[Manufacturer]]"
+Mfg="Oxford Semiconductor Inc"
+;#OxEndData
+
+;#OxData#PCIePPortDeviceDesc = "[[DeviceDescription]]"
+PCIePPortDeviceDesc = "PCI Express ECP Parallel Port"
+;#OxEndData
+
+
+
+;-------------------------------------------------------------------------------
+;                  OXide definitions. Do not modify
+;-------------------------------------------------------------------------------
+
+;#OxGlobalSection#Manufacturer information
+	;#OxGroup#Manufacturer name
+        ;#OxDefine#Manufacturer#Name #String[32]
+  ;#OxEndGroup
+;#OxEndSection
+
+;#OxSection#Parallel Port Details
+	;#OxGroup#INF file version information
+        ;#OxDefine#Version#Driver Version#String[12]
+        ;#OxDefine#Date#Date#Date
+  ;#OxEndGroup
+	;#OxGroup#Device Description
+        ;#OxDefine#DeviceDescription#Description#String[48]
+  ;#OxEndGroup
+;#OxEndSection
+
+;#OxSection#Supported Parallel Port Devices#These devices will use the Windows parallel port driver
+	;#OxMultiGroup#Supported Vendor and Device IDs
+		;#OxDefine#VendorId#Vendor Id#VendorId
+		;#OxDefine#DeviceId#Device Id#PCIeDeviceId
+	;#OxEndGroup
+;#OxEndSection
