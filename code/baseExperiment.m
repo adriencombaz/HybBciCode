@@ -2,11 +2,11 @@ function baseExperiment
 
 %%                        SCANNER PARAMETERS
 %==========================================================================
-subjectName                     = 'test';
+subjectName                     = 'testMarkers';
 saveData                        = true;
 saveLog                         = true;
 saveUnfoldedScenario            = true;
-useLptPort                      = false;
+useLptPort                      = true;
 
 nBlocksPerCond                  = 1;
 nRounds                         = 1;
@@ -65,7 +65,7 @@ switch hostName,
     case 'kuleuven-24b13c',
         eegDataDir  = 'd:/KULeuven/PhD/Work/EEG-Recording/hydrid-P300-SSVEP/';
     case 'neu-wrk-0158',
-        eegDataDir  = 'd:/Adrien/hybrid-BCI-3-A-BaseExperiment-01/recordedData/';
+        eegDataDir  = 'd:/Adrien/hybrid-BCI-3-A-BaseExperiment-02-newSten/recordedData/';
     otherwise,
         eegDataDir  = './EEG-recordings/';
 end
@@ -163,9 +163,8 @@ HideCursor();
 nConds = numel(conditions);
 nBlocks = zeros(1, nConds);
 blockSequence = repmat(1:nConds, 1, nBlocksPerCond);
-blockSequence = blockSequence(randperm(nConds*nBlocksPerCond));
-
-for iBlock = 1:nConds*nBlocksPerCond
+% blockSequence = blockSequence(randperm(nConds*nBlocksPerCond));
+for iBlock = 4%1:nConds*nBlocksPerCond
     
     % Display message
     %----------------------------------------------------------------------
@@ -175,9 +174,11 @@ for iBlock = 1:nConds*nBlocksPerCond
         ], ...
         conditions{iCond}, nBlocks(iCond)+1, nBlocksPerCond, instructions{iCond});
     DrawFormattedText(st.pPTBwin, textMsg, 'center', 'center', WhiteIndex(st.pPTBwin), [],[],[], 2);
+%     [VBLTimestamp StimulusOnsetTime FlipTimestamp missedDeadlines1(iBlock) Beampos] = Screen('Flip', st.pPTBwin, nextFlip);
     Screen('Flip', st.pPTBwin);
-    WaitSecs(5); 
+    WaitSecs(3); 
 %     KbWait([], 3);
+%     [VBLTimestamp StimulusOnsetTime FlipTimestamp missedDeadlines2(iBlock) Beampos] = Screen('Flip', st.pPTBwin);µ
     Screen('Flip', st.pPTBwin);
     Screen('Close');
     
@@ -203,18 +204,20 @@ frameRenderDurationLog = st.frameRenderDurationLog;
 st.closeGraph();
 ShowCursor();
 
-mainDataFilename = fullfile( currentDataDir, [currentTimeString '-ExperimentDetail.txt'] );
-save( mainDataFilename, ...
-    'conditions', ...
-    'scenario', ...
-    'instructions', ...
-    'SsvepFreqScen', ...
-    'p3OnScen', ...
-    'nBlocksPerCond', ...
-    'blockSequence', ...
-    'flipTimeLog', ...
-    'frameRenderDurationLog' ...
-    );
+if saveData
+    mainDataFilename = fullfile( currentDataDir, [currentTimeString '-ExperimentDetail.mat'] );
+    save( mainDataFilename, ...
+        'conditions', ...
+        'scenario', ...
+        'instructions', ...
+        'SsvepFreqScen', ...
+        'p3OnScen', ...
+        'nBlocksPerCond', ...
+        'blockSequence', ...
+        'flipTimeLog', ...
+        'frameRenderDurationLog' ...
+        );
+end
 
 %% ========================================================================
 %==========================================================================
@@ -434,6 +437,9 @@ save( mainDataFilename, ...
         st.sc.useBinaryIntensity            = useBinaryIntensity;
         st.sc.correctStimulusAppearanceTime = correctStimulusAppearanceTime;
         st.sc.showProgressBar               = showProgressBar;
+        st.sc.issueFrameBasedEvents         = true;
+        st.sc.issueTimeBasedEvents          = false;
+        st.sc.frameBasedEventIdAdjust       = 0;
         
         st.unfoldScenario();
         if saveUnfoldedScenario,
@@ -471,7 +477,7 @@ save( mainDataFilename, ...
         
         %% ================================================================
         %                         EXPERIMENT
-        logThis( 'Flushing the device and presenting stimuli (experiment in progress)' );
+        logThis( 'Presenting stimuli (experiment in progress)' );
         presentationStartTime = st.presentationStartTime;
         
         for iRound = 1:nRounds,
