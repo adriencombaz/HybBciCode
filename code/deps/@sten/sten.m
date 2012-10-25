@@ -726,11 +726,12 @@ classdef sten < handle
             end % of warm up loop
             obj.sc.desired.stimulationDuration = 2*obj.scr.flipInterval;
             obj.presentationStartTime = obj.lastFlipTime + 2*obj.scr.flipInterval;
-%             obj.presentScenarioImmediately();        % first "warming-up" call
-            obj.presentScenarioRightNow();        % first "warm-up" call
+            obj.presentScenarioImmediately();        % first "warming-up" call
+%             obj.presentScenarioRightNow();        % first "warm-up" call
 
             obj.presentationStartTime = obj.lastFlipTime + 2*obj.scr.flipInterval;
-            obj.presentScenarioRightNow();        % second "warm-up" call
+            obj.presentScenarioImmediately();        % first "warming-up" call
+%             obj.presentScenarioRightNow();        % second "warm-up" call
 
             obj.resetPresentation();
             
@@ -812,7 +813,7 @@ classdef sten < handle
             obj.sc.desired.stimulationDuration = originalStimulationDuration;
             obj.dispatchEvents( obj.sc.events(obj.sc.iStartEvent).id );
 
-        end % of method PREPAREPRESENTATION        
+        end % of method PREPAREPRESENTATIONOPTIMIZED        
 
         %-----------------------------------------------
         function resetPresentation( obj )
@@ -888,9 +889,11 @@ classdef sten < handle
                                         % [eventIdList] for this frame).
                                         obj.nLocalEvents = obj.nLocalEvents + 1;
                                         obj.eventIdList(obj.nLocalEvents) = obj.sc.events(obj.iEvent).id;
+% % % % % % % %                                         fprintf('\n\nnLocalEvents (TIME BASED!!!): %d\n\n', obj.nLocalEvents);
                                     else
                                         % if it's NOT a first frame, then the time-based event should be issued
                                         % immideately with appropriate timestamp [of the new state start time].
+% % % % % % % %                                         fprintf('\n\nbefore flip: stim%d, %d, %g\n\n', iStim, obj.sc.events(obj.iEvent).id, obj.sc.stimuli(iStim).states(obj.iSt).startTime);
                                         obj.dispatchEvents( obj.sc.events(obj.iEvent).id, obj.sc.stimuli(iStim).states(obj.iSt).startTime );
                                     end
                                 end % of time-based event handling branch
@@ -898,6 +901,7 @@ classdef sten < handle
                                 if obj.sc.issueFrameBasedEvents,
                                     % TODO: consider corrected timestamps
                                     obj.nLocalEvents = obj.nLocalEvents + 1;
+% % % % % % % %                                     fprintf('\n\nnLocalEvents (FRAME BASED!!!): %d\n\n', obj.nLocalEvents);
                                     obj.eventIdList(obj.nLocalEvents) = obj.sc.events(obj.iEvent).id + obj.sc.frameBasedEventIdAdjust;
                                 end % of frame-based event handling branch
                                 
@@ -1020,7 +1024,12 @@ classdef sten < handle
                 
                 if obj.processEvents && obj.nLocalEvents > 0,
                     obj.dispatchEvents( obj.eventIdList(1:obj.nLocalEvents), obj.lastFlipTime );
-%                     logThis( 'nLocalEvents: %g, lastFlipTime: %10.4f', obj.nLocalEvents, obj.lastFlipTime );
+% % % % % % % %                     logThis( 'nLocalEvents: %g, lastFlipTime: %10.4f', obj.nLocalEvents, obj.lastFlipTime );
+% % % % % % % %                     fprintf('\nafter flip flip:');
+% % % % % % % %                     for i = 1:obj.nLocalEvents
+% % % % % % % %                         fprintf(' %d ', obj.eventIdList(i));
+% % % % % % % %                     end
+% % % % % % % %                     fprintf(', %g\n', obj.lastFlipTime);
                     obj.nLocalEvents = 0;
                 end
                 
@@ -1046,9 +1055,9 @@ classdef sten < handle
                 
             end % main (time) loop
             
-            if obj.processEvents,
-                obj.dispatchEvents( obj.sc.events(obj.sc.iMainLoopStopEvent).id, obj.stopLoopTime );
-            end
+%             if obj.processEvents,
+%                 obj.dispatchEvents( obj.sc.events(obj.sc.iMainLoopStopEvent).id, obj.stopLoopTime );
+%             end
 
             [~, obj.lastFlipTime] = Screen( ...
                 'Flip', ...     % routine name
@@ -1224,11 +1233,20 @@ classdef sten < handle
                                         else
                                             % if it's NOT a first frame, then the time-based event should be issued
                                             % immideately with appropriate timestamp [of the new state start time].
+% % % % %                                             fprintf('\n\nbefore flip: stim%d, %d, %g\n\n', iStim, obj.sc.events(obj.iEvent).id, obj.sc.stimuli(iStim).states(obj.iSt).startTime);
                                             obj.dispatchEvents( eventId, obj.sc.stimuli(iStim).states(iState).startTime );
                                         end
                                     end % of time-based event handling branch
 
+                                    if obj.sc.issueFrameBasedEvents,
+                                        % TODO: consider corrected timestamps
+                                        eventQueueLength = eventQueueLength + 1;
+% % % % %                                         fprintf('\n\nnLocalEvents (FRAME BASED!!!): %d\n\n', eventQueueLength);
+                                        eventQueue(eventQueueLength) = eventId + obj.sc.frameBasedEventIdAdjust;
+                                    end % of frame-based event handling branch
+                                    
                                     previousEventId(iStim) = eventId;
+                                    
                                 end % if (previousEventId(iStim) ~= eventId ),
                             end % if (iEvent > 0),
 %                         end % if obj.processEvents,
@@ -1341,14 +1359,15 @@ classdef sten < handle
                         );
                     
                 end
-%                 if obj.processEvents && eventQueueLength > 0,
-%                     obj.dispatchEvents( eventQueue(1:eventQueueLength), lastFlipTime );
-% %                     logThis( 'nLocalEvents: %g, lastFlipTime: %10.4f', obj.nLocalEvents, obj.lastFlipTime );
-%                     eventQueueLength = 0;
-%                 end
+                
                 if eventQueueLength > 0,
                     obj.dispatchEvents( eventQueue(1:eventQueueLength), lastFlipTime );
-%                     logThis( 'nLocalEvents: %g, lastFlipTime: %10.4f', obj.nLocalEvents, obj.lastFlipTime );
+% % % % %                     logThis( 'nLocalEvents: %g, lastFlipTime: %10.4f', eventQueueLength, obj.lastFlipTime );
+% % % % %                     fprintf('after flip flip:');
+% % % % %                     for i = 1:eventQueueLength
+% % % % %                         fprintf(' %d ', eventQueue(i));
+% % % % %                     end
+% % % % %                     fprintf(', %g\n\n\n', lastFlipTime);
                     eventQueueLength = 0;
                 end
                 
@@ -1387,7 +1406,7 @@ classdef sten < handle
             end % main (time) loop
             
 %             if obj.processEvents,
-                obj.dispatchEvents( obj.sc.events(obj.sc.iMainLoopStopEvent).id, expectedLoopEndTime );
+%                 obj.dispatchEvents( obj.sc.events(obj.sc.iMainLoopStopEvent).id, expectedLoopEndTime );
 %             end
 
             obj.iFrame = iFrame;

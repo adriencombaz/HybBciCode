@@ -5,7 +5,7 @@ classdef biosemiLabelChannel < handle
         currentLabel    = 0;
         iCurrentLabel   = 1;
         listLabels      = [];
-        sizeListLabels  = 2000; % default value
+        sizeListLabels  = 10000; % default value
         useTriggerCable = false;
         lptAddress
     end % of public-read/protected-write properties section

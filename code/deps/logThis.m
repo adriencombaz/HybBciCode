@@ -145,7 +145,9 @@ function logThis( msg, varargin )
                         if isempty( parameterValue )
                             logToFile = true;
                         else
-                            if isnumeric( parameterValue ),
+                            if islogical( parameterValue ),
+                                logToFile = parameterValue;
+                            elseif isnumeric( parameterValue ),
                                 logToFile = logical( parameterValue(1) );
                             elseif ischar( parameterValue ),
                                 switch lower( parameterValue ),
@@ -164,7 +166,9 @@ function logThis( msg, varargin )
                         if isempty( parameterValue )
                             logToScreen = true;
                         else
-                            if isnumeric( parameterValue ),
+                            if islogical( parameterValue ),
+                                logToScreen = parameterValue;
+                            elseif isnumeric( parameterValue ),
                                 logToScreen = logical( parameterValue(1) );
                             elseif ischar( parameterValue ),
                                 switch lower( parameterValue ),
