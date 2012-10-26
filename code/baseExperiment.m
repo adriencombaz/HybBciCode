@@ -1,5 +1,7 @@
 function baseExperiment
 
+% test modification
+
 %%                        SCANNER PARAMETERS
 %==========================================================================
 subjectName                     = 'testMarkers';
