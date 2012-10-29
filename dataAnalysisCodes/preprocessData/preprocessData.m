@@ -4,10 +4,10 @@ function preprocessData
 %                           INITIALIZE PARAMETERS
 
 addpath(fullfile(cd, 'xmlRelatedFncts'));
-expDir      = 'd:\KULeuven\PhD\Work\hybrid-BCI-3-A-BaseExperiment-02-newSten\';
-dataDir     = fullfile(expDir, 'recordedData');
-outputDir	= fullfile(expDir, 'processedData');
-sessionName = '2012-10-23-FullExpTest';
+expDir      = 'd:\KULeuven\PhD\Work\Hybrid-BCI\';
+dataDir     = fullfile(expDir, 'HybBciData');
+outputDir	= fullfile(expDir, 'HybBciProcessedData');
+sessionName = '2012-10-29-Watermelon';
 
 % file lists
 %--------------------------------------------------------------------------
@@ -25,6 +25,17 @@ if iEogFile
     fileList(iEogFile)  = [];
 end
 
+% identify main parameter file
+%--------------------------------------------------------------------------
+temp                = strfind(parFileList, 'ExperimentDetail');
+iMainPar            = sum( find ( cellfun(@(x) ~isempty(x), temp ) ) );
+if iMainPar
+    mainParamFile           = parFileList{iMainPar};
+    parFileList(iMainPar)   = [];
+else
+    error('main parameter file not found!!');
+end
+mainExpPars = load( fullfile(folderName, mainParamFile) );
 
 % Check that only one bdf file is present
 %--------------------------------------------------------------------------
@@ -61,13 +72,38 @@ eogChan.REch    = '(up + down)/2';
 
 % check the lists of files
 %--------------------------------------------------------------------------
+
+% check that the lists of .xml and .mat file are consistent 
 tag = '-unfolded-scenario';
 xmlLabels = cellfun(@(x) x( 1 : strfind(x, tag)-1 ), xmlFileList, 'UniformOutput', false);
 tag = '.mat';
 parLabels = cellfun(@(x) x( 1 : strfind(x, tag)-1 ), parFileList, 'UniformOutput', false);
-
 if ~isequal(xmlLabels, parLabels)
     error('File list inconsistent')
+end
+
+% check that the number of blocks read from the main .mat file is consistent with the number of other .mat files
+nBlocksTotal = numel(parFileList);
+if nBlocksTotal ~= numel(mainExpPars.blockSequence)
+    error('mismatch between number of blocks from the mainExpPars file and the list of parameter files');
+end
+
+% check that the order of the blocks is consistent
+countBlock = zeros(1, numel(mainExpPars.conditions));
+for iB = 1:nBlocksTotal
+    
+    iCond           = mainExpPars.blockSequence(iB);
+    expectedCond    = strrep( mainExpPars.conditions{ iCond }, ' ', '-'  );
+    tag             = sprintf( '%s-block-%.2d', expectedCond, countBlock(iCond)+1 );
+    countBlock(iCond) = countBlock(iCond)+1;
+    
+    if ~strfind(parFileList{iB}, tag)
+        error('block %d: expected condition/block: %s, found file: %s', iB, tag, parFileList{iB});
+    end
+    
+end
+if unique(countBlock) ~= mainExpPars.nBlocksPerCond
+    error('error in the block count!!!');
 end
 
 
@@ -126,25 +162,34 @@ end
 
 hdr = sopen( fullfile(folderName, dataFile) );
 
+statusChannel   = bitand(hdr.BDF.ANNONS, 255);
+hdr.BDF         = rmfield(hdr.BDF, 'ANNONS'); % just saving up some space...
 
-
-
-
-
-
-
-for iF = 1:numel(fileList)
+for iF = 1:nBlocksTotal
 
 % read data files
 %--------------------------------------------------------------------------
 fprintf('Loading data file %s (%d out of %d)\n', fileList{iF}, iF, numel(fileList));
 expParams   = load( fullfile(folderName, parFileList{iF}) );
 scenario    = xml2mat( fullfile(folderName, xmlFileList{iF}) );
-hdr         = sopen( fullfile(folderName, fileList{iF}) );
 
-statusChannel = bitand(hdr.BDF.ANNONS, 255);
+
+% work on the status channel
+%--------------------------------------------------------------------------
+
+% onset and offset event values experiment start and stop (normally +1, -1)
+onsetEventInd       = cellfun( @(x) strcmp(x, 'start event'), {scenario.events(:).desc} );
+offsetEventInd      = cellfun( @(x) strcmp(x, 'end event'), {scenario.events(:).desc} );
+expStartEventValue  = scenario.events( onsetEventInd ).id;
+expStopEventValue   = scenario.events( offsetEventInd ).id;
+if iF == 1
+    expStartStopChan = logical( bitand(statusChannel, expStartEventValue) );
+else
+end
+
+
+
 [sig hdr]   = sread(hdr);
-hdr.BDF = rmfield(hdr.BDF, 'ANNONS'); % just saving up some space...
 
 % experiment paramters
 %--------------------------------------------------------------------------
@@ -239,12 +284,6 @@ chanList(discardChanInd) = [];
 if ~isequal(chanListEogCal, chanList), warning('channel list of eog calibration file and data file are different!!'); end
 
 
-% onset and offset event values experiment start and stop (normally +1, -1)
-onsetEventInd       = cellfun( @(x) strcmp(x, 'start event'), {scenario.events(:).desc} );
-offsetEventInd      = cellfun( @(x) strcmp(x, 'end event'), {scenario.events(:).desc} );
-expStartEventValue  = scenario.events( onsetEventInd ).id;
-expStopEventValue   = scenario.events( offsetEventInd ).id;
-
 % onset and offset event values for cue stimuli (normally +2, -2)
 onsetEventInd       = cellfun( @(x) strcmp(x, 'Cue on'), {scenario.events(:).desc} );
 offsetEventInd      = cellfun( @(x) strcmp(x, 'Cue off'), {scenario.events(:).desc} );
@@ -261,7 +300,7 @@ if statusChannel(1) ~= 0
 %     statusChannel(1:iSt-1) = [];
 end
 
-eventChan.experiment = logical( bitand(statusChannel, expStartEventValue) );
+% % % % % % % % % % % % % % % eventChan.experiment = logical( bitand(statusChannel, expStartEventValue) );
 eventChan.cue = logical( bitand(statusChannel, cueOnEventValue) );
 if p3On
     eventChan.p3 = logical( bitand(statusChannel, p3Params.onsetEventValue) );
