@@ -4,16 +4,16 @@ function baseExperiment
 
 %%                        SCANNER PARAMETERS
 %==========================================================================
-subjectName                     = 'testMarkers';
+subjectName                     = 'Watermelon';
 saveData                        = true;
 saveLog                         = true;
 saveUnfoldedScenario            = true;
 useLptPort                      = true;
 
-nBlocksPerCond                  = 1;
+nBlocksPerCond                  = 4;
 nRounds                         = 1;
-nSubroundsPerRound              = 2; %6; % 12
-nRepetitions                    = 2; %1; % 10
+nSubroundsPerRound              = 6; %6; % 12
+nRepetitions                    = 10; %1; % 10
 stimDurationInSec               = [0.2 0.3];
 fakeStimDurInSec                = 0.1;
 gapDurationInSec                = 0;
@@ -67,7 +67,7 @@ switch hostName,
     case 'kuleuven-24b13c',
         eegDataDir  = 'd:/KULeuven/PhD/Work/EEG-Recording/hydrid-P300-SSVEP/';
     case 'neu-wrk-0158',
-        eegDataDir  = 'd:/Adrien/hybrid-BCI-3-A-BaseExperiment-02-newSten/recordedData/';
+        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/HybBciData/';
     otherwise,
         eegDataDir  = './EEG-recordings/';
 end
@@ -165,8 +165,8 @@ HideCursor();
 nConds = numel(conditions);
 nBlocks = zeros(1, nConds);
 blockSequence = repmat(1:nConds, 1, nBlocksPerCond);
-% blockSequence = blockSequence(randperm(nConds*nBlocksPerCond));
-for iBlock = 4%1:nConds*nBlocksPerCond
+blockSequence = blockSequence(randperm(nConds*nBlocksPerCond));
+for iBlock = 1:nConds*nBlocksPerCond
     
     % Display message
     %----------------------------------------------------------------------
