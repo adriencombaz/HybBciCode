@@ -51,7 +51,7 @@
         </states>
         <eventMatrix class="double" size="2 2">0 3 4 0</eventMatrix>
 
-        <!-- frequent stimulus -->
+        <!-- rare stimulus -->
         <description>rare stimulus</description>
         <stateSequence class="double">1 2 1 2</stateSequence>
         <durationSequenceInSec class="double">1</durationSequenceInSec>

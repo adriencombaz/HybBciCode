@@ -4,10 +4,10 @@ function oddballPlots
 
 addpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\preprocessData\xmlRelatedFncts\');
 
-dataDir = '';
-bdfFileName = '';
+dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\oddball\2012-11-14-test\';
+bdfFileName = 'watermelon_oddball.bdf';
 % paramFileName = '';
-scenarioFileName = '';
+scenarioFileName = '2012-11-14-16-57-06-unfolded-scenario.xml';
 
 refChanNames    = {'EXG1', 'EXG2'};
 discardChanNames= {'EXG3', 'EXG4', 'EXG5', 'EXG6', 'EXG7', 'EXG8'};
@@ -22,8 +22,8 @@ tAfterOnset     = 0.8; % upper time range in secs
 
 %%
 
-% expParams       = load( fullfile(folderName, paramFileName) );
-scenario        = xml2mat( fullfile(folderName, scenarioFileName) );
+% expParams       = load( fullfile(dataDir, paramFileName) );
+scenario        = xml2mat( fullfile(dataDir, scenarioFileName) );
 
 hdr             = sopen( fullfile(dataDir, bdfFileName) );
 [sig hdr]       = sread(hdr);

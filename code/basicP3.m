@@ -7,7 +7,7 @@ subjectName                     = 'test';
 saveData                        = true;
 saveLog                         = true;
 saveUnfoldedScenario            = true;
-useLptPort                      = false;
+useLptPort                      = true;
 showLog                         = true;
 
 stimDurationInSec               = [.2 .4];
@@ -18,7 +18,7 @@ initialPauseinSec               = 2;
 cueDurationInSec                = 1;
 pauseAfterCueInSec              = 1;
 pauseBetweenStagesInSec         = 1;
-nCuesToShow                     = 12;
+nCuesToShow                     = 2;
 
 scenariosDir                    = 'scenarios/';
 stimulusType                    = 'redDisk';
@@ -52,7 +52,7 @@ switch hostName,
     case 'kuleuven-24b13c',
         eegDataDir  = 'd:/KULeuven/PhD/Work/EEG-Recording/basicP3/';
     case 'neu-wrk-0158',
-        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/basicP3/';
+        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/HybBciData/basicP3/';
     otherwise,
         eegDataDir  = './EEG-recordings/';
 end
@@ -62,7 +62,7 @@ end
 currentTimeString = datestr( now, 31 );
 currentTimeString(11:3:end) = '-';
 currentDataDir = [eegDataDir currentTimeString(1:10) '-' strrep( subjectName, ' ', '-' ) '/'];
-if ~exist( currentDataDir, 'dir' )
+if ~exist( currentDataDir, 'dir' ) && ( saveData || saveLog || saveUnfoldedScenario )
     mkdir( currentDataDir );
 end
 dataFilename = sprintf( '%s%s.mat', currentDataDir, currentTimeString );

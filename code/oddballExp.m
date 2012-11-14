@@ -4,9 +4,9 @@ function oddballExp
 %==========================================================================
 
 subjectName                     = 'test';
-saveData                        = true;
-saveLog                         = true;
-saveUnfoldedScenario            = true;
+saveData                        = false;
+saveLog                         = false;
+saveUnfoldedScenario            = false;
 useLptPort                      = false;
 showLog                         = true;
 
@@ -46,7 +46,7 @@ switch hostName,
     case 'kuleuven-24b13c',
         eegDataDir  = 'd:/KULeuven/PhD/Work/EEG-Recording/oddball/';
     case 'neu-wrk-0158',
-        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/oddball/';
+        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/HybBciData/oddball/';
     otherwise,
         eegDataDir  = './EEG-recordings/';
 end
@@ -56,7 +56,7 @@ end
 currentTimeString = datestr( now, 31 );
 currentTimeString(11:3:end) = '-';
 currentDataDir = [eegDataDir currentTimeString(1:10) '-' strrep( subjectName, ' ', '-' ) '/'];
-if ~exist( currentDataDir, 'dir' )
+if ~exist( currentDataDir, 'dir' ) && ( saveData || saveLog || saveUnfoldedScenario )
     mkdir( currentDataDir );
 end
 dataFilename = sprintf( '%s%s.mat', currentDataDir, currentTimeString );

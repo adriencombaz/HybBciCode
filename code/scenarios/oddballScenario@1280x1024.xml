@@ -4,8 +4,8 @@
     <!-- Desired parameter values section -->
     <desired class="struct">
         <scr class="struct">
-            <nCols class="double">1920</nCols>
-            <nRows class="double">1200</nRows>
+            <nCols class="double">1280</nCols>
+            <nRows class="double">1024</nRows>
         </scr>
     </desired>
 
@@ -51,12 +51,12 @@
         </states>
         <eventMatrix class="double" size="2 2">0 3 4 0</eventMatrix>
 
-        <!-- frequent stimulus -->
+        <!-- rare stimulus -->
         <description>rare stimulus</description>
         <stateSequence class="double">1 2 1 2</stateSequence>
         <durationSequenceInSec class="double">1</durationSequenceInSec>
         <desired class="struct">
-            <position class="double">661 301 1260 900</position>
+            <position class="double">341 213 940 812</position>
         </desired>
         <states class="struct">
             <views class="struct">
