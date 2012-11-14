@@ -1,9 +1,9 @@
-function preprocessData
+function preprocessDataSplitRead
 
 %% =====================================================================================
 %                           INITIALIZE PARAMETERS
 
-addpath(fullfile(cd, 'xmlRelatedFncts'));
+addpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\preprocessData\xmlRelatedFncts\');
 expDir      = 'd:\KULeuven\PhD\Work\Hybrid-BCI\';
 dataDir     = fullfile(expDir, 'HybBciData');
 outputDir	= fullfile(expDir, 'HybBciProcessedData');
@@ -116,46 +116,6 @@ filter.type            = 'butter'; % Butterworth IIR filter
 
 
 %% =====================================================================================
-%                    COMPUTER EOG CORRECTION PARAMETERS
-
-if iEogFile
-    
-    % read eog calibration data file
-    %--------------------------------------------------------------------------
-    fprintf('\nLoading eog calibration data\n');
-    hdr             = sopen( fullfile(folderName, eogCalibrationFile) );
-    [sig hdr]       = sread(hdr);
-    fsEogCal        = hdr.SampleRate;
-    eventLoc        = hdr.EVENT.POS;
-    eventType       = hdr.EVENT.TYP;
-    chanListEogCal  = hdr.Label;
-    chanListEogCal(strcmp(chanListEogCal, 'Status')) = [];
-    
-    
-    % discard unused channels
-    %--------------------------------------------------------------------------
-    discardChanInd          = cell2mat( cellfun( @(x) find(strcmp(hdr.Label, x)), discardChanNames, 'UniformOutput', false ) );
-    sig(:, discardChanInd)  = [];
-    chanListEogCal(discardChanInd)= [];
-    
-    % re-reference EEG signals
-    %--------------------------------------------------------------------------
-    refChanInd  = cell2mat( cellfun( @(x) find(strcmp(hdr.Label, x)), refChanNames, 'UniformOutput', false ) );
-    sig         = bsxfun( @minus, sig, mean(sig(:,refChanInd) , 2) );
-    
-    % filter data
-    %--------------------------------------------------------------------------
-    [filter.a filter.b] = butter(filter.order, [filter.fr_low_margin filter.fr_high_margin]/(fsEogCal/2));
-    sig = filtfilt( filter.a, filter.b, sig );
-    
-    % Compute EOG regression coefficients
-    %--------------------------------------------------------------------------
-    fprintf('Computing EOG regression coefficients\n');
-    [Bv Bh Br]  = computeEogRegCoeff(sig, eventLoc, eventType, fsEogCal, eogChan, chanListEogCal);
-    
-end
-
-%% =====================================================================================
 %                               TREAT OTHER FILES
 
 
@@ -172,13 +132,11 @@ discardChanInd      = cell2mat( cellfun( @(x) find(strcmp(hdr.Label, x)), discar
 
 % sampling rate
 fs = hdr.SampleRate;
-if iEogFile && fsEogCal~=fs, warning('preprocessData:fs', 'sampling rate of eog calibration file and data file are different!!'); end
 
 % channel labels
 chanList                 = hdr.Label;
 chanList(strcmp(chanList, 'Status')) = [];
 chanList(discardChanInd) = [];
-if iEogFile && ~isequal(chanListEogCal, chanList), warning('preprocessData:chanList', 'channel list of eog calibration file and data file are different!!'); end
 
 
 
@@ -191,7 +149,7 @@ if numel(expStartSamples) ~= nBlocksTotal, error('number of experiment onsets do
 
 
 
-for iC = 1:numel(mainExpPars.conditions)
+for iC = 1%%%%%%%%%%%%%%:numel(mainExpPars.conditions)
     
     fprintf('\nTreating condition %d out of %d (%s)\n', iC, numel(mainExpPars.conditions), mainExpPars.conditions{iC});
     
@@ -263,57 +221,91 @@ for iC = 1:numel(mainExpPars.conditions)
         % discard unused channels and Re-reference
         %--------------------------------------------------------------------------------------
         sig(:, discardChanInd)  = [];
+        [filter.a filter.b] = butter(filter.order, [filter.fr_low_margin filter.fr_high_margin]/(fs/2));
+        for i = 1:size(sig, 2)
+            sig(:,i) = filtfilt( filter.a, filter.b, sig(:,i) );
+        end
         block{iB}.sig = bsxfun( @minus, sig, mean(sig(:,refChanInd) , 2) );
         
-        % additional stuffs to save (normally, not necessary)
-        %--------------------------------------------------------------------------------------
-        block{iB}.expParams = expParams;
-        block{iB}.scenario = scenario;
+    end
+    clear sig statusChannel
+    %=============================================================================================
+    %% CUT, AVERAGE AND PLOT ERPs
+    
+    tBeforeOnset    = 0.2; % lower time range in secs
+    tAfterOnset     = 0.8; % upper time range in secs
+    nl      = round(tBeforeOnset*fs);
+    nh      = round(tAfterOnset*fs);
+    range   = nh+nl+1;
+    nChan = numel(chanList);
+    
+    nEvTot = 0;
+    for iB = 1:numel(block), nEvTot = nEvTot + numel(block{iB}.p3Params.p3StateSeq); end
+
+%     epochs      = zeros(range, nChan, nEvTot, 'single');
+%     epochs      = zeros(range, nChan, nEvTot);
+%     stimType    = zeros(nEvTot, 1);
+%     iEv         = 1;
+    ErpTarget   = zeros(range, nChan);
+    nTarget     = 0;
+    ErpNonTarget= zeros(range, nChan);
+    nNonTarget  = 0;
+    for iB = 1:numel(block)
         
-    end
-    
-listOfVariablesToSave = { ...
-    'hdr', ...          % normally, not necessary
-    'fs', ...
-    'p3On', ...
-    'ssvepFreq', ...
-    'chanList', ...
-    'block' ...
-    };    
-rawFileName = fullfile( rawOutputFolder, [strrep(mainExpPars.conditions{iC}, ' ', '-') '.mat']);
-fprintf('\tSaving raw data to file %s\n', rawFileName); 
-save( rawFileName, listOfVariablesToSave{:} );
-    
-
-if iEogFile
-
-    [filter.a filter.b] = butter(filter.order, [filter.fr_low_margin filter.fr_high_margin]/(fs/2));
-
-    for iB = 1:mainExpPars.nBlocksPerCond
-    %--------------------------------------------------------------------------------------
-    % Preliminary filtering
-    % sig = filtfilt( filter.a, filter.b, sig );
-    for i = 1:size(block{iB}.sig, 2)
-        block{iB}.sig(:,i) = filtfilt( filter.a, filter.b, block{iB}.sig(:,i) );
-    end
-    
-    %--------------------------------------------------------------------------------------
-    % Apply EOG correction
-    block{iB}.sig = applyEogCorrection(block{iB}.sig, Bv, Br, Bh, eogChan, chanListEogCal);
-    
-    end
-    
-    %--------------------------------------------------------------------------------------
-    % save eog corrected data
-    eogCorrFileName = fullfile( eogCorrOutputFolder, [strrep(mainExpPars.conditions{iC}, ' ', '-') '.mat']);
-    fprintf('\tSaving eog corrected data to file %s\n', eogCorrFileName);
-    save( eogCorrFileName, listOfVariablesToSave{:} );
+        %
+        no = find( diff( block{iB}.eventChan.p3 ) == 1 ) + 1;
+        if numel(no) ~= numel(block{iB}.p3Params.p3StateSeq),
+            error('mismatch in the number of events and onsets found')
+        end
+        epochs      = zeros(range, nChan, numel(no));
         
-end
+        
+%         evInds = iEv:iEv+numel(no)-1;
+        
+                
+        %
+        for iE = 1:numel(no)%numel(evInds)
+            epochs(:,:,iE) = block{iB}.sig( no(iE)-nl : no(iE)+nh, : );
+        end
+        
+        %
+        stimId = block{iB}.p3Params.p3StateSeq;
+        
+        %
+        nItems  = numel( unique( block{1}.p3Params.p3StateSeq ) );
+        temp    = repmat( block{iB}.p3Params.targetStateSeq, nItems*expParams.nRepetitions, 1);
+        targetId = temp(:);
+        
+        %
+%         stimType(evInds) = ( stimId(:) == targetId(:) );
+        stimType = ( stimId(:) == targetId(:) );
+        
+        %
+        ErpTarget       = ErpTarget + sum( epochs( :, :, stimType == 1 ), 3 );
+        nTarget         = nTarget + sum(stimType==1);
+        ErpNonTarget    = ErpNonTarget + sum( epochs( :, :, stimType == 0 ), 3 );
+        nNonTarget      = nNonTarget + sum(stimType==0);
 
-listOfVariablesToClear = listOfVariablesToSave( ~ismember( listOfVariablesToSave, {'hdr' , 'fs', 'chanList'} ) );
-clear(listOfVariablesToClear{:})
+    end
+    
+    clear block
+%     ErpTarget = mean( epochs( :, :, stimType == 1 ), 3 );
+%     ErpNonTarget = mean( epochs( :, :, stimType == 0 ), 3 );
 
+%     epochs( :, :, stimType == 1 ) = [];
+%     ErpNonTarget = mean( epochs, 3 );
+
+    ErpTarget = ErpTarget / nTarget;
+    ErpNonTarget = ErpNonTarget / nNonTarget;
+
+    plotERPsFromCutData2( ...
+        {ErpNonTarget, ErpTarget}, ...
+        'samplingRate', fs, ...
+        'chanLabels', chanList, ...
+        'timeBeforeOnset', 0.2, ...
+        'nMaxChanPerAx', 20, ...
+        'axisOfEvent', [1 2] ...
+        );
 end
 
 end
