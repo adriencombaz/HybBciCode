@@ -1,10 +1,32 @@
 function oddballPlots
 
 %%
+% init host name
+%--------------------------------------------------------------------------
+if isunix,
+    envVarName = 'HOSTNAME';
+else
+    envVarName = 'COMPUTERNAME';
+end
+hostName = lower( strtok( getenv( envVarName ), '.') );
 
-addpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\preprocessData\xmlRelatedFncts\');
+% init paths
+%--------------------------------------------------------------------------
+switch hostName,
+    case 'kuleuven-24b13c',
+        addpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\preprocessData\xmlRelatedFncts\');
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\oddball\';
+    case 'neu-wrk-0158',
+        addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\oddball\';
+    otherwise,
+        error('host not recognized');
+end
 
-dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\oddball\2012-11-14-test\';
+%%
+
+
+sessionName = '2012-11-14-test';
 bdfFileName = 'watermelon_oddball.bdf';
 % paramFileName = '';
 scenarioFileName = '2012-11-14-16-57-06-unfolded-scenario.xml';
@@ -22,10 +44,10 @@ tAfterOnset     = 0.8; % upper time range in secs
 
 %%
 
-% expParams       = load( fullfile(dataDir, paramFileName) );
-scenario        = xml2mat( fullfile(dataDir, scenarioFileName) );
+% expParams       = load( fullfile(dataDir, sessionName, paramFileName) );
+scenario        = xml2mat( fullfile(dataDir, sessionName, scenarioFileName) );
 
-hdr             = sopen( fullfile(dataDir, bdfFileName) );
+hdr             = sopen( fullfile(dataDir, sessionName, bdfFileName) );
 [sig hdr]       = sread(hdr);
 statusChannel   = bitand(hdr.BDF.ANNONS, 255);
 hdr.BDF         = rmfield(hdr.BDF, 'ANNONS'); % just saving up some space...
@@ -81,12 +103,11 @@ end
 freqErps = freqErps/numel(freqOnsets);
 
 
-[rareErps OrdChanList] = reorderEEGChannels(rareErps, chanList); %#ok<NASGU>
-[freqErps OrdChanList] = reorderEEGChannels(freqErps, chanList);
+[allERPs OrdChanList] = reorderEEGChannels({rareErps freqErps}, chanList); %#ok<NASGU>
 
 
 plotERPsFromCutData2( ...
-    {rareErps freqErps}, ...
+    allERPs, ...
     'samplingRate', fs, ...
     'chanLabels', OrdChanList, ...
     'timeBeforeOnset', tBeforeOnset, ...
