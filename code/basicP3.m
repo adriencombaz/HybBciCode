@@ -3,22 +3,22 @@ function basicP3
 %%                        SCANNER PARAMETERS
 %==========================================================================
 
-subjectName                     = 'test';
+subjectName                     = 'adrien';
 saveData                        = true;
 saveLog                         = true;
 saveUnfoldedScenario            = true;
 useLptPort                      = true;
 showLog                         = true;
 
-stimDurationInSec               = [.2 .4];
+stimDurationInSec               = [.2 .2]; %[.4 .4]; %[.2 .4];
 fakeStimDurInSec                = 0.1;
-gapDurationInSec                = 0;
+gapDurationInSec                = [.2 .4]; %0;
 nRepetitions                    = 10;
 initialPauseinSec               = 2;
 cueDurationInSec                = 1;
 pauseAfterCueInSec              = 1;
 pauseBetweenStagesInSec         = 1;
-nCuesToShow                     = 2;
+nCuesToShow                     = 12;
 
 scenariosDir                    = 'scenarios/';
 stimulusType                    = 'redDisk';
@@ -175,7 +175,7 @@ for iSR = 1:nCuesToShow
     stateSeq = 2*stateSeq-1;
     
     if sum(gapDurationInSec) > 0
-        stateSeq        = [stateSeq ; (2*iCueOff)*ones(size(stateSeq))];
+        stateSeq        = [stateSeq ; iP3off*ones(size(stateSeq))];
         stimDurationSeq = stimDurationInSec(1) + ( stimDurationInSec(2) - stimDurationInSec(1) ) .* rand( 1,size(stateSeq, 2) );
         gapDurationSeq  = gapDurationInSec(1)  + ( gapDurationInSec(2)  - gapDurationInSec(1)  ) .* rand( 1,size(stateSeq, 2) );
         durationSeq     = [stimDurationSeq ; gapDurationSeq];

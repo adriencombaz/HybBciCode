@@ -27,17 +27,52 @@ end
 
 %%
 
-sessionName = '2012-11-14-test';
-bdfFileName = '2012-11-14-17-07-51-watermelonP3Disappear.bdf';
-paramFileName = '2012-11-14-17-07-51.mat';
-scenarioFileName = '2012-11-14-17-07-51-unfolded-scenario.xml';
+% sessionName = '2012-11-15-adrien';
+% bdfFileName = '2012-11-15-15-25-47-p3Disappear.bdf';
+% paramFileName = '2012-11-15-15-25-47.mat';
+% scenarioFileName = '2012-11-15-15-25-47-unfolded-scenario.xml';
+
+% sessionName = '2012-11-15-adrien';
+% bdfFileName = '2012-11-15-15-41-06-redDisk.bdf';
+% paramFileName = '2012-11-15-15-41-06.mat';
+% scenarioFileName = '2012-11-15-15-41-06-unfolded-scenario.xml';
+
+% sessionName = '2012-11-15-adrien';
+% bdfFileName = '2012-11-15-16-07-39-disappear-fixedStimDur.bdf';
+% paramFileName = '2012-11-15-16-07-39.mat';
+% scenarioFileName = '2012-11-15-16-07-39-unfolded-scenario.xml';
+
+% sessionName = '2012-11-15-adrien';
+% bdfFileName = '2012-11-15-16-18-47-redDisk-fixedStimDur.bdf';
+% paramFileName = '2012-11-15-16-18-47.mat';
+% scenarioFileName = '2012-11-15-16-18-47-unfolded-scenario.xml';
+
+% sessionName = '2012-11-15-adrien';
+% bdfFileName = '2012-11-15-16-44-53-disappear-fixedStimDur-nonzeroFixedGapDur.bdf';
+% paramFileName = '2012-11-15-16-44-53.mat';
+% scenarioFileName = '2012-11-15-16-44-53-unfolded-scenario.xml';
+
+% sessionName = '2012-11-15-adrien';
+% bdfFileName = '2012-11-15-16-55-50-redDisk-fixedStimDur-nonzeroFixedGapDur.bdf';
+% paramFileName = '2012-11-15-16-55-50.mat';
+% scenarioFileName = '2012-11-15-16-55-50-unfolded-scenario.xml';
+
+% sessionName = '2012-11-15-adrien';
+% bdfFileName = '2012-11-15-17-07-17-disappear-fixedStimDur-nonzeroRandomGapDur.bdf';
+% paramFileName = '2012-11-15-17-07-17.mat';
+% scenarioFileName = '2012-11-15-17-07-17-unfolded-scenario.xml';
+
+% sessionName = '2012-11-15-adrien';
+% bdfFileName = '2012-11-15-17-18-13-redDisk-fixedStimDur-nonzeroRandomGapDur.bdf';
+% paramFileName = '2012-11-15-17-18-13.mat';
+% scenarioFileName = '2012-11-15-17-18-13-unfolded-scenario.xml';
 
 refChanNames    = {'EXG1', 'EXG2'};
 discardChanNames= {'EXG3', 'EXG4', 'EXG5', 'EXG6', 'EXG7', 'EXG8'};
 
-filter.fr_low_margin   = .2;
-filter.fr_high_margin  = 40;
-filter.order           = 4;
+filter.fr_low_margin   = .5;
+filter.fr_high_margin  = 20;
+filter.order           = 3;
 filter.type            = 'butter'; % Butterworth IIR filter
 
 tBeforeOnset    = 0.2; % lower time range in secs

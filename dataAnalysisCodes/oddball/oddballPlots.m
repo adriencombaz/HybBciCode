@@ -26,17 +26,17 @@ end
 %%
 
 
-sessionName = '2012-11-14-test';
-bdfFileName = 'watermelon_oddball.bdf';
+sessionName = '2012-11-15-test';
+bdfFileName = 'oddball.bdf';
 % paramFileName = '';
-scenarioFileName = '2012-11-14-16-57-06-unfolded-scenario.xml';
+scenarioFileName = '2012-11-15-15-13-14-unfolded-scenario.xml';
 
 refChanNames    = {'EXG1', 'EXG2'};
 discardChanNames= {'EXG3', 'EXG4', 'EXG5', 'EXG6', 'EXG7', 'EXG8'};
 
-filter.fr_low_margin   = .2;
-filter.fr_high_margin  = 40;
-filter.order           = 4;
+filter.fr_low_margin   = .5;
+filter.fr_high_margin  = 30;
+filter.order           = 3;
 filter.type            = 'butter'; % Butterworth IIR filter
 
 tBeforeOnset    = 0.2; % lower time range in secs

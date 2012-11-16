@@ -4,15 +4,15 @@ function oddballExp
 %==========================================================================
 
 subjectName                     = 'test';
-saveData                        = false;
-saveLog                         = false;
-saveUnfoldedScenario            = false;
-useLptPort                      = false;
+saveData                        = true;
+saveLog                         = true;
+saveUnfoldedScenario            = true;
+useLptPort                      = true;
 showLog                         = true;
 
 stimDurationInSec               = .2;
 gapDurationInSec                = [.2 .4];
-nRareStim                       = 10;
+nRareStim                       = 100;
 nFrequentStim                   = 5*nRareStim;
 initialPauseinSec               = 2;
 
