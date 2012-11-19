@@ -1,4 +1,4 @@
-function basicP3Plots
+function lookingForP3Plots
 
 %%
 
@@ -17,72 +17,23 @@ hostName = lower( strtok( getenv( envVarName ), '.') );
 switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\basicP3\';
+        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\lookingForP3\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\basicP3\';
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\lookingForP3\';
     otherwise,
         error('host not recognized');
 end
 
 %%
 
-sessionName = '2012-11-15-adrien';
-bdfFileName = '2012-11-15-15-25-47-p3Disappear.bdf';
-paramFileName = '2012-11-15-15-25-47.mat';
-scenarioFileName = '2012-11-15-15-25-47-unfolded-scenario.xml';
-title = 'disappear';
+sessionName = '';
+bdfFileName = '';
+paramFileName = '';
+scenarioFileName = '';
+title = '';
 showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
-sessionName = '2012-11-15-adrien';
-bdfFileName = '2012-11-15-15-41-06-redDisk.bdf';
-paramFileName = '2012-11-15-15-41-06.mat';
-scenarioFileName = '2012-11-15-15-41-06-unfolded-scenario.xml';
-title = 'red disk';
-showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
-
-sessionName = '2012-11-15-adrien';
-bdfFileName = '2012-11-15-16-07-39-disappear-fixedStimDur.bdf';
-paramFileName = '2012-11-15-16-07-39.mat';
-scenarioFileName = '2012-11-15-16-07-39-unfolded-scenario.xml';
-title = 'disappear';
-showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
-
-sessionName = '2012-11-15-adrien';
-bdfFileName = '2012-11-15-16-18-47-redDisk-fixedStimDur.bdf';
-paramFileName = '2012-11-15-16-18-47.mat';
-scenarioFileName = '2012-11-15-16-18-47-unfolded-scenario.xml';
-title = 'red disk';
-showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
-
-sessionName = '2012-11-15-adrien';
-bdfFileName = '2012-11-15-16-44-53-disappear-fixedStimDur-nonzeroFixedGapDur.bdf';
-paramFileName = '2012-11-15-16-44-53.mat';
-scenarioFileName = '2012-11-15-16-44-53-unfolded-scenario.xml';
-title = 'disappear';
-showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
-
-sessionName = '2012-11-15-adrien';
-bdfFileName = '2012-11-15-16-55-50-redDisk-fixedStimDur-nonzeroFixedGapDur.bdf';
-paramFileName = '2012-11-15-16-55-50.mat';
-scenarioFileName = '2012-11-15-16-55-50-unfolded-scenario.xml';
-title = 'red disk';
-showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
-
-sessionName = '2012-11-15-adrien';
-bdfFileName = '2012-11-15-17-07-17-disappear-fixedStimDur-nonzeroRandomGapDur.bdf';
-paramFileName = '2012-11-15-17-07-17.mat';
-scenarioFileName = '2012-11-15-17-07-17-unfolded-scenario.xml';
-title = 'disappear';
-showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
-
-
-sessionName = '2012-11-15-adrien';
-bdfFileName = '2012-11-15-17-18-13-redDisk-fixedStimDur-nonzeroRandomGapDur.bdf';
-paramFileName = '2012-11-15-17-18-13.mat';
-scenarioFileName = '2012-11-15-17-18-13-unfolded-scenario.xml';
-title = 'red disk';
-showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
 end
 
