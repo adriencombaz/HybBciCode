@@ -16,8 +16,8 @@ hostName = lower( strtok( getenv( envVarName ), '.') );
 %--------------------------------------------------------------------------
 switch hostName,
     case 'kuleuven-24b13c',
-        addpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\preprocessData\xmlRelatedFncts\');
-        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\basicP3\';
+        addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
+        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\basicP3\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\basicP3\';
@@ -27,45 +27,66 @@ end
 
 %%
 
-% sessionName = '2012-11-15-adrien';
-% bdfFileName = '2012-11-15-15-25-47-p3Disappear.bdf';
-% paramFileName = '2012-11-15-15-25-47.mat';
-% scenarioFileName = '2012-11-15-15-25-47-unfolded-scenario.xml';
+sessionName = '2012-11-15-adrien';
+bdfFileName = '2012-11-15-15-25-47-p3Disappear.bdf';
+paramFileName = '2012-11-15-15-25-47.mat';
+scenarioFileName = '2012-11-15-15-25-47-unfolded-scenario.xml';
+title = 'disappear';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
-% sessionName = '2012-11-15-adrien';
-% bdfFileName = '2012-11-15-15-41-06-redDisk.bdf';
-% paramFileName = '2012-11-15-15-41-06.mat';
-% scenarioFileName = '2012-11-15-15-41-06-unfolded-scenario.xml';
+sessionName = '2012-11-15-adrien';
+bdfFileName = '2012-11-15-15-41-06-redDisk.bdf';
+paramFileName = '2012-11-15-15-41-06.mat';
+scenarioFileName = '2012-11-15-15-41-06-unfolded-scenario.xml';
+title = 'red disk';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
-% sessionName = '2012-11-15-adrien';
-% bdfFileName = '2012-11-15-16-07-39-disappear-fixedStimDur.bdf';
-% paramFileName = '2012-11-15-16-07-39.mat';
-% scenarioFileName = '2012-11-15-16-07-39-unfolded-scenario.xml';
+sessionName = '2012-11-15-adrien';
+bdfFileName = '2012-11-15-16-07-39-disappear-fixedStimDur.bdf';
+paramFileName = '2012-11-15-16-07-39.mat';
+scenarioFileName = '2012-11-15-16-07-39-unfolded-scenario.xml';
+title = 'disappear';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
-% sessionName = '2012-11-15-adrien';
-% bdfFileName = '2012-11-15-16-18-47-redDisk-fixedStimDur.bdf';
-% paramFileName = '2012-11-15-16-18-47.mat';
-% scenarioFileName = '2012-11-15-16-18-47-unfolded-scenario.xml';
+sessionName = '2012-11-15-adrien';
+bdfFileName = '2012-11-15-16-18-47-redDisk-fixedStimDur.bdf';
+paramFileName = '2012-11-15-16-18-47.mat';
+scenarioFileName = '2012-11-15-16-18-47-unfolded-scenario.xml';
+title = 'red disk';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
-% sessionName = '2012-11-15-adrien';
-% bdfFileName = '2012-11-15-16-44-53-disappear-fixedStimDur-nonzeroFixedGapDur.bdf';
-% paramFileName = '2012-11-15-16-44-53.mat';
-% scenarioFileName = '2012-11-15-16-44-53-unfolded-scenario.xml';
+sessionName = '2012-11-15-adrien';
+bdfFileName = '2012-11-15-16-44-53-disappear-fixedStimDur-nonzeroFixedGapDur.bdf';
+paramFileName = '2012-11-15-16-44-53.mat';
+scenarioFileName = '2012-11-15-16-44-53-unfolded-scenario.xml';
+title = 'disappear';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
-% sessionName = '2012-11-15-adrien';
-% bdfFileName = '2012-11-15-16-55-50-redDisk-fixedStimDur-nonzeroFixedGapDur.bdf';
-% paramFileName = '2012-11-15-16-55-50.mat';
-% scenarioFileName = '2012-11-15-16-55-50-unfolded-scenario.xml';
+sessionName = '2012-11-15-adrien';
+bdfFileName = '2012-11-15-16-55-50-redDisk-fixedStimDur-nonzeroFixedGapDur.bdf';
+paramFileName = '2012-11-15-16-55-50.mat';
+scenarioFileName = '2012-11-15-16-55-50-unfolded-scenario.xml';
+title = 'red disk';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
-% sessionName = '2012-11-15-adrien';
-% bdfFileName = '2012-11-15-17-07-17-disappear-fixedStimDur-nonzeroRandomGapDur.bdf';
-% paramFileName = '2012-11-15-17-07-17.mat';
-% scenarioFileName = '2012-11-15-17-07-17-unfolded-scenario.xml';
+sessionName = '2012-11-15-adrien';
+bdfFileName = '2012-11-15-17-07-17-disappear-fixedStimDur-nonzeroRandomGapDur.bdf';
+paramFileName = '2012-11-15-17-07-17.mat';
+scenarioFileName = '2012-11-15-17-07-17-unfolded-scenario.xml';
+title = 'disappear';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
-% sessionName = '2012-11-15-adrien';
-% bdfFileName = '2012-11-15-17-18-13-redDisk-fixedStimDur-nonzeroRandomGapDur.bdf';
-% paramFileName = '2012-11-15-17-18-13.mat';
-% scenarioFileName = '2012-11-15-17-18-13-unfolded-scenario.xml';
+
+sessionName = '2012-11-15-adrien';
+bdfFileName = '2012-11-15-17-18-13-redDisk-fixedStimDur-nonzeroRandomGapDur.bdf';
+paramFileName = '2012-11-15-17-18-13.mat';
+scenarioFileName = '2012-11-15-17-18-13-unfolded-scenario.xml';
+title = 'red disk';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
+
+end
+
+function showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, titleStr)
 
 refChanNames    = {'EXG1', 'EXG2'};
 discardChanNames= {'EXG3', 'EXG4', 'EXG5', 'EXG6', 'EXG7', 'EXG8'};
@@ -144,6 +165,22 @@ for i = 1:numel(nonTargetInds)
 end
 nonTargetErps = nonTargetErps / numel(nonTargetInds);
 
+%%
+if numel(unique(expParams.stimDurationInSec)) ~= 1
+    titleStr  = [titleStr sprintf(' random stim dur [%g-%g sec]', min(expParams.stimDurationInSec), max(expParams.stimDurationInSec))];
+else
+    titleStr  = [titleStr sprintf(' fixed stim dur [%g sec]', unique(expParams.stimDurationInSec))];
+end
+if expParams.gapDurationInSec == 0
+    titleStr  = [titleStr ' no gap'];
+else
+    if numel(unique(expParams.gapDurationInSec)) ~= 1
+        titleStr  = [titleStr sprintf(' random gap dur [%g-%g sec]', min(expParams.gapDurationInSec), max(expParams.gapDurationInSec))];
+    else
+        titleStr  = [titleStr sprintf(' fixed gap dur [%g sec]', unique(expParams.gapDurationInSec))];
+    end
+end
+
 plotERPsFromCutData2( ...
     {targetErps nonTargetErps}, ...
     'samplingRate', fs, ...
@@ -151,8 +188,17 @@ plotERPsFromCutData2( ...
     'timeBeforeOnset', tBeforeOnset, ...
     'nMaxChanPerAx', 10, ...
     'axisOfEvent', [1 1], ...
-    'legendStr',  {'target', 'nonTarget'} ...
+    'legendStr',  {'target', 'nonTarget'}, ...
+    'scale', 8, ...
+    'title', titleStr ...
     );
 
+s.Format        = 'png';
+s.Resolution    = 300;
+fh = findobj('Name', titleStr);
+set(findobj(fh,'Type','uicontrol'),'Visible','off');
+figName = strrep(titleStr, ' ', '-');
+hgexport(gcf, [figName '.png'], s);
+close(fh);
 
 end
