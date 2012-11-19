@@ -13,7 +13,7 @@
     <textures class="struct">
         <filename>icons-background-spread@1920-1200.png</filename>
         <filename>target-crosshair.png</filename>
-        <filename>red-disk.png</filename>
+        <filename>red-disk-medium.png</filename>
     </textures>
 
     <!-- Events section -->

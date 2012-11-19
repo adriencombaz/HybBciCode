@@ -23,6 +23,8 @@ imageName{5} = fullfile(imageDir, 'toilet');
 imageName{6} = fullfile(imageDir, 'bathtub');
 imageName = cellfun( @(x) [x '.png'], imageName, 'UniformOutput', false );
 
+stimImageName = 'red-disk-medium.png';
+
 texturesDir = 'textures\';
 if ~exist(texturesDir, 'dir'), mkdir(texturesDir); end
 
@@ -34,7 +36,6 @@ eltMarginV  = round( ( scrPos(4) - (eltMatrix(1)-1)*eltGapV - eltMatrix(1)*eltSi
 eltMarginH  = round( ( scrPos(3) - (eltMatrix(2)-1)*eltGapH - eltMatrix(2)*eltSizeH ) / 2 );
 bgImageName = sprintf('icons-background@%d-%d.png', scrPos(3), scrPos(4));
 generateBackgroundImage(imageName, bgImageName);
-stimImageName = 'red-disk.png';
 scFileName = sprintf('lookingForP3-%.2d-P300-stim-redDisk-narrow@%dx%d.xml', nItems, scrPos(3), scrPos(4));
 generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
 
@@ -49,7 +50,6 @@ eltGapH     = round( ( scrPos(3) - 2*eltMarginH - eltMatrix(2)*eltSizeH ) / (elt
 eltGapV     = round( ( scrPos(4) - 2*eltMarginV - eltMatrix(1)*eltSizeV ) / (eltMatrix(1) - 1) );
 bgImageName = sprintf('icons-background-spread@%d-%d.png', scrPos(3), scrPos(4));
 generateBackgroundImage(imageName, bgImageName);
-stimImageName = 'red-disk.png';
 scFileName = sprintf('lookingForP3-%.2d-P300-stim-redDisk-spread@%dx%d.xml', nItems, scrPos(3), scrPos(4));
 generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
 
