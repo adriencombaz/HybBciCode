@@ -30,9 +30,10 @@ if ~exist(texturesDir, 'dir'), mkdir(texturesDir); end
 %==========================================================================
 eltGapH     = eltSizeH;
 eltGapV     = eltSizeV;
-eltMarginV  = 100; %100;%50;
+eltMarginV  = round( ( scrPos(4) - (eltMatrix(1)-1)*eltGapV - eltMatrix(1)*eltSizeV ) / 2 );
 eltMarginH  = round( ( scrPos(3) - (eltMatrix(2)-1)*eltGapH - eltMatrix(2)*eltSizeH ) / 2 );
-bgImageName = generateBackgroundImage(imageName);
+bgImageName = sprintf('icons-background@%d-%d.png', scrPos(3), scrPos(4));
+generateBackgroundImage(imageName, bgImageName);
 stimImageName = 'red-disk.png';
 scFileName = sprintf('lookingForP3-%.2d-P300-stim-redDisk-narrow@%dx%d.xml', nItems, scrPos(3), scrPos(4));
 generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
@@ -46,7 +47,8 @@ eltMarginH  = 100; %100;%50;
 eltMarginV  = 100; %100;%50;
 eltGapH     = round( ( scrPos(3) - 2*eltMarginH - eltMatrix(2)*eltSizeH ) / (eltMatrix(2) - 1) );
 eltGapV     = round( ( scrPos(4) - 2*eltMarginV - eltMatrix(1)*eltSizeV ) / (eltMatrix(1) - 1) );
-bgImageName = generateBackgroundImageSpread(imageName);
+bgImageName = sprintf('icons-background-spread@%d-%d.png', scrPos(3), scrPos(4));
+generateBackgroundImage(imageName, bgImageName);
 stimImageName = 'red-disk.png';
 scFileName = sprintf('lookingForP3-%.2d-P300-stim-redDisk-spread@%dx%d.xml', nItems, scrPos(3), scrPos(4));
 generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
@@ -61,14 +63,14 @@ generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
 
     %==========================================================================
     %==========================================================================
-    function bgImageName = generateBackgroundImage(imageName)
+    function generateBackgroundImage(imageName, bgImageName)
 
         %--------------------------------------------------------------------------
         % background images
         hStart      = eltMarginH;
         vStart      = eltMarginV;
-        hEnd        = scrPos(3) - eltMarginH;
-        vEnd        = scrPos(4) - eltMarginV;
+        hEnd        = hStart + eltMatrix(2)*eltSizeH + (eltMatrix(2)-1)*eltGapH; % scrPos(3) - eltMarginH;
+        vEnd        = vStart + eltMatrix(1)*eltSizeV + (eltMatrix(1)-1)*eltGapV; % scrPos(4) - eltMarginV;
         
         hSize       = hEnd - hStart;
         vSize       = vEnd - vStart;
@@ -93,47 +95,6 @@ generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
             stimAlpha( vRange, hRange)    = alpha/2;
             
         end
-        bgImageName = sprintf('icons-background@%d-%d.png', scrPos(3), scrPos(4));
-        imwrite(stimImage, [texturesDir bgImageName], 'Alpha', stimAlpha);
-    
-    end
-
-
-    %==========================================================================
-    %==========================================================================
-    function bgImageName = generateBackgroundImageSpread(imageName)
-    
-        %--------------------------------------------------------------------------
-        % background images
-        hStart      = eltMarginH;
-        vStart      = eltMarginV;
-        hEnd        = scrPos(3) - eltMarginH;
-        vEnd        = scrPos(4) - eltMarginV;
-        
-        hSize       = hEnd - hStart;
-        vSize       = vEnd - vStart;
-        
-        imToRead  = imageName;
-        stimImage = zeros(vSize, hSize, 3, 'uint8');
-        stimAlpha = zeros(vSize, hSize, 'uint8');
-        for iIcon = 1:nItems
-            
-            [vPosInMatrix hPosInMatrix] = ind2sub(eltMatrix, iIcon);
-            
-            distFromLeft    = (hPosInMatrix-1) * ( eltSizeH + eltGapH );
-            distFromTop     = (vPosInMatrix-1) * ( eltSizeV + eltGapV );
-            hRange          = distFromLeft + (1:eltSizeH);
-            vRange          = distFromTop + (1:eltSizeV);
-            
-            [A, ~, alpha]   = imread(imToRead{iIcon});
-            A               = imresize(A, [eltSizeH, eltSizeV]);
-            alpha           = imresize(alpha, [eltSizeH, eltSizeV]);
-            
-            stimImage( vRange, hRange, :) = A;
-            stimAlpha( vRange, hRange)    = alpha/2;
-            
-        end
-        bgImageName = sprintf('icons-background-spread@%d-%d.png', scrPos(3), scrPos(4));
         imwrite(stimImage, [texturesDir bgImageName], 'Alpha', stimAlpha);
     
     end
@@ -150,8 +111,8 @@ generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
         % P300 and cue stimuli
         hStart      = eltMarginH;
         vStart      = eltMarginV;
-        hEnd        = scrPos(3) - eltMarginH;
-        vEnd        = scrPos(4) - eltMarginV;
+        hEnd        = hStart + eltMatrix(2)*eltSizeH + (eltMatrix(2)-1)*eltGapH; % scrPos(3) - eltMarginH;
+        vEnd        = vStart + eltMatrix(1)*eltSizeV + (eltMatrix(1)-1)*eltGapV; % scrPos(4) - eltMarginV;
         P300StimPos = [ hStart+1 vStart+1 hEnd vEnd ];
         
         CuePos      = zeros(nItems, 4); % for .xml scenario (and PTB)
@@ -189,7 +150,7 @@ generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
         scFile = fopen(scFileName, 'w');
         
         fprintf(scFile, '<scenario class="struct">\n');
-        fprintf(scFile, '    <description>Looking fo rP300 (%d items)</description>\n\n', nItems);
+        fprintf(scFile, '    <description>Looking for P300 (%d items)</description>\n\n', nItems);
         
         
         fprintf(scFile, '    <!-- Desired parameter values section -->\n');

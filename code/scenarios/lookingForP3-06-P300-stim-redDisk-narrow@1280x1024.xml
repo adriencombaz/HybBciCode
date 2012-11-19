@@ -1,5 +1,5 @@
 <scenario class="struct">
-    <description>Looking fo rP300 (6 items)</description>
+    <description>Looking for P300 (6 items)</description>
 
     <!-- Desired parameter values section -->
     <desired class="struct">
@@ -40,7 +40,7 @@
         <stateSequence class="double">1</stateSequence>
         <durationSequenceInSec class="double">0.1</durationSequenceInSec>
         <desired class="struct">
-            <position class="double">379 101 902 924</position>
+            <position class="double">379 76 903 950</position>
         </desired>
         <states class="struct">
             <views class="struct">
@@ -57,51 +57,51 @@
             <position class="double">0 0 0 0</position>
         </desired>
         <states class="struct">
-            <position class="double">379 101 553 275</position>
+            <position class="double">379 76 553 250</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">379 101 553 275</position>
+            <position class="double">379 76 553 250</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">379 451 553 625</position>
+            <position class="double">379 426 553 600</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">379 451 553 625</position>
+            <position class="double">379 426 553 600</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">379 801 553 975</position>
+            <position class="double">379 776 553 950</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">379 801 553 975</position>
+            <position class="double">379 776 553 950</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">729 101 903 275</position>
+            <position class="double">729 76 903 250</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">729 101 903 275</position>
+            <position class="double">729 76 903 250</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">729 451 903 625</position>
+            <position class="double">729 426 903 600</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">729 451 903 625</position>
+            <position class="double">729 426 903 600</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">729 801 903 975</position>
+            <position class="double">729 776 903 950</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
-            <position class="double">729 801 903 975</position>
+            <position class="double">729 776 903 950</position>
             <views class="struct">
                 <iTexture class="double">3</iTexture>
             </views>
@@ -134,27 +134,27 @@
             <position class="double">0 0 0 0</position>
         </desired>
         <states class="struct">
-            <position class="double">379 101 553 275</position>
+            <position class="double">379 76 553 250</position>
             <views class="struct">
                 <iTexture class="double">2</iTexture>
             </views>
-            <position class="double">379 451 553 625</position>
+            <position class="double">379 426 553 600</position>
             <views class="struct">
                 <iTexture class="double">2</iTexture>
             </views>
-            <position class="double">379 801 553 975</position>
+            <position class="double">379 776 553 950</position>
             <views class="struct">
                 <iTexture class="double">2</iTexture>
             </views>
-            <position class="double">729 101 903 275</position>
+            <position class="double">729 76 903 250</position>
             <views class="struct">
                 <iTexture class="double">2</iTexture>
             </views>
-            <position class="double">729 451 903 625</position>
+            <position class="double">729 426 903 600</position>
             <views class="struct">
                 <iTexture class="double">2</iTexture>
             </views>
-            <position class="double">729 801 903 975</position>
+            <position class="double">729 776 903 950</position>
             <views class="struct">
                 <iTexture class="double">2</iTexture>
             </views>

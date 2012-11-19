@@ -4,10 +4,10 @@ function basicP3
 %==========================================================================
 
 subjectName                     = 'adrien';
-saveData                        = true;
-saveLog                         = true;
-saveUnfoldedScenario            = true;
-useLptPort                      = true;
+saveData                        = false;
+saveLog                         = false;
+saveUnfoldedScenario            = false;
+useLptPort                      = false;
 showLog                         = true;
 
 stimDurationInSec               = [.2 .2]; %[.4 .4]; %[.2 .4];

@@ -1,5 +1,5 @@
 <scenario class="struct">
-    <description>Looking fo rP300 (6 items)</description>
+    <description>Looking for P300 (6 items)</description>
 
     <!-- Desired parameter values section -->
     <desired class="struct">
@@ -40,7 +40,7 @@
         <stateSequence class="double">1</stateSequence>
         <durationSequenceInSec class="double">0.1</durationSequenceInSec>
         <desired class="struct">
-            <position class="double">101 101 1820 1100</position>
+            <position class="double">101 101 1821 1100</position>
         </desired>
         <states class="struct">
             <views class="struct">
