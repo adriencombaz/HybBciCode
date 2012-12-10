@@ -3,7 +3,7 @@ function oddballExp
 %%                        SCANNER PARAMETERS
 %==========================================================================
 
-subjectName                     = 'test';
+subjectName                     = 'nikolay';
 saveData                        = true;
 saveLog                         = true;
 saveUnfoldedScenario            = true;
@@ -11,7 +11,7 @@ useLptPort                      = true;
 showLog                         = true;
 
 stimDurationInSec               = .2;
-gapDurationInSec                = [.2 .4];
+gapDurationInSec                = [.1 .3];
 nRareStim                       = 100;
 nFrequentStim                   = 5*nRareStim;
 initialPauseinSec               = 2;

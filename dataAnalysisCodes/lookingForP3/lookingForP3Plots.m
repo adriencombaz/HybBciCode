@@ -27,13 +27,62 @@ end
 
 %%
 
-sessionName = '';
-bdfFileName = '';
-paramFileName = '';
-scenarioFileName = '';
-title = '';
+% sessionName = '2012-11-19-adrien';
+% bdfFileName = '2012-11-19-16-25-54-slow-gap-narrow.bdf';
+% paramFileName = '2012-11-19-16-25-54.mat';
+% scenarioFileName = '2012-11-19-16-25-54-unfolded-scenario.xml';
+% title = 'slow-gap-narrow';
+% showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
+% 
+% sessionName = '2012-11-19-adrien';
+% bdfFileName = '2012-11-19-16-40-33-fast-noGap-narrow.bdf';
+% paramFileName = '2012-11-19-16-40-33.mat';
+% scenarioFileName = '2012-11-19-16-40-33-unfolded-scenario.xml';
+% title = 'fast-noGap-narrow';
+% showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
+
+% sessionName = '2012-11-19-adrien';
+% bdfFileName = '2012-11-19-16-52-05-slow-noGap-narrow.bdf';
+% paramFileName = '2012-11-19-16-52-05.mat';
+% scenarioFileName = '2012-11-19-16-52-05-unfolded-scenario.xml';
+% title = 'slow-noGap-narrow';
+% showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
+
+% sessionName = '2012-11-19-adrien';
+% bdfFileName = '2012-11-19-17-05-53-fast-noGap-spread.bdf';
+% paramFileName = '2012-11-19-17-05-53.mat';
+% scenarioFileName = '2012-11-19-17-05-53-unfolded-scenario.xml';
+% title = 'fast-noGap-spread';
+% showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
+% 
+% sessionName = '2012-11-19-adrien';
+% bdfFileName = '2012-11-19-17-14-05-fast-gap-spread.bdf';
+% paramFileName = '2012-11-19-17-14-05.mat';
+% scenarioFileName = '2012-11-19-17-14-05-unfolded-scenario.xml';
+% title = 'fast-gap-spread';
+% showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
+% 
+% sessionName = '2012-11-19-adrien';
+% bdfFileName = '2012-11-19-17-21-36-fast-gap-narrow.bdf';
+% paramFileName = '2012-11-19-17-21-36.mat';
+% scenarioFileName = '2012-11-19-17-21-36-unfolded-scenario.xml';
+% title = 'fast-gap-narrow';
+% showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
+
+sessionName = '2012-11-19-adrien';
+bdfFileName = '2012-11-19-17-33-20-slow-gap-spread.bdf';
+paramFileName = '2012-11-19-17-33-20.mat';
+scenarioFileName = '2012-11-19-17-33-20-unfolded-scenario.xml';
+title = 'slow-gap-spread';
 showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
+
+sessionName = '2012-11-19-adrien';
+bdfFileName = '2012-11-19-17-45-42-slow-noGap-spread.bdf';
+paramFileName = '2012-11-19-17-45-42.mat';
+scenarioFileName = '2012-11-19-17-45-42-unfolded-scenario.xml';
+title = 'slow-noGap-spread';
+showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
 end
 
@@ -148,7 +197,8 @@ s.Format        = 'png';
 s.Resolution    = 300;
 fh = findobj('Name', titleStr);
 set(findobj(fh,'Type','uicontrol'),'Visible','off');
-figName = strrep(titleStr, ' ', '-');
+% figName = strrep(titleStr, ' ', '-');
+figName = fullfile( dataDir, sessionName, bdfFileName(1:end-4) );
 hgexport(gcf, [figName '.png'], s);
 close(fh);
 

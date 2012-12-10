@@ -26,10 +26,25 @@ end
 %%
 
 
-sessionName = '2012-11-15-test';
+% sessionName = '2012-11-15-test';
+% bdfFileName = 'oddball.bdf';
+% % paramFileName = '';
+% scenarioFileName = '2012-11-15-15-13-14-unfolded-scenario.xml';
+
+% sessionName = '2012-11-19-adrien';
+% bdfFileName = 'oddball.bdf';
+% % paramFileName = '';
+% scenarioFileName = '2012-11-19-18-00-43-unfolded-scenario.xml';
+
+% sessionName = '2012-11-20-nikolay';
+% bdfFileName = 'oddball.bdf';
+% % paramFileName = '';
+% scenarioFileName = '2012-11-20-15-55-13-unfolded-scenario.xml';
+
+sessionName = '2012-11-22-nikolay';
 bdfFileName = 'oddball.bdf';
 % paramFileName = '';
-scenarioFileName = '2012-11-15-15-13-14-unfolded-scenario.xml';
+scenarioFileName = '2012-11-22-15-56-03-unfolded-scenario.xml';
 
 refChanNames    = {'EXG1', 'EXG2'};
 discardChanNames= {'EXG3', 'EXG4', 'EXG5', 'EXG6', 'EXG7', 'EXG8'};
