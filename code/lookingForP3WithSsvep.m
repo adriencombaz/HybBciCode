@@ -49,7 +49,8 @@ end
 
 %---------------------------------------------------------------------------------------
 %
-ISI = [.25 .35];
+% ISI = [.25 .35];
+ISI = [.2 .3];
 switch gapOrNoGap
     case 'gap'
         stimDurationInSec = [.2 .2];
@@ -64,7 +65,7 @@ initialPauseinSec               = 2;
 cueDurationInSec                = 2;
 pauseAfterCueInSec              = 1;
 pauseBetweenStagesInSec         = 1;
-p300DelayInSec                  = 0.2;
+p300DelayInSec                  = 0.5;
 
 scenariosDir                    = 'scenarios/';
 useBinaryIntensity              = true;
@@ -158,6 +159,9 @@ iCueOff = numel( st.sc.stimuli(iLookHereStimulus).states );
 nItems  = iCueOff-1;
 
 st.setFrequency( ssvepFreq, iSSVEPStimuli );
+
+% st.sc.stimuli(iSSVEPStimuli).states(1).frequency = ssvepFreq;
+% st.sc.stimuli(iSSVEPStimuli).states(2).frequency = 0;
 
 %--------------------------------------------------------------------------
 % generate state sequence and duration sequence

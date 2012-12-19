@@ -17,21 +17,58 @@ hostName = lower( strtok( getenv( envVarName ), '.') );
 switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\lookingForP3\';
+        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\lookingForP3WithSsvep\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\lookingForP3\';
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\lookingForP3WithSsvep\';
     otherwise,
         error('host not recognized');
 end
 
 %%
 
-sessionName = '2012-11-19-adrien';
-bdfFileName = '2012-11-19-17-45-42-slow-noGap-spread.bdf';
-paramFileName = '2012-11-19-17-45-42.mat';
-scenarioFileName = '2012-11-19-17-45-42-unfolded-scenario.xml';
-title = 'slow-noGap-spread';
+% sessionName = '2012-12-17-adrien';
+% bdfFileName = '2012-12-17-15-47-30-0Hz-Gap.bdf';
+% paramFileName = '2012-12-17-15-47-30.mat';
+% scenarioFileName = '2012-12-17-15-47-30-unfolded-scenario.xml';
+% title = '0Hz-gap';
+
+% sessionName = '2012-12-17-adrien';
+% bdfFileName = '2012-12-17-15-55-16-12Hz-Gap.bdf';
+% paramFileName = '2012-12-17-15-55-16.mat';
+% scenarioFileName = '2012-12-17-15-55-16-unfolded-scenario.xml';
+% title = '12Hz-gap';
+
+% sessionName = '2012-12-17-adrien';
+% bdfFileName = '2012-12-17-16-04-05-12Hz-NoGap.bdf';
+% paramFileName = '2012-12-17-16-04-05.mat';
+% scenarioFileName = '2012-12-17-16-04-05-unfolded-scenario.xml';
+% title = '12Hz-Nogap';
+
+% sessionName = '2012-12-17-adrien';
+% bdfFileName = '2012-12-17-16-14-05-12Hz-NoGap-ISI-200-400ms.bdf';
+% paramFileName = '2012-12-17-16-14-05.mat';
+% scenarioFileName = '2012-12-17-16-14-05-unfolded-scenario.xml';
+% title = '12Hz-Nogap';
+
+% sessionName = '2012-12-17-adrien';
+% bdfFileName = '2012-12-17-16-25-03-12Hz-NoGap-ISI-200-300ms-whiteIcons-yellowSsvep.bdf';
+% paramFileName = '2012-12-17-16-25-03.mat';
+% scenarioFileName = '2012-12-17-16-25-03-unfolded-scenario.xml';
+% title = '12Hz-Nogap';
+
+% sessionName = '2012-12-17-adrien';
+% bdfFileName = '2012-12-17-17-09-40-12Hz-NoGap-ISI-200-300ms-whiteIcons-yellowTransSsvep.bdf';
+% paramFileName = '2012-12-17-17-09-40.mat';
+% scenarioFileName = '2012-12-17-17-09-40-unfolded-scenario.xml';
+% title = '12Hz-Nogap';
+
+sessionName = '2012-12-17-adrien';
+bdfFileName = '2012-12-17-17-21-48-12Hz-NoGap-blackSquare.bdf';
+paramFileName = [bdfFileName(1:19) '.mat'];
+scenarioFileName = [bdfFileName(1:19) '-unfolded-scenario.xml'];
+title = '12Hz-Nogap';
+
 showPlot(dataDir, sessionName, bdfFileName, paramFileName, scenarioFileName, title);
 
 end

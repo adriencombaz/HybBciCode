@@ -29,8 +29,10 @@ imageName{4} = fullfile(imageDir, 'shirt');
 imageName{5} = fullfile(imageDir, 'toilet');
 imageName{6} = fullfile(imageDir, 'bathtub');
 imageName = cellfun( @(x) [x '.png'], imageName, 'UniformOutput', false );
+% imageName = cellfun( @(x) [x '-grey.png'], imageName, 'UniformOutput', false );
 
-stimImageName = 'red-disk-medium.png';
+% stimImageName = 'red-disk-medium.png';
+stimImageName = 'black-pixel.png';
 
 texturesDir = 'textures\';
 if ~exist(texturesDir, 'dir'), mkdir(texturesDir); end
@@ -45,18 +47,6 @@ scFileName = sprintf('lookingForP3WithSsvep-%.2d-P3-stim@%dx%d.xml', nItems, scr
 generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
 
 
-
-% % % % % % %%
-% % % % % % %==========================================================================
-% % % % % % eltMatrix   = [2 3];
-% % % % % % eltMarginH  = 100; %100;%50;
-% % % % % % eltMarginV  = 100; %100;%50;
-% % % % % % eltGapH     = round( ( scrPos(3) - 2*eltMarginH - eltMatrix(2)*eltSizeH ) / (eltMatrix(2) - 1) );
-% % % % % % eltGapV     = round( ( scrPos(4) - 2*eltMarginV - eltMatrix(1)*eltSizeV ) / (eltMatrix(1) - 1) );
-% % % % % % bgImageName = sprintf('icons-background-spread@%d-%d.png', scrPos(3), scrPos(4));
-% % % % % % generateBackgroundImage(imageName, bgImageName);
-% % % % % % scFileName = sprintf('lookingForP3-%.2d-P300-stim-redDisk-spread@%dx%d.xml', nItems, scrPos(3), scrPos(4));
-% % % % % % generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
 
     %==========================================================================
     %==========================================================================
@@ -169,7 +159,8 @@ generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
         fprintf(scFile, '        <filename>%s</filename>\n', bgImageName);
         fprintf(scFile, '        <filename>target-crosshair.png</filename>\n');
         fprintf(scFile, '        <filename>%s</filename>\n', stimImageName);
-        fprintf(scFile, '        <filename>yellow-pixel.png</filename>\n');
+%         fprintf(scFile, '        <filename>yellow-pixel.png</filename>\n');
+        fprintf(scFile, '        <filename>yellow-pixel-transparent.png</filename>\n');
         fprintf(scFile, '    </textures>\n\n');
         
         %--------------------------------------------------------------------------
@@ -215,6 +206,7 @@ generateScenarioAndStimuli(stimImageName, bgImageName, scFileName);
         fprintf(scFile, '            <initialPhase class="double">0.00000000000000</initialPhase>\n');
         fprintf(scFile, '            <views class="struct">\n');
         fprintf(scFile, '                <iTexture class="double">0</iTexture>\n');
+%         fprintf(scFile, '                <iTexture class="double">4</iTexture>\n');
         fprintf(scFile, '            </views>\n');
         fprintf(scFile, '        </states>\n');
         fprintf(scFile, '        <eventMatrix class="double" size="2 2">0 5 6 0</eventMatrix>\n\n');
