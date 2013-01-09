@@ -1478,7 +1478,8 @@ classdef sten < handle
                                     parameterValue >= min( obj.availableScreenList ) && ...
                                     parameterValue <= max( obj.availableScreenList ) && ...
                                     parameterValue == fix( parameterValue ),
-                                obj.screenId = parameterValue;
+%                                 obj.screenId = parameterValue;
+                                obj.desiredScreenID = parameterValue;
                             else
                                 error('sten:parseInputParameters:BadScreenID', ...
                                     'STEN: Wrong or missing value for desired screen ID.');

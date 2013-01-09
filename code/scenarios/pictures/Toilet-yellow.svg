@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100"
+   height="100"
+   id="svg3776"
+   version="1.1"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="Toilet-yellow.svg"
+   inkscape:export-filename="D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\code\scenarios\pictures\toilet-yellow.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs3778" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="-23.05441"
+     inkscape:cy="41.295348"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:showpageshadow="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1181"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3781">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-952.36218)">
+    <path
+       style="fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:1.00004566000000010;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 6.6652793,952.86218 c -2.6692863,0 -4.8338678,2.23233 -4.8338678,5.0222 0,1.64787 0.750895,3.10012 1.9147139,4.01776 l 0,40.02076 -0.3452762,0 c -0.8850357,0 -1.6008264,0.697 -1.6008264,1.5694 l 0,4.3003 c 0,0.8722 0.7159476,1.5841 1.6008264,1.6007 l 5.0510395,0.095 c 0,0 0.033938,1.5405 0.033938,2.3846 0,3.2447 1.0802806,6.3619 3.0447083,9.1969 0.429717,2.4674 1.582921,6.9799 4.582757,12.116 0.308099,0.5275 0.243272,8.1387 0.219722,10.6722 -2.372659,0.2584 -4.206093,1.9028 -4.206093,3.955 0,2.2323 2.158233,4.0492 4.833868,4.0492 l 54.271151,0 c 2.675635,0 4.833868,-1.8169 4.833868,-4.0492 0,-2.2323 -2.158233,-4.0178 -4.833868,-4.0178 l -1.820547,0 0,-5.5243 c 0,-4.4754 2.779907,-5.2862 3.798038,-5.5559 4.196558,-1.1114 7.814823,-3.7779 9.604958,-5.2733 5.985553,-4.2353 9.955959,-9.6654 9.57357,-15.5688 -0.054,-0.8336 0.03148,-1.5092 0.0022,-2.3216 l 3.670274,-0.1268 c 1.175919,-0.041 2.103046,-0.9398 2.103046,-2.103 l 0,-3.3586 c 0,-1.1632 -0.926435,-2.103 -2.103046,-2.103 l -4.896645,0 c -0.139963,0 -0.275803,0.038 -0.408055,0.063 l -59.167796,0 0,-39.17327 c 2.086321,-0.55367 3.641095,-2.50769 3.641095,-4.86525 0,-2.78987 -2.16458,-5.0222 -4.833867,-5.0222 z"
+       id="rect2551"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ssccsssscscscssssscsccscssssscccsss" />
+  </g>
+</svg>
