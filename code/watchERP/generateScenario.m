@@ -3,7 +3,8 @@ function sc = generateScenario( desiredScreenID )
 ssvepColor = [1 1 1]; % white
 % ssvepColor = [1 1 O]; % yellow
 % ssvepColor = [.5 .5 .5]; % grey
-ssvepAlpha = .75; % 0: fully transparent, 1: fully opaque
+% ssvepAlpha = .75; % 0: fully transparent, 1: fully opaque
+ssvepAlpha = .4; % 0: fully transparent, 1: fully opaque
 dimmedColor = 'white'; % 'white' 'grey' 'yellow'
 flashStyle = 'newColor'; % 'combine' 'newColor'
 flashImage = 'red-disk-medium'; % 'black-pixel' 'red-disk-medium', for 'overlap' case
@@ -15,18 +16,19 @@ sizeFactorFlash = 1.2;
 
 %% Init parameters
 %==========================================================================
-eltMatrix   = [3 2];
-nItems      = prod(eltMatrix);
-scrPos      = get(0, 'ScreenSize');
-% scrPos      = [1 1 1920 1200];
-% scrPos      = [1 1 1280 1024];
-scrPos      = Screen('Rect', desiredScreenID);
-eltSizeH    = 175; %150;%200;
-eltSizeV    = 175; %150;%200;
-eltGapH     = eltSizeH;
-eltGapV     = eltSizeV;
-SSVEPMarginH = 80;
-SSVEPMarginV = 80;
+eltMatrix       = [3 2];
+nItems          = prod(eltMatrix);
+scrPos          = Screen('Rect', desiredScreenID);
+% eltSizeH        = 175; % for 1920x1200
+% eltSizeV        = 175; % for 1920x1200
+% SSVEPMarginH    = 80; % for 1920x1200
+% SSVEPMarginV    = 80; % for 1920x1200
+eltSizeH        = 160; % for 1920x1200
+eltSizeV        = 160; % for 1920x1200
+SSVEPMarginH    = 70; % for 1920x1200
+SSVEPMarginV    = 70; % for 1920x1200
+eltGapH         = eltSizeH;
+eltGapV         = eltSizeV;
 
 eltSizeH_flash  = round( sizeFactorFlash * eltSizeH );
 hPadd           = eltSizeH_flash - eltSizeH;
@@ -331,7 +333,7 @@ sc.texturesDir = fullfile(cd, texturesDir);
             sc.stimuli(2).states(iState+1).views.iTexture  = iS+1;  % fake
             
             sc.stimuli(2).eventMatrix(iState, 2:2:2*nItems) = find( cellfun( @(x) strcmp(x, 'P300 stim off'), {sc.events(:).desc} ) ); % from real to fake (reset binary marker)
-            sc.stimuli(2).eventMatrix(iState+1, 2:2:2*nItems) = find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from fake to real (set binary marker)
+            sc.stimuli(2).eventMatrix(iState+1, 1:2:2*nItems-1) = find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from fake to real (set binary marker)
             
             iState = iState+2;
         end

@@ -3,7 +3,8 @@ function watchERP
 addpath( '../deps' );
 addpath( '../deps/lptIO' );
 
-desiredScreenID = 1;
+% desiredScreenID = 1;
+desiredScreenID = 0;
 
 
 %%                        SCANNER PARAMETERS
@@ -18,6 +19,7 @@ saveLog                         = true;
 saveUnfoldedScenario            = true;
 useLptPort                      = true;
 showLog                         = true;
+showP3                          = true;
 gapOrNoGapList                  = {'gap', 'noGap'};
 gapOrNoGap                      = gapOrNoGapList{1};
 nRepetitions                    = 10;
@@ -30,6 +32,7 @@ parameterList = {
     'Number of cues',                           nCuesToShow,                'nCuesToShow'
     'Numner of repetitions',                    nRepetitions,               'nRepetitions'
     'SSVEP frequency',                          ssvepFreq,                  'ssvepFreq'
+    'Show oddball stimulation',                 showP3,                     'showP3'
     'Use LPT Port',                             useLptPort,                 'useLptPort'
     'Save data',                                saveData,                   'saveData'
     'Save logs to text file',                   saveLog,                    'saveLog'
@@ -58,6 +61,7 @@ end
 % ISI = [.25 .35];
 ISI = [.2 .3];
 % ISI = [2 3];
+% ISI = [.1 .2];
 switch gapOrNoGap
     case 'gap'
         stimDurationInSec = [.2 .2];
@@ -68,6 +72,7 @@ switch gapOrNoGap
 end
 
 fakeStimDurInSec                = 0.1;
+% fakeStimDurInSec                = 0.05;
 initialPauseinSec               = 2;
 cueDurationInSec                = 2;
 pauseAfterCueInSec              = 1;
@@ -289,6 +294,11 @@ if sum(lookHereDurationSeq) - sum(p3DurationSeq) > 1e-10
     error('mistake in the sequence duration');
 end
 
+if ~showP3
+    p3StateSeq      = iP3off;
+    p3DurationSeq   = sum(lookHereDurationSeq);
+end
+
 roundDurationInSec = sum(lookHereDurationSeq);
 
 st.sc.stimuli(iP300Stimuli).stateSequence               = p3StateSeq;
@@ -371,6 +381,7 @@ if saveData
     labelList   = labChan.getListLabels();
     screenInfo  = st.scr;
     flipTimeLog = st.flipTimeLog;
+    scenario    = st.sc;
     frameRenderDurationLog = st.frameRenderDurationLog;
     listOfVariablesToSave = { ...
         'subjectName', ...

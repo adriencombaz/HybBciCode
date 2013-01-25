@@ -1,4 +1,4 @@
-function wathcErpPlotsAllInOne
+function watchErpPlotsAllInOne
         
     %%
     % init host name
