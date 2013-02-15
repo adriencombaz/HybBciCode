@@ -110,7 +110,7 @@ for iS = 1:nSub
                 cuts_DS = newCuts;
             else
                 nbins = floor( size(newCuts, 1) / DSF );
-                cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3) ) % , 'single' );
+                cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3) ); % , 'single' );
                 for i = 1:nbins
                     cuts_DS(i,:,:) = mean( newCuts( (i-1)*DSF+1:i*DSF, :, : ), 1 );
                 end
