@@ -27,10 +27,10 @@ end
 %%
 
 
-[bdfFileName, sessionDir, ~]    = uigetfile([dataDir '*.bdf']);%, 'MultiSelect', 'on');
-% if ~iscell(bdfFileName) && bdfFileName == 0
-%     return;
-% end
+[bdfFileName, sessionDir, ~]    = uigetfile([dataDir '*.bdf'], 'MultiSelect', 'on');
+if isnumeric(bdfFileName) && bdfFileName == 0
+    return;
+end
 bdfFileName = {bdfFileName};
 
 
@@ -106,13 +106,15 @@ targetId        = tempp(:);
 stimType        = double( stimId(:) == targetId(:) );
 
 
+minThreshold = -1000;
+maxThreshold = 1000;
 targetErps = zeros(range, nChan);
 targetInds = find(stimType == 1);
 nEpochs = 0;
 for i = 1:numel(targetInds)
     iSampleEvent    = stimOnsets(targetInds(i));
     cut             = sig( (iSampleEvent-nl) : (iSampleEvent+nh), : );
-    if min(cut(:)) > -50 && max(cut(:)) < 50
+    if min(cut(:)) > minThreshold && max(cut(:)) < maxThreshold
         targetErps  = targetErps + cut;
         nEpochs     = nEpochs + 1;
     end
@@ -128,7 +130,7 @@ nEpochs = 0;
 for i = 1:numel(nonTargetInds)
     iSampleEvent    = stimOnsets(nonTargetInds(i));
     cut             = sig( (iSampleEvent-nl) : (iSampleEvent+nh), : );
-    if min(cut(:)) > -50 && max(cut(:)) < 50
+    if min(cut(:)) > minThreshold && max(cut(:)) < maxThreshold
         nonTargetErps   = nonTargetErps + cut;
         nEpochs         = nEpochs + 1;
     end
@@ -138,21 +140,6 @@ nRejected       = numel(nonTargetInds) - nEpochs;
 fprintf('%d epochs rejected\n', nRejected);
 
 %% Plot mean ERPs
-
-if numel(unique(expParams.stimDurationInSec)) ~= 1
-    titleStr  = [titleStr sprintf(' random stim dur [%g-%g sec]', min(expParams.stimDurationInSec), max(expParams.stimDurationInSec))];
-else
-    titleStr  = [titleStr sprintf(' fixed stim dur [%g sec]', unique(expParams.stimDurationInSec))];
-end
-if expParams.gapDurationInSec == 0
-    titleStr  = [titleStr ' no gap'];
-else
-    if numel(unique(expParams.gapDurationInSec)) ~= 1
-        titleStr  = [titleStr sprintf(' random gap dur [%g-%g sec]', min(expParams.gapDurationInSec), max(expParams.gapDurationInSec))];
-    else
-        titleStr  = [titleStr sprintf(' fixed gap dur [%g sec]', unique(expParams.gapDurationInSec))];
-    end
-end
 
 plotERPsFromCutData2( ...
     {targetErps nonTargetErps}, ...
@@ -166,13 +153,13 @@ plotERPsFromCutData2( ...
     'title', titleStr ...
     );
 
-s.Format        = 'png';
-s.Resolution    = 300;
-fh = findobj('Name', titleStr);
-set(findobj(fh,'Type','uicontrol'),'Visible','off');
-figName = fullfile( sessionDir, ['erp-' bdfFileName(1:end-4)]);
-% figName = fullfile( sessionDir, ['erp-' bdfFileName(1:end-4) '-noRejection']);
-hgexport(gcf, [figName '.png'], s);
-close(fh);
+% s.Format        = 'png';
+% s.Resolution    = 300;
+% fh = findobj('Name', titleStr);
+% set(findobj(fh,'Type','uicontrol'),'Visible','off');
+% figName = fullfile( sessionDir, ['erp-' bdfFileName(1:end-4)]);
+% % figName = fullfile( sessionDir, ['erp-' bdfFileName(1:end-4) '-noRejection']);
+% hgexport(gcf, [figName '.png'], s);
+% close(fh);
 
 end

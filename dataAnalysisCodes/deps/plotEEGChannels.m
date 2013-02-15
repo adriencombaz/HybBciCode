@@ -5,11 +5,12 @@ function plotEEGChannels(sig, varargin)
 %% ========================================================================
 %                        PARSE INPUT ARGUMENTS
 
-allowedParameterList = {'eventLoc', 'eventType', 'samplingRate', 'chanLabels'};
+allowedParameterList = {'eventLoc', 'eventType', 'samplingRate', 'chanLabels', 'indEvColorTrace'};
 eventLoc        = [];
 eventType       = [];
 samplingRate    = 1;
 chanLabels      = cellstr( int2str( (1:size(sig, 2))' ) );
+indEvColorTrace = [];
 
 iArg = 1;
 nParameters = numel( varargin );
@@ -61,10 +62,18 @@ while ( iArg <= nParameters ),
                     error('plotEEGChannels:chanLabels', ...
                         'Wrong channels labels input.');
                 end
+            case 5,  % indEvColorTrace
+                if isnumeric( parameterValue ) ...
+                        && sum(size( parameterValue )) == numel( parameterValue ) + 1,
+                    indEvColorTrace = parameterValue;
+                else
+                    error('plotEEGChannels:indEvColorTrace', ...
+                        'Wrong indEvColorTrace input.');
+                end
         end % of iParameter switch
     end % of unique acceptable iParameter found branch
     
-    if isempty( parameterValue  ),
+    if isempty( parameterValue ),
         iArg = iArg + 1;
     else
         iArg = iArg + 2;
@@ -77,12 +86,23 @@ if ~isempty(eventLoc) && ~isempty(eventType) && numel( eventType ) ~= numel( eve
     error('event locations and types arrays do not have the same size');
 end
 
+if ~isempty(indEvColorTrace)
+    if max(indEvColorTrace) > numel(eventLoc)
+        error('indEvColor > number of events');
+    end
+    colEvLocStart   = eventLoc(indEvColorTrace);
+end
+
+
 %% ========================================================================
 %                       SET DEFAULT PARAMETERS
 
 %--------------------------------------------------------------------------
 % parameters for the gui layout
+orUn = get(0, 'Units');
+set(0, 'Units', 'pixels');
 scrSize = get(0, 'ScreenSize');
+set(0, 'Units', orUn);
 nScrCols = scrSize(3);
 nScrRows = scrSize(4);
 
@@ -251,6 +271,9 @@ plotData;
             'Xlim', xLimAx ...
             );
         
+
+        % display events
+        %------------------------------------------------------------------
         axEventLoc = [];
         if ~isempty(eventLoc)
             axEventLoc = ( eventLoc( eventLoc >= axProp.xOffset+1 & eventLoc <= axProp.xOffset+winSizeInSamples ) - 1 ) / samplingRate;
@@ -262,8 +285,6 @@ plotData;
         end
         
         
-        % display events
-        %------------------------------------------------------------------
         for iEv = 1:numel(axEventLoc)
             
             if ~isempty(eventType)
@@ -281,7 +302,40 @@ plotData;
                 'linewidth', 1);
             
         end
-               
+        
+        
+        % color EEG trace in red for specific events
+        %------------------------------------------------------------------
+        if ~isempty( indEvColorTrace )
+            
+            axEvLoc         = ( eventLoc( eventLoc >= axProp.xOffset+1 & eventLoc <= axProp.xOffset+winSizeInSamples ) - 1 );
+            axColEvLocStart = ( colEvLocStart( colEvLocStart >= axProp.xOffset+1 & colEvLocStart <= axProp.xOffset+winSizeInSamples ) - 1 );
+
+            for iEv = 1:numel(axColEvLocStart)
+                
+                axColEvLocEnd =  find(axEvLoc > axColEvLocStart(iEv), 1, 'first');
+                if isempty( axColEvLocEnd )
+                    axColEvLocEnd = min( axProp.xOffset+winSizeInSamples-1, size( sig, 1 )-1 );
+                else
+                    axColEvLocEnd = axEvLoc( axColEvLocEnd );
+                end
+                
+                yData = sig( axColEvLocStart(iEv)+1:axColEvLocEnd+1, chanInd);
+                xData = ( axColEvLocStart(iEv):axColEvLocEnd ) / samplingRate;
+                for iCh = 1:nChan
+                    plot(ax, ...
+                        xData, ...
+                        yData(:, nChan-iCh+1) + iCh*ySpacing, ...
+                        'Color', 'r', ...
+                        'LineWidth', axProp.LW, ...
+                        'clipping', 'on');
+                end
+
+                
+            end
+            
+        end
+        
         % plot scale axis
         %------------------------------------------------------------------        
         cla(scaleAx);
