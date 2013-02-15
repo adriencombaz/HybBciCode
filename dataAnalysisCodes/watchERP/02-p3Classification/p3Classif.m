@@ -24,7 +24,7 @@ nCond   = numel(cond);
 nRuns   = max( unique( fileList.run ) );
 nAveMax = 10;
 
-fid         = fopen('Results.txt','wt');
+fid = fopen('Results.txt','wt');
 fprintf(fid, 'subject, condition, nAverages, accuracy, nCorrect, nCued\n');
 
 tBeforeOnset = 0;
@@ -67,8 +67,7 @@ for iS = 1:nSub
             
             % get cuts
             %------------------------------------------------------------------------------
-%             cuts = erpData.getCuts2();
-            cuts = single( erpData.getCuts2() );
+            cuts = erpData.getCuts2(); % single( erpData.getCuts2() );
             cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
             
             % spatial filtering
@@ -76,8 +75,7 @@ for iS = 1:nSub
 %             W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
             nSPcomp = size(cuts, 2);
             W = eye( nSPcomp );
-%             newCuts = zeros( size(cuts, 1), nSPcomp, size(cuts, 3) );
-            newCuts = zeros( size(cuts, 1), nSPcomp, size(cuts, 3), 'single' );
+            newCuts = zeros( size(cuts, 1), nSPcomp, size(cuts, 3) ); % , 'single' );
             for iTr = 1:size(cuts, 3)
                 newCuts( :, :, iTr ) = cuts( :, :, iTr ) * W;
             end
@@ -112,7 +110,7 @@ for iS = 1:nSub
                 cuts_DS = newCuts;
             else
                 nbins = floor( size(newCuts, 1) / DSF );
-                cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3), 'single' );
+                cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3) ) % , 'single' );
                 for i = 1:nbins
                     cuts_DS(i,:,:) = mean( newCuts( (i-1)*DSF+1:i*DSF, :, : ), 1 );
                 end
@@ -123,8 +121,8 @@ for iS = 1:nSub
             %------------------------------------------------------------------------------
             nT_train    = 1000;
             nNT_train   = 1000;
-            SigTrainT   = zeros( size(cuts_DS, 1), size(cuts_DS, 2), nT_train, 'single' );
-            SigTrainNT  = zeros( size(cuts_DS, 1), size(cuts_DS, 2), nNT_train, 'single' );
+            SigTrainT   = zeros( size(cuts_DS, 1), size(cuts_DS, 2), nT_train ); %, 'single' );
+            SigTrainNT  = zeros( size(cuts_DS, 1), size(cuts_DS, 2), nNT_train ); %, 'single' );
             
             indTargetEvents = find( erpData.eventId == iT );
             for i = 1:nT_train
@@ -165,11 +163,11 @@ for iS = 1:nSub
             igam        = 1;    % Central value of the regularization paramter for the first line search
             B_init      = [];
             error_type  = 1;    % 1: calculate mean square error on misclassified data
-            % 2: calculate mean square error on active data (data that are not beyond the margin...even if correctly classified)
+                                % 2: calculate mean square error on active data (data that are not beyond the margin...even if correctly classified)
             
             ntrain      = size(Xtrain,1);
             Xtrain      = [Xtrain ones(ntrain,1)];
-            Xtrain      = double( Xtrain );
+            Xtrain      = Xtrain; % double( Xtrain );
             
             [B_init iter_init]  = Lin_SVM_Keerthi(Xtrain,Ytrain,B_init,igam);
             linesearch_algo;
@@ -220,13 +218,12 @@ for iS = 1:nSub
                 
                 % get cuts
                 %------------------------------------------------------------------------------
-%                 cuts = erpData.getCuts2();
-                cuts = single( erpData.getCuts2() );
+                cuts = erpData.getCuts2(); % single( erpData.getCuts2() );
                 cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
                 
                 % select and average trials
                 %------------------------------------------------------------------------------
-                meanCuts = zeros( size(cuts, 1), size(cuts, 2), nIcons*nCues, 'single' );
+                meanCuts = zeros( size(cuts, 1), size(cuts, 2), nIcons*nCues ); %, 'single' );
                 for iCue = 1:nCues
                     
                     iStart      = (iCue-1)*nIcons*nReps;
@@ -243,7 +240,7 @@ for iS = 1:nSub
                 
                 % spatial filtering
                 %------------------------------------------------------------------------------
-                newCuts = zeros( size(meanCuts, 1), nSPcomp, size(meanCuts, 3), 'single' );
+                newCuts = zeros( size(meanCuts, 1), nSPcomp, size(meanCuts, 3) ); %, 'single' );
                 for iTr = 1:size(meanCuts, 3)
                     newCuts( :, :, iTr ) = meanCuts( :, :, iTr ) * W;
                 end
@@ -278,7 +275,7 @@ for iS = 1:nSub
                     cuts_DS = newCuts;
                 else
                     nbins = floor( size(newCuts, 1) / DSF );
-                    cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3), 'single' );
+                    cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3) ); %, 'single' );
                     for i = 1:nbins
                         cuts_DS(i,:,:) = mean( newCuts( (i-1)*DSF+1:i*DSF, :, : ), 1 );
                     end
