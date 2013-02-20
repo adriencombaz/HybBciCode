@@ -37,6 +37,7 @@ classdef eegDataset < handle
 
             hdr             = sopen( fullfile(sessionDir, bdfFileName) );
             [obj.sig hdr]   = sread(hdr);
+	    fclose(hdr.FILE.FID);
             statusChannel   = bitand(hdr.BDF.ANNONS, 255);
             hdr.BDF         = rmfield(hdr.BDF, 'ANNONS'); % just saving up some space...
             obj.fs          = hdr.SampleRate;
