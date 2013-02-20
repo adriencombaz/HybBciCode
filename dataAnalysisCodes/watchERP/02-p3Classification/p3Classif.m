@@ -8,6 +8,7 @@ switch hostName,
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
+        addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\watchERP\';
     otherwise,
         error('host not recognized');
@@ -72,9 +73,9 @@ for iS = 1:nSub
             
             % spatial filtering
             %------------------------------------------------------------------------------
-%             W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
-            nSPcomp = size(cuts, 2);
-            W = eye( nSPcomp );
+            W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
+%             nSPcomp = size(cuts, 2);
+%             W = eye( nSPcomp );
             newCuts = zeros( size(cuts, 1), nSPcomp, size(cuts, 3) ); % , 'single' );
             for iTr = 1:size(cuts, 3)
                 newCuts( :, :, iTr ) = cuts( :, :, iTr ) * W;
@@ -321,4 +322,18 @@ for iS = 1:nSub
 end
 
 fclose(fid);
+
+
+%%
+colors = {'r', 'g', 'b'};
+figure
+for iS = 1:nSub
+    subplot(1, nSub, iS)
+    hold on
+    for iC = 1:nCond
+        plot(1:nAveMax, 100 * squeeze( nCorrect(iS, iC, :) ) ./ squeeze( nCued(iS, iC, :) ), '-+', 'color', colors{iC} )        
+    end
+    ylim([0 110])
+end
+legend(cond);
 

@@ -149,9 +149,22 @@ save('meanErpDataset.mat', 'meanErpDataset');
 
 
 %%
-
+sub = unique(meanErpDataset.subject);
+cond = unique(meanErpDataset.condition);
+tBeforeOnset = unique(meanErpDataset.tBeforeOnset);
+nSubjects = numel(sub);
+nCond = numel(cond);
+nErpType = numel(unique(meanErpDataset.type));
 chanList = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
 
+LW = 2;
+MS = 6;
+FS = 9;
+fWidth = 50;
+fHeight = 31;
+
+
+%%
 for iS = 1:nSubjects
     
     avg = cell(1, nCond*nErpType);
@@ -201,6 +214,30 @@ for iS = 1:nSubjects
         'scale', 8, ...
         'title', sprintf('subject %s', sub{iS}) ...
         );
+    
+    
+    h = ImageSetup;
+    h.I_Width       = fWidth; % cm
+    h.I_High        = fHeight; % cm
+    h.I_KeepColor   = 1;
+    h.I_Box         = 'off';
+    h.I_FontSize    = FS;
+    h.I_LineWidth   = LW;
+    h.I_AlignAxesTexts = 0;
+    h.I_TitleInAxis = 1;
+    h.OptimizeSpace = 0;
+    
+    h.prepareAllFigures;
+    
+    % set(findobj('parent', gcf, 'tag', 'legend'), 'Box', 'off');
+    set(findobj(gcf,'Type','uicontrol'),'Visible','off');
+    
+    s.Format = 'tiff';
+    s.Resolution = h.I_DPI;
+    hgexport(gcf,fullfile(cd, [sprintf('subject%s', sub{iS}) '.png']),s);
+    
+    close(gcf);
+    
     
 end
 
@@ -292,39 +329,88 @@ plotERPsFromCutData2( ...
     'title', 'target ERPs' ...
     );
 
+h = ImageSetup;
+h.I_Width       = fWidth; % cm
+h.I_High        = fHeight; % cm
+h.I_DPI         = 300;
+h.I_KeepColor   = 1;
+h.I_Box         = 'off';
+h.I_Grid        = 'on';
+h.I_FontSize    = FS;
+h.I_LineWidth   = LW;
+h.I_AlignAxesTexts = 0;
+h.I_TitleInAxis = 1;
+h.OptimizeSpace = 0;
+
+h.prepareAllFigures;
+
+set(findobj('parent', gcf, 'tag', 'legend'), 'Location', 'NorthWest');
+set(findobj(gcf,'Type','uicontrol'),'Visible','off');
+
+s.Format = 'tiff';
+s.Resolution = h.I_DPI;
+hgexport(gcf,fullfile(cd, 'targetERPs.png'),s);
+
+close(gcf);
+
+
 %%
-% % % chanList = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
-% % % 
-% % % avg         = cell(1, nCond*nSubjects);
-% % % axisOfEvent = zeros(1, nCond*nSubjects);
-% % % % legendStr   = unique(meanErpDataset.condition);
-% % % legendStr   = cond;
-% % % axisTitle   = unique(meanErpDataset.subject);
-% % % ind = 1;
-% % % for iS = 1:nSubjects
-% % %     for iC = 1:nCond
-% % %         temp = meanErpDataset( ...
-% % %             ismember( meanErpDataset.subject, axisTitle{iS} ) ...
-% % %             & ismember( meanErpDataset.condition, legendStr{iC} ) ...
-% % %             & ismember( meanErpDataset.type, 'nonTarget' ) ...
-% % %             , : );
-% % %         
-% % %         chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList, 'UniformOutput', false ) );
-% % %         avg{ind}            = temp.meanERP{1}(:, chanListInd);
-% % %         axisOfEvent(ind)    = iS;
-% % %         ind = ind+1;
-% % %     end
-% % % end
-% % % 
-% % % plotERPsFromCutData2( ...
-% % %     avg, ...
-% % %     'axisOfEvent', axisOfEvent, ...
-% % %     'axisTitle', axisTitle, ...
-% % %     'legendStr', legendStr, ...
-% % %     'samplingRate', unique( meanErpDataset.fs ), ...
-% % %     'chanLabels', chanList, ...
-% % %     'timeBeforeOnset', unique(tBeforeOnset), ...
-% % %     'nMaxChanPerAx', 12, ...
-% % %     'scale', 8, ...
-% % %     'title', 'non-target ERPs' ...
-% % %     );
+chanList = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
+
+avg         = cell(1, nCond*nSubjects);
+axisOfEvent = zeros(1, nCond*nSubjects);
+legendStr   = unique(meanErpDataset.condition);
+legendStr   = cond;
+axisTitle   = unique(meanErpDataset.subject);
+ind = 1;
+for iS = 1:nSubjects
+    for iC = 1:nCond
+        temp = meanErpDataset( ...
+            ismember( meanErpDataset.subject, axisTitle{iS} ) ...
+            & ismember( meanErpDataset.condition, legendStr{iC} ) ...
+            & ismember( meanErpDataset.type, 'nonTarget' ) ...
+            , : );
+        
+        chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList, 'UniformOutput', false ) );
+        avg{ind}            = temp.meanERP{1}(:, chanListInd);
+        axisOfEvent(ind)    = iS;
+        ind = ind+1;
+    end
+end
+
+plotERPsFromCutData2( ...
+    avg, ...
+    'axisOfEvent', axisOfEvent, ...
+    'axisTitle', axisTitle, ...
+    'legendStr', legendStr, ...
+    'samplingRate', unique( meanErpDataset.fs ), ...
+    'chanLabels', chanList, ...
+    'timeBeforeOnset', unique(tBeforeOnset), ...
+    'nMaxChanPerAx', 12, ...
+    'scale', 8, ...
+    'title', 'non-target ERPs' ...
+    );
+
+h = ImageSetup;
+h.I_Width       = fWidth; % cm
+h.I_High        = fHeight; % cm
+h.I_DPI         = 300;
+h.I_KeepColor   = 1;
+h.I_Box         = 'off';
+h.I_Grid        = 'on';
+h.I_FontSize    = FS;
+h.I_LineWidth   = LW;
+h.I_AlignAxesTexts = 0;
+h.I_TitleInAxis = 1;
+h.OptimizeSpace = 0;
+
+h.prepareAllFigures;
+
+set(findobj('parent', gcf, 'tag', 'legend'), 'Location', 'NorthWest');
+set(findobj(gcf,'Type','uicontrol'),'Visible','off');
+
+s.Format = 'tiff';
+s.Resolution = h.I_DPI;
+hgexport(gcf,fullfile(cd, 'nonTargetERPs.png'),s);
+
+close(gcf);
