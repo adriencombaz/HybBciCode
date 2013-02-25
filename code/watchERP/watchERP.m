@@ -6,7 +6,6 @@ addpath( '../deps/lptIO' );
 % desiredScreenID = 1;
 desiredScreenID = 0;
 
-
 %%                        SCANNER PARAMETERS
 %==========================================================================
 
@@ -24,14 +23,15 @@ gapOrNoGapList                  = {'gap', 'noGap'};
 gapOrNoGap                      = gapOrNoGapList{1};
 nRepetitions                    = 10;
 nCuesToShow                     = 12;
-ssvepFreq                       = 12;
+ssvepFreqList                   = {'60/4', '60/5', '60/6', '60/7', '60/8'}; 
+ssvepFreqStr                    = ssvepFreqList{1};
 
 parameterList = {
     'Subject name',                             subjectName,                'subjectName'
     'gap or no gap',                            gapOrNoGapList,             'gapOrNoGap'
     'Number of cues',                           nCuesToShow,                'nCuesToShow'
     'Numner of repetitions',                    nRepetitions,               'nRepetitions'
-    'SSVEP frequency',                          ssvepFreq,                  'ssvepFreq'
+    'SSVEP frequency',                          ssvepFreqList,              'ssvepFreqStr'
     'Show oddball stimulation',                 showP3,                     'showP3'
     'Use LPT Port',                             useLptPort,                 'useLptPort'
     'Save data',                                saveData,                   'saveData'
@@ -55,6 +55,8 @@ pars = getItFromGUI( ...
 if isempty( pars ),
     return
 end
+
+ssvepFreq = eval(ssvepFreqStr);
 
 %---------------------------------------------------------------------------------------
 %
