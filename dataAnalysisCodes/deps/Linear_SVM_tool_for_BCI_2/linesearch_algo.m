@@ -21,13 +21,13 @@ n_neg           = numel(ind_neg);
 block_size_pos  = floor(n_pos/nfolds);
 block_size_neg  = floor(n_neg/nfolds);
 
-figure
+% figure
 
 ln = 1;
 while ( itr<maxFunEvals && norm(Xm-Xm_old)>TolX && norm(Xval-Xval_old)>TolFun )
     
-    fprintf('LINE SEARCH ON LINE NUMBER %d\n',ln);
-    fprintf('-----------------------------\n\n');
+%     fprintf('LINE SEARCH ON LINE NUMBER %d\n',ln);
+%     fprintf('-----------------------------\n\n');
     
     Xm_old        = Xm;
     Xval_old      = Xval;
@@ -39,7 +39,7 @@ while ( itr<maxFunEvals && norm(Xm-Xm_old)>TolX && norm(Xval-Xval_old)>TolFun )
     for i = 1:length(xline)
         
         itr       = itr+1;
-        fprintf('\nPERFORMANCE FOR GAMMA = %f\n', exp(xline(i)));
+%         fprintf('\nPERFORMANCE FOR GAMMA = %f\n', exp(xline(i)));
         
         crossvalidate_algo;
         
@@ -52,8 +52,8 @@ while ( itr<maxFunEvals && norm(Xm-Xm_old)>TolX && norm(Xval-Xval_old)>TolFun )
             B_next_line = B;
         end
         
-        plot(xline(i),cost(i),'d','MarkerEdgeColor',colo,'MarkerFaceColor',colo)
-        hold on
+%         plot(xline(i),cost(i),'d','MarkerEdgeColor',colo,'MarkerFaceColor',colo)
+%         hold on
     
     end
     
@@ -65,6 +65,6 @@ while ( itr<maxFunEvals && norm(Xm-Xm_old)>TolX && norm(Xval-Xval_old)>TolFun )
     startvalues   = [min(xline(selected)) max(xline(selected))];
     
     ln = ln + 1;
-    colo            = 'k';
+%     colo            = 'k';
     
 end

@@ -37,7 +37,7 @@ classdef eegDataset < handle
 
             hdr             = sopen( fullfile(sessionDir, bdfFileName) );
             [obj.sig hdr]   = sread(hdr);
-	    fclose(hdr.FILE.FID);
+            fclose(hdr.FILE.FID);
             statusChannel   = bitand(hdr.BDF.ANNONS, 255);
             hdr.BDF         = rmfield(hdr.BDF, 'ANNONS'); % just saving up some space...
             obj.fs          = hdr.SampleRate;
@@ -57,7 +57,7 @@ classdef eegDataset < handle
 
             
             %% reorder channels so that it matches the order from the .locs file
-            obj.chanLocs    = readlocs(obj.locFile);
+            obj.chanLocs    = readlocs(obj.locFile, 'filetype', 'loc');
             nChansToReorder = numel( obj.chanLocs );
             if sum( ismember( obj.chanList(1:nChansToReorder), {obj.chanLocs.labels} ) ) ~= nChansToReorder
                 error('the %d first channel labels do not match with the reordered channels list', nChansToReorder)

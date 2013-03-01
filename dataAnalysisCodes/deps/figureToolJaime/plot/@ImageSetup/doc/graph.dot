@@ -1,0 +1,19 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+
+  ImageSetup [URL="ImageSetup.html"];
+  add2HorSubplot [URL="add2HorSubplot.html"];
+  add2VerSubplot [URL="add2VerSubplot.html"];
+  addHorHandle [URL="addHorHandle.html"];
+  addVerHandle [URL="addVerHandle.html"];
+  checkFigHandles [URL="checkFigHandles.html"];
+  clearHandles [URL="clearHandles.html"];
+  figs2subplots [URL="figs2subplots.html"];
+  findImageHandles [URL="findImageHandles.html"];
+  prepareAllFigures [URL="prepareAllFigures.html"];
+  prepareAxes [URL="prepareAxes.html"];
+  prepareFigures [URL="prepareFigures.html"];
+  printNow [URL="printNow.html"];
+  subplot1 [URL="subplot1.html"];
+  unique1 [URL="unique1.html"];
+}

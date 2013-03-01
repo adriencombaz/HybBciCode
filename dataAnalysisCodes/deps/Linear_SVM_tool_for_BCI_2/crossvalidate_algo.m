@@ -29,14 +29,14 @@ for l =1:nfolds
         Ytrain_val      = Ytrain(val_ind);
         misclass        = find(Ysim_val ~= Ytrain_val);
         mserror         = mserror + sum( (Ytrain_val(misclass) - Ylat_val(misclass)).^2 );
-        fprintf('measuring performance of on fold %d out of %d. Mean Square Error: %f\n',l,nfolds,sum( (Ytrain(misclass) - Ylat_val(misclass)).^2 ));
+%         fprintf('measuring performance of on fold %d out of %d. Mean Square Error: %f\n',l,nfolds,sum( (Ytrain(misclass) - Ylat_val(misclass)).^2 ));
         
     elseif (error_type == 2)
         % Error Type 2 (mse on active set)
         Ytrain_val  = Ytrain(val_ind);
         active_set  = find(Ytrain_val.*Ylat_val < 1);
         mserror     = mserror + sum( (Ytrain_val(active_set) - Ylat_val(active_set)).^2 );
-        fprintf('measuring performance of on fold %d out of %d. Mean Square Error: %f\n',l,nfolds,sum( (Ytrain_val(active_set) - Ylat_val(active_set)).^2 ));
+%         fprintf('measuring performance of on fold %d out of %d. Mean Square Error: %f\n',l,nfolds,sum( (Ytrain_val(active_set) - Ylat_val(active_set)).^2 ));
                 
     end
     
@@ -47,4 +47,4 @@ end
 % B_init      = B;
 
 mserror = mserror/nfolds;
-fprintf('GLOBAL MSE FOR THE CROSSVALIDATION: %f\n\n',mserror);
+% fprintf('GLOBAL MSE FOR THE CROSSVALIDATION: %f\n\n',mserror);

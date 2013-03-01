@@ -21,6 +21,8 @@ switch hostName,
         %             dataDir2 = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\oddball\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
+        addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
+        rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\watchERP\';
         %             dataDir2= 'd:\Adrien\Work\Hybrid-BCI\HybBciData\oddball\';
     otherwise,
@@ -30,11 +32,13 @@ end
 % ========================================================================================================
 % ========================================================================================================
 
-TableName   = 'watchErpDataset.xlsx';
+% TableName   = 'watchErpDataset.xlsx';
+TableName   = 'watchErpDataset2.xlsx';
 fileList    = dataset('XLSFile', TableName);
 
 sub = unique( fileList.subjectTag );
-cond = {'oddball', 'hybrid-12Hz', 'hybrid-15Hz'};
+cond = {'oddball', 'hybrid-8-57Hz', 'hybrid-10Hz', 'hybrid-12Hz', 'hybrid-15Hz'};
+% cond = {'oddball', 'hybrid-12Hz', 'hybrid-15Hz'};
 nSubjects = numel(sub);
 nCond = numel(cond);
 nErpType = 2; % target and non-target ERPs
@@ -145,12 +149,15 @@ meanErpDataset = dataset( ...
     fs ...
     );
 
-save('meanErpDataset.mat', 'meanErpDataset');
+save('meanErpDataset2.mat', 'meanErpDataset');
 
 
-%%
+%% ========================================================================================================
+% =========================================================================================================
+
 sub = unique(meanErpDataset.subject);
-cond = unique(meanErpDataset.condition);
+cond = {'oddball', 'hybrid-8-57Hz', 'hybrid-10Hz', 'hybrid-12Hz', 'hybrid-15Hz'};
+% cond = {'oddball', 'hybrid-12Hz', 'hybrid-15Hz'};
 tBeforeOnset = unique(meanErpDataset.tBeforeOnset);
 nSubjects = numel(sub);
 nCond = numel(cond);
@@ -163,8 +170,23 @@ FS = 9;
 fWidth = 50;
 fHeight = 31;
 
+cmap = colormap; close(gcf);
+nCmap = size(cmap, 1);
+colorList = zeros(nCond, 3);
+for i = 1:nCond
+    colorList(i, :) = cmap( round((i-1)*(nCmap-1)/(nCond-1)+1) , : );
+end
+% colorList = [ ...    
+%     0 0 1 ; ... % blue
+%     1 0 0 ; ... % red
+%     0 1 0 ;...  % green
+%     1 1 0 ; ... % yellow
+%     1 0 1 ...   % magenta
+%     ];
 
-%%
+%% ========================================================================================================
+%  PLOT FOR EACH SUBJECT: TARGET VS. NON-TARGET, ONE CONDITION PER AXE
+% =========================================================================================================
 for iS = 1:nSubjects
     
     avg = cell(1, nCond*nErpType);
@@ -241,36 +263,9 @@ for iS = 1:nSubjects
     
 end
 
-%%
-
-% % % % for iS = 1:nSubjects
-% % % %    
-% % % %     temp = meanErpDataset( ...
-% % % %         ismember( meanErpDataset.subject, sub{iS} ) ...
-% % % %         & ismember( meanErpDataset.type, 'target' ) ...
-% % % %         , : );
-% % % %     
-% % % %     avg = temp.meanERP;
-% % % %     legendStr = temp.condition;
-% % % % 
-% % % %     
-% % % %     plotERPsFromCutData2( ...
-% % % %         avg, ...
-% % % %         'legendStr', legendStr, ...
-% % % %         'axisOfEvent', [1 1 1], ...
-% % % %         'samplingRate', unique(temp.fs), ...
-% % % %         'chanLabels', temp.chanList{1}, ...
-% % % %         'timeBeforeOnset', unique(temp.tBeforeOnset), ...
-% % % %         'nMaxChanPerAx', 10, ...
-% % % %         'scale', 8, ...
-% % % %         'title', sprintf('subject %s', sub{iS}) ...
-% % % %         );
-% % % %     
-% % % %     
-% % % %     
-% % % % end
-
-%%
+%% ========================================================================================================
+%  PLOT TARGET ERPs FOR ALL CONDITIONS ON THE SAME AXE, ONE SUBJECT PER AXE
+% =========================================================================================================
 
 allFs = unique( meanErpDataset.fs );
 if numel(allFs) ~= 1
@@ -300,6 +295,7 @@ axisOfEvent = zeros(1, nCond*nSubjects);
 % legendStr   = unique(meanErpDataset.condition);
 legendStr   = cond;
 axisTitle   = unique(meanErpDataset.subject);
+colors = zeros(nCond*nSubjects, 3);
 ind = 1;
 for iS = 1:nSubjects
     for iC = 1:nCond
@@ -312,6 +308,7 @@ for iS = 1:nSubjects
         chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList, 'UniformOutput', false ) );
         avg{ind}            = temp.meanERP{1}(:, chanListInd);
         axisOfEvent(ind)    = iS;
+        colors(ind, :) = colorList(iC, :);
         ind = ind+1;
     end
 end
@@ -326,6 +323,7 @@ plotERPsFromCutData2( ...
     'timeBeforeOnset', unique(tBeforeOnset), ...
     'nMaxChanPerAx', 12, ...
     'scale', 8, ...
+    'EventColors', colors, ...
     'title', 'target ERPs' ...
     );
 
@@ -354,14 +352,17 @@ hgexport(gcf,fullfile(cd, 'targetERPs.png'),s);
 close(gcf);
 
 
-%%
+%% ========================================================================================================
+%  PLOT NON-TARGET ERPs FOR ALL CONDITIONS ON THE SAME AXE, ONE SUBJECT PER AXE
+% =========================================================================================================
 chanList = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
 
 avg         = cell(1, nCond*nSubjects);
 axisOfEvent = zeros(1, nCond*nSubjects);
-legendStr   = unique(meanErpDataset.condition);
+% legendStr   = unique(meanErpDataset.condition);
 legendStr   = cond;
 axisTitle   = unique(meanErpDataset.subject);
+colors = zeros(nCond*nSubjects, 3);
 ind = 1;
 for iS = 1:nSubjects
     for iC = 1:nCond
@@ -374,6 +375,7 @@ for iS = 1:nSubjects
         chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList, 'UniformOutput', false ) );
         avg{ind}            = temp.meanERP{1}(:, chanListInd);
         axisOfEvent(ind)    = iS;
+        colors(ind, :) = colorList(iC, :);
         ind = ind+1;
     end
 end
@@ -388,6 +390,7 @@ plotERPsFromCutData2( ...
     'timeBeforeOnset', unique(tBeforeOnset), ...
     'nMaxChanPerAx', 12, ...
     'scale', 8, ...
+    'EventColors', colors, ...
     'title', 'non-target ERPs' ...
     );
 
@@ -414,3 +417,76 @@ s.Resolution = h.I_DPI;
 hgexport(gcf,fullfile(cd, 'nonTargetERPs.png'),s);
 
 close(gcf);
+
+%% ========================================================================================================
+%  PLOT TARGET MINUS NON-TARGET ERPs FOR ALL CONDITIONS ON THE SAME AXE, ONE SUBJECT PER AXE
+% =========================================================================================================
+chanList = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
+
+avg         = cell(1, nCond*nSubjects);
+axisOfEvent = zeros(1, nCond*nSubjects);
+% legendStr   = unique(meanErpDataset.condition);
+legendStr   = cond;
+axisTitle   = unique(meanErpDataset.subject);
+colors = zeros(nCond*nSubjects, 3);
+ind = 1;
+for iS = 1:nSubjects
+    for iC = 1:nCond
+        temp = meanErpDataset( ...
+            ismember( meanErpDataset.subject, axisTitle{iS} ) ...
+            & ismember( meanErpDataset.condition, legendStr{iC} ) ...
+            & ismember( meanErpDataset.type, 'target' ) ...
+            , : );
+        
+        temp2 = meanErpDataset( ...
+            ismember( meanErpDataset.subject, axisTitle{iS} ) ...
+            & ismember( meanErpDataset.condition, legendStr{iC} ) ...
+            & ismember( meanErpDataset.type, 'nonTarget' ) ...
+            , : );
+
+        chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList, 'UniformOutput', false ) );
+        avg{ind}            = temp.meanERP{1}(:, chanListInd) - temp2.meanERP{1}(:, chanListInd);
+        axisOfEvent(ind)    = iS;
+        colors(ind, :) = colorList(iC, :);
+        ind = ind+1;
+    end
+end
+
+plotERPsFromCutData2( ...
+    avg, ...
+    'axisOfEvent', axisOfEvent, ...
+    'axisTitle', axisTitle, ...
+    'legendStr', legendStr, ...
+    'samplingRate', unique( meanErpDataset.fs ), ...
+    'chanLabels', chanList, ...
+    'timeBeforeOnset', unique(tBeforeOnset), ...
+    'nMaxChanPerAx', 12, ...
+    'scale', 8, ...
+    'EventColors', colors, ...
+    'title', 'non-target ERPs' ...
+    );
+
+h = ImageSetup;
+h.I_Width       = fWidth; % cm
+h.I_High        = fHeight; % cm
+h.I_DPI         = 300;
+h.I_KeepColor   = 1;
+h.I_Box         = 'off';
+h.I_Grid        = 'on';
+h.I_FontSize    = FS;
+h.I_LineWidth   = LW;
+h.I_AlignAxesTexts = 0;
+h.I_TitleInAxis = 1;
+h.OptimizeSpace = 0;
+
+h.prepareAllFigures;
+
+set(findobj('parent', gcf, 'tag', 'legend'), 'Location', 'NorthWest');
+set(findobj(gcf,'Type','uicontrol'),'Visible','off');
+
+s.Format = 'tiff';
+s.Resolution = h.I_DPI;
+hgexport(gcf,fullfile(cd, 'TminusNTERPs.png'),s);
+
+close(gcf);
+

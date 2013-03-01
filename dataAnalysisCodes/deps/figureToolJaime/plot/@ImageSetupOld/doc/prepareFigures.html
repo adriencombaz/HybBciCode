@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of prepareFigures</title>
+  <meta name="keywords" content="prepareFigures">
+  <meta name="description" content="% first it is prapared the output image">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">.</a> &gt; prepareFigures.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for .&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>prepareFigures
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>% first it is prapared the output image</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function obj = prepareFigures(obj,hgcf); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">% first it is prapared the output image</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function printNow1(hObject,eventdata)</a></li><li><a href="#_sub2" class="code">function addVerHandle1(hObject,eventdata)</a></li><li><a href="#_sub3" class="code">function addHorHandle1(hObject,eventdata)</a></li><li><a href="#_sub4" class="code">function copy2clipboard(hObject,eventdata)</a></li><li><a href="#_sub5" class="code">function [absXpos absYpos]=absolutePos(ha,reltextPos)</a></li><li><a href="#_sub6" class="code">function [relXpos relYpos]=relativePos(ha,glotextPos)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function obj = prepareFigures(obj,hgcf);</a>
+0002 <span class="comment">%% first it is prapared the output image</span>
+0003 set(hgcf, <span class="string">'PaperUnit'</span>, obj.I_Unit);
+0004 papersize = get(hgcf, <span class="string">'PaperSize'</span>);
+0005 left = (papersize(1)- obj.I_Width)/4;
+0006 bottom = (papersize(2)- obj.I_High)/4;
+0007 myfiguresize = [left, bottom, obj.I_Width, obj.I_High];
+0008 set(hgcf, <span class="string">'PaperPosition'</span>, myfiguresize);
+0009 set(hgcf,<span class="string">'units'</span>,obj.I_Unit,<span class="string">'position'</span>,myfiguresize);
+0010 set(hgcf,<span class="string">'color'</span>,<span class="string">'w'</span>);
+0011 colormap(<span class="string">'gray'</span>);
+0012 
+0013 
+0014 
+0015 <span class="comment">%% limits for the axis</span>
+0016 haxis = findobj(hgcf,<span class="string">'type'</span>,<span class="string">'axes'</span>,<span class="string">'-not'</span>,<span class="string">'Tag'</span>,<span class="string">'legend'</span>); <span class="comment">%only axes</span>
+0017 <span class="keyword">if</span> obj.I_AutoYlim
+0018     y1=min(cell2mat(get(haxis,<span class="string">'YLim'</span>)));
+0019     y2=max(cell2mat(get(haxis,<span class="string">'YLim'</span>)));
+0020     obj.I_Ylim= [y1(1) y2(2)];
+0021     set(haxis,<span class="string">'YLim'</span>,obj.I_Ylim);
+0022 <span class="keyword">else</span>
+0023     <span class="keyword">if</span> ~isequal(obj.I_Ylim,[-inf inf])
+0024         set(haxis,<span class="string">'YLim'</span>,obj.I_Ylim);
+0025     <span class="keyword">end</span>;
+0026 <span class="keyword">end</span>
+0027 
+0028 <span class="keyword">if</span> obj.I_AutoXlim
+0029     x1=min(cell2mat(get(haxis,<span class="string">'XLim'</span>)));
+0030     x2=max(cell2mat(get(haxis,<span class="string">'XLim'</span>)));
+0031     obj.I_Ylim= [x1(1) x2(2)];
+0032     set(haxis,<span class="string">'XLim'</span>,obj.I_Xlim);
+0033 <span class="keyword">else</span>
+0034     <span class="keyword">if</span> ~isequal(obj.I_Xlim,[-inf inf])
+0035         set(haxis,<span class="string">'XLim'</span>,obj.I_Xlim);
+0036     <span class="keyword">end</span>;
+0037 <span class="keyword">end</span>;
+0038 <span class="comment">%% position of legends</span>
+0039 hlegends = findobj(hgcf,<span class="string">'type'</span>,<span class="string">'axes'</span>,<span class="string">'Tag'</span>,<span class="string">'legend'</span>); <span class="comment">%only legends</span>
+0040 set(hlegends,<span class="string">'Location'</span>,obj.I_LegendLocation); 
+0041 
+0042 <span class="comment">%% legend setup</span>
+0043 set(hlegends,<span class="keyword">...</span>
+0044     <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0045     <span class="string">'visible'</span>,obj.I_Legend); 
+0046 
+0047 <span class="comment">%% preparation of axes</span>
+0048 <span class="keyword">for</span> i=1:length(haxis)
+0049     obj.prepareAxes(haxis(i));
+0050 <span class="keyword">end</span>
+0051 
+0052 <span class="comment">%% all texts (not in legend)</span>
+0053 <span class="comment">% delete(findobj(hgcf,'Tag','toDelete'));%my created texts</span>
+0054 htexts = findall(hgcf,<span class="string">'Type'</span>,<span class="string">'text'</span>,<span class="string">'-not'</span>,<span class="string">'String'</span>,<span class="string">''</span>);
+0055 cont=1;
+0056 <span class="keyword">while</span> cont&lt;=length(htexts)
+0057     <span class="keyword">if</span> length(findobj(get(htexts(cont),<span class="string">'Parent'</span>),<span class="string">'Tag'</span>,<span class="string">'legend'</span>)) &gt;=1
+0058         htexts(cont)=[];
+0059     <span class="keyword">else</span>
+0060         cont=cont+1;
+0061     <span class="keyword">end</span>
+0062 <span class="keyword">end</span>
+0063 alltexts=get(htexts,<span class="string">'String'</span>);
+0064 set(htexts,<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+0065 <span class="comment">%</span>
+0066 <span class="comment">% for i=1:length(htexts)</span>
+0067 <span class="comment">% %     contx=1;</span>
+0068 <span class="comment">% %     conty=1;</span>
+0069 <span class="comment">% %     hi=get(htexts(i),'Parent');</span>
+0070 <span class="comment">% %     set(htexts(i),'Visible','off');</span>
+0071 <span class="comment">% %     textPosi=get(htexts(i),'Position');</span>
+0072 <span class="comment">% %     [xi,yi] = absolutePos(hi,textPosi);</span>
+0073 <span class="comment">% %     xf=xi;</span>
+0074 <span class="comment">% %     yf=yi;</span>
+0075 <span class="comment">% %     repeated=false;</span>
+0076 <span class="comment">%     for j=i+1:length(htexts)</span>
+0077 <span class="comment">%         if isequal(alltexts(i),alltexts(j)) &amp;&amp; isequal(get(htexts(j),'Visible'),'on')</span>
+0078 <span class="comment">% %             repeated=true;</span>
+0079 <span class="comment">% %             textPosj=get(htexts(j),'Position');</span>
+0080 <span class="comment">% %             hj=get(htexts(j),'Parent');</span>
+0081 <span class="comment">% %             [xj,yj] = absolutePos(hj,textPosj);</span>
+0082 <span class="comment">% %             if get(htexts(i),'Rotation')==90</span>
+0083 <span class="comment">% %                 conty=conty+1;</span>
+0084 <span class="comment">% %                 xf=xi;</span>
+0085 <span class="comment">% %                 yf=yf+yj;</span>
+0086 <span class="comment">% %             end</span>
+0087 <span class="comment">% %             if get(htexts(i),'Rotation')==0</span>
+0088 <span class="comment">% %                 contx = contx+1;</span>
+0089 <span class="comment">% %                 xf=xf+xi;</span>
+0090 <span class="comment">% %                 yf=yj;</span>
+0091 <span class="comment">% %             end</span>
+0092 <span class="comment">%             set(htexts(j),'Visible','off');</span>
+0093 <span class="comment">%         end</span>
+0094 <span class="comment">%     end</span>
+0095 <span class="comment">% %     if repeated</span>
+0096 <span class="comment">% %         [xr,yr] = relativePos(hi,[xf/contx yf/conty]);</span>
+0097 <span class="comment">% %         set(hi);</span>
+0098 <span class="comment">% %         text(xr,yr,alltexts(i),...</span>
+0099 <span class="comment">% %             'Rotation',get(htexts(i),'Rotation'),...</span>
+0100 <span class="comment">% %             'Tag','toDelete');</span>
+0101 <span class="comment">% %     end</span>
+0102 <span class="comment">% end</span>
+0103 <span class="comment">%% Subplot Buttons</span>
+0104 hprint = uicontrol(hgcf,<span class="string">'Style'</span>, <span class="string">'pushbutton'</span>, <span class="string">'String'</span>, <span class="string">'Print'</span>,<span class="keyword">...</span>
+0105     <span class="string">'Position'</span>, [0 0 60 20], <span class="string">'Callback'</span>, @<a href="#_sub1" class="code" title="subfunction printNow1(hObject,eventdata)">printNow1</a>);
+0106 hsubp = uicontrol(hgcf,<span class="string">'Style'</span>, <span class="string">'pushbutton'</span>, <span class="string">'String'</span>, <span class="string">'add2Ver'</span>,<span class="keyword">...</span>
+0107     <span class="string">'Position'</span>, [60 0 60 20], <span class="string">'Callback'</span>,@<a href="#_sub2" class="code" title="subfunction addVerHandle1(hObject,eventdata)">addVerHandle1</a>);
+0108 hsubp = uicontrol(hgcf,<span class="string">'Style'</span>, <span class="string">'pushbutton'</span>, <span class="string">'String'</span>, <span class="string">'add2Hor'</span>,<span class="keyword">...</span>
+0109     <span class="string">'Position'</span>, [120 0 60 20], <span class="string">'Callback'</span>, @<a href="#_sub3" class="code" title="subfunction addHorHandle1(hObject,eventdata)">addHorHandle1</a>);
+0110 hsubp = uicontrol(hgcf,<span class="string">'Style'</span>, <span class="string">'pushbutton'</span>, <span class="string">'String'</span>, <span class="string">'Copy2Clipboard'</span>,<span class="keyword">...</span>
+0111     <span class="string">'Position'</span>, [180 0 60 20], <span class="string">'Callback'</span>, @<a href="#_sub4" class="code" title="subfunction copy2clipboard(hObject,eventdata)">copy2clipboard</a>);
+0112 <span class="comment">%% buttons connections</span>
+0113     <a name="_sub1" href="#_subfunctions" class="code">function printNow1(hObject,eventdata)</a>
+0114         obj.printNow(hgcf);
+0115     <span class="keyword">end</span>
+0116     <a name="_sub2" href="#_subfunctions" class="code">function addVerHandle1(hObject,eventdata)</a>
+0117         obj.addVerHandle(hgcf);
+0118     <span class="keyword">end</span>
+0119     <a name="_sub3" href="#_subfunctions" class="code">function addHorHandle1(hObject,eventdata)</a>
+0120         obj.addHorHandle(hgcf);
+0121     <span class="keyword">end</span>
+0122     <a name="_sub4" href="#_subfunctions" class="code">function copy2clipboard(hObject,eventdata)</a>
+0123         set(findobj(hgcf,<span class="string">'Type'</span>,<span class="string">'uicontrol'</span>),<span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0124         print(hgcf,[<span class="string">'-r'</span> num2str(obj.I_DPI)], <span class="string">'-dmeta'</span>);
+0125         set(findobj(hgcf,<span class="string">'Type'</span>,<span class="string">'uicontrol'</span>),<span class="string">'Visible'</span>,<span class="string">'on'</span>);
+0126     <span class="keyword">end</span>
+0127 
+0128 <span class="keyword">end</span>
+0129 
+0130 <a name="_sub5" href="#_subfunctions" class="code">function [absXpos absYpos]=absolutePos(ha,reltextPos)</a>
+0131 axesPos = get(ha,<span class="string">'Position'</span>);
+0132 axeYlim = get(ha,<span class="string">'YLim'</span>);
+0133 axeXlim = get(ha,<span class="string">'XLim'</span>);
+0134 absYpos = axesPos(2)+axesPos(4)*(reltextPos(2)-axeYlim(1))/(axeYlim(2)-axeYlim(1));
+0135 absXpos = axesPos(1)+axesPos(3)*(reltextPos(1)-axeXlim(1))/(axeXlim(2)-axeXlim(1));
+0136 <span class="keyword">end</span>
+0137 <a name="_sub6" href="#_subfunctions" class="code">function [relXpos relYpos]=relativePos(ha,glotextPos)</a>
+0138 axesPos = get(ha,<span class="string">'Position'</span>);
+0139 axeYlim = get(ha,<span class="string">'YLim'</span>);
+0140 axeXlim = get(ha,<span class="string">'XLim'</span>);
+0141 relYpos = axeYlim(1)+(glotextPos(2)-axesPos(2))/axesPos(4)*(axeYlim(2)-axeYlim(1));
+0142 relXpos = axeXlim(1)+(glotextPos(1)-axesPos(1))/axesPos(3)*(axeXlim(2)-axeXlim(1));
+0143 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 16-Nov-2009 14:39:28 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

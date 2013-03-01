@@ -15,12 +15,14 @@ switch hostName,
         error('host not recognized');
 end
 
-TableName   = '..\01-preprocess-plot\watchErpDataset.xlsx';
+% TableName   = '..\01-preprocess-plot\watchErpDataset.xlsx';
+TableName   = '..\01-preprocess-plot\watchErpDataset2.xlsx';
 fileList    = dataset('XLSFile', TableName);
 
 
 sub     = unique( fileList.subjectTag );
-cond    = {'oddball', 'hybrid-12Hz', 'hybrid-15Hz'};
+cond    = unique( fileList.condition );
+% cond    = {'oddball', 'hybrid-12Hz', 'hybrid-15Hz'};
 nSub    = numel(sub);
 nCond   = numel(cond);
 nRuns   = max( unique( fileList.run ) );
@@ -80,9 +82,9 @@ for iS = 1:nSub
                 
                 % spatial filtering
                 %------------------------------------------------------------------------------
-                W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
-%                 nSPcomp = size(cuts, 2);
-%                 W = eye( nSPcomp );
+%                 W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
+                nSPcomp = size(cuts, 2);
+                W = eye( nSPcomp );
                 newCuts = zeros( size(cuts, 1), nSPcomp, size(cuts, 3) ); % , 'single' );
                 for iTr = 1:size(cuts, 3)
                     newCuts( :, :, iTr ) = cuts( :, :, iTr ) * W;

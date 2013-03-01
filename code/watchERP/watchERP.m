@@ -23,7 +23,7 @@ gapOrNoGapList                  = {'gap', 'noGap'};
 gapOrNoGap                      = gapOrNoGapList{1};
 nRepetitions                    = 10;
 nCuesToShow                     = 12;
-ssvepFreqList                   = {'60/4', '60/5', '60/6', '60/7', '60/8'}; 
+ssvepFreqList                   = {'60/4', '60/5', '60/6', '60/7', '60/8', '0'}; 
 ssvepFreqStr                    = ssvepFreqList{1};
 
 parameterList = {

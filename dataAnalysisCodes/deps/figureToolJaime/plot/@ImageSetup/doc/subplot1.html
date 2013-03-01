@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of subplot1</title>
+  <meta name="keywords" content="subplot1">
+  <meta name="description" content="-------------------------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">.</a> &gt; subplot1.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for .&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>subplot1
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>-------------------------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function Hgcf = subplot1(obj,M,N,varargin); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">-------------------------------------------------------------------------
+ subplot1 function         An mproved subplot function
+ Input  : - If more than one input argumenst are given,
+            then the first parameter is the number of rows.
+            If single input argument is given, then this is the
+            subplot-number for which to set focus.
+            This could a scalar or two element vector (I,J).
+          - Number of columns.
+          * variable number of parameters
+            (in pairs: ...,Keywoard, Value,...)
+           - 'Min'    : X, Y lower position of lowest subplot,
+                        default is [0.10 0.10].
+           - 'Max'    : X, Y largest position of highest subplot,
+                        default is [0.95 0.95].
+           - 'Gap'    : X,Y gaps between subplots,
+                        default is [0.01 0.01].
+           - 'XTickL' : x ticks labels option,
+                        'Margin' : plot only XTickLabels in the
+                                   subplot of the lowest  row (default).
+                        'All'    : plot XTickLabels in all subplots.
+                        'None'   : don't plot XTickLabels in subplots.
+           - 'YTickL' : y ticks labels option,
+                        'Margin' : plot only YTickLabels in the
+                                   subplot of the lowest  row (defailt).
+                        'All'    : plot YTickLabels in all subplots.
+                        'None'   : don't plot YTickLabels in subplots.
+           -  'FontS'  : axis font size, default is 10.
+             'XScale' : scale of x axis:
+                        'linear', default.
+                        'log'
+           -  'YScale' : scale of y axis:
+                        'linear', default.
+                        'log'
+ Example: subplot1(2,2,'Gap',[0.02 0.02]);
+          subplot1(2,3,'Gap',[0.02 0.02],'XTickL','None','YTickL','All','FontS',16);
+ See also : subplot1c.m
+ Tested : Matlab 5.3
+     By : Eran O. Ofek           June 2002
+    URL : http://wise-obs.tau.ac.il/~eran/matlab.html
+-------------------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Hgcf = subplot1(obj,M,N,varargin);</a>
+0002 <span class="comment">%-------------------------------------------------------------------------</span>
+0003 <span class="comment">% subplot1 function         An mproved subplot function</span>
+0004 <span class="comment">% Input  : - If more than one input argumenst are given,</span>
+0005 <span class="comment">%            then the first parameter is the number of rows.</span>
+0006 <span class="comment">%            If single input argument is given, then this is the</span>
+0007 <span class="comment">%            subplot-number for which to set focus.</span>
+0008 <span class="comment">%            This could a scalar or two element vector (I,J).</span>
+0009 <span class="comment">%          - Number of columns.</span>
+0010 <span class="comment">%          * variable number of parameters</span>
+0011 <span class="comment">%            (in pairs: ...,Keywoard, Value,...)</span>
+0012 <span class="comment">%           - 'Min'    : X, Y lower position of lowest subplot,</span>
+0013 <span class="comment">%                        default is [0.10 0.10].</span>
+0014 <span class="comment">%           - 'Max'    : X, Y largest position of highest subplot,</span>
+0015 <span class="comment">%                        default is [0.95 0.95].</span>
+0016 <span class="comment">%           - 'Gap'    : X,Y gaps between subplots,</span>
+0017 <span class="comment">%                        default is [0.01 0.01].</span>
+0018 <span class="comment">%           - 'XTickL' : x ticks labels option,</span>
+0019 <span class="comment">%                        'Margin' : plot only XTickLabels in the</span>
+0020 <span class="comment">%                                   subplot of the lowest  row (default).</span>
+0021 <span class="comment">%                        'All'    : plot XTickLabels in all subplots.</span>
+0022 <span class="comment">%                        'None'   : don't plot XTickLabels in subplots.</span>
+0023 <span class="comment">%           - 'YTickL' : y ticks labels option,</span>
+0024 <span class="comment">%                        'Margin' : plot only YTickLabels in the</span>
+0025 <span class="comment">%                                   subplot of the lowest  row (defailt).</span>
+0026 <span class="comment">%                        'All'    : plot YTickLabels in all subplots.</span>
+0027 <span class="comment">%                        'None'   : don't plot YTickLabels in subplots.</span>
+0028 <span class="comment">%           -  'FontS'  : axis font size, default is 10.</span>
+0029 <span class="comment">%             'XScale' : scale of x axis:</span>
+0030 <span class="comment">%                        'linear', default.</span>
+0031 <span class="comment">%                        'log'</span>
+0032 <span class="comment">%           -  'YScale' : scale of y axis:</span>
+0033 <span class="comment">%                        'linear', default.</span>
+0034 <span class="comment">%                        'log'</span>
+0035 <span class="comment">% Example: subplot1(2,2,'Gap',[0.02 0.02]);</span>
+0036 <span class="comment">%          subplot1(2,3,'Gap',[0.02 0.02],'XTickL','None','YTickL','All','FontS',16);</span>
+0037 <span class="comment">% See also : subplot1c.m</span>
+0038 <span class="comment">% Tested : Matlab 5.3</span>
+0039 <span class="comment">%     By : Eran O. Ofek           June 2002</span>
+0040 <span class="comment">%    URL : http://wise-obs.tau.ac.il/~eran/matlab.html</span>
+0041 <span class="comment">%-------------------------------------------------------------------------</span>
+0042 MinDef      = [0.10 0.10];
+0043 MaxDef      = [0.95 0.95];
+0044 GapDef      = [0.01 0.01];
+0045 XTickLDef   = <span class="string">'Margin'</span>;  
+0046 YTickLDef   = <span class="string">'Margin'</span>;  
+0047 FontSDef    = 10;
+0048 XScaleDef   = <span class="string">'linear'</span>;
+0049 YScaleDef   = <span class="string">'linear'</span>;
+0050 
+0051 <span class="comment">% set default parameters</span>
+0052 Min    = MinDef;
+0053 Max    = MaxDef;
+0054 Gap    = GapDef;
+0055 XTickL = XTickLDef;
+0056 YTickL = YTickLDef;
+0057 FontS  = FontSDef;
+0058 XScale = XScaleDef;
+0059 YScale = YScaleDef;
+0060 
+0061 
+0062 MoveFoc = 0;
+0063 <span class="keyword">if</span> (nargin==1),
+0064    <span class="comment">%--- move focus to subplot # ---</span>
+0065    MoveFoc = 1;
+0066 <span class="keyword">elseif</span> (nargin==2),
+0067    <span class="comment">% do nothing</span>
+0068 <span class="keyword">elseif</span> (nargin&gt;2),
+0069    Narg = length(varargin);
+0070    <span class="keyword">if</span> (0.5.*Narg==floor(0.5.*Narg)),
+0071 
+0072       <span class="keyword">for</span> I=1:2:Narg-1,
+0073          <span class="keyword">switch</span> varargin{I},
+0074           <span class="keyword">case</span> <span class="string">'Min'</span>
+0075           Min = varargin{I+1};
+0076           <span class="keyword">case</span> <span class="string">'Max'</span>
+0077           Max = varargin{I+1};
+0078           <span class="keyword">case</span> <span class="string">'Gap'</span>
+0079           Gap = varargin{I+1};
+0080           <span class="keyword">case</span> <span class="string">'XTickL'</span>
+0081           XTickL = varargin{I+1};
+0082           <span class="keyword">case</span> <span class="string">'YTickL'</span>
+0083           YTickL = varargin{I+1};
+0084           <span class="keyword">case</span> <span class="string">'FontS'</span>
+0085           FontS = varargin{I+1};
+0086           <span class="keyword">case</span> <span class="string">'XScale'</span>
+0087           XScale = varargin{I+1};
+0088           <span class="keyword">case</span> <span class="string">'YScale'</span>
+0089           YScale = varargin{I+1};
+0090           <span class="keyword">otherwise</span>
+0091          error(<span class="string">'Unknown keyword'</span>);
+0092          <span class="keyword">end</span>
+0093       <span class="keyword">end</span>
+0094    <span class="keyword">else</span>
+0095       error(<span class="string">'Optional arguments should given as keyword, value'</span>);
+0096    <span class="keyword">end</span>
+0097 <span class="keyword">else</span>
+0098    error(<span class="string">'Illegal number of input arguments'</span>);
+0099 <span class="keyword">end</span>
+0100 
+0101 
+0102 
+0103 
+0104 
+0105 
+0106 
+0107 
+0108 <span class="keyword">switch</span> MoveFoc
+0109  <span class="keyword">case</span> 1
+0110     <span class="comment">%--- move focus to subplot # ---</span>
+0111     H    = get(gcf,<span class="string">'Children'</span>);
+0112     Ptot = length(H);
+0113     <span class="keyword">if</span> (length(M)==1),
+0114        M    = Ptot - M + 1; 
+0115     <span class="keyword">elseif</span> (length(M)==2),
+0116        <span class="comment">%--- check for subplot size ---</span>
+0117        Pos1  = get(H(1),<span class="string">'Position'</span>);
+0118        Pos1x = Pos1(1);
+0119        <span class="keyword">for</span> Icheck=2:1:Ptot,
+0120           PosN  = get(H(Icheck),<span class="string">'Position'</span>);
+0121           PosNx = PosN(1);
+0122           <span class="keyword">if</span> (PosNx==Pos1x),
+0123              NumberOfCol = Icheck - 1;
+0124              <span class="keyword">break</span>;
+0125           <span class="keyword">end</span>
+0126        <span class="keyword">end</span>
+0127        NumberOfRow = Ptot./NumberOfCol;
+0128 
+0129        Row = M(1);
+0130        Col = M(2);
+0131 
+0132        M   = (Row-1).*NumberOfCol + Col;
+0133        M    = Ptot - M + 1; 
+0134     <span class="keyword">else</span>
+0135        error(<span class="string">'Unknown option, undefined subplot index'</span>);
+0136     <span class="keyword">end</span>
+0137 
+0138     set(gcf,<span class="string">'CurrentAxes'</span>,H(M));
+0139 
+0140  <span class="keyword">case</span> 0
+0141     <span class="comment">%--- open subplots ---</span>
+0142 
+0143     Xmin   = Min(1);
+0144     Ymin   = Min(2);
+0145     Xmax   = Max(1);
+0146     Ymax   = Max(2);
+0147     Xgap   = Gap(1);
+0148     Ygap   = Gap(2);
+0149     
+0150     
+0151     Xsize  = (Xmax - Xmin)./N;
+0152     Ysize  = (Ymax - Ymin)./M;
+0153     
+0154     Xbox   = Xsize - Xgap;
+0155     Ybox   = Ysize - Ygap;
+0156     
+0157     
+0158     Ptot = M.*N;
+0159     
+0160     Hgcf = figure(obj.hOutFig);
+0161     clf;
+0162     figure(Hgcf);
+0163     <span class="keyword">for</span> Pi=1:1:Ptot,
+0164        Row = ceil(Pi./N);
+0165        Col = Pi - (Row - 1)*N;
+0166 
+0167        Xstart = Xmin + Xsize.*(Col - 1);
+0168        Ystart = Ymax - Ysize.*Row;
+0169 
+0170 <span class="comment">%       subplot(M,N,Pi);</span>
+0171 <span class="comment">%       hold on;</span>
+0172        axes(<span class="string">'position'</span>,[Xstart,Ystart,Xbox,Ybox]);
+0173        <span class="comment">%set(gca,'position',[Xstart,Ystart,Xbox,Ybox]);</span>
+0174        set(gca,<span class="string">'FontSize'</span>,FontS); 
+0175        box on;
+0176        hold on;
+0177 
+0178        <span class="keyword">switch</span> XTickL
+0179         <span class="keyword">case</span> <span class="string">'Margin'</span>
+0180            <span class="keyword">if</span> (Row~=M),
+0181               <span class="comment">%--- erase XTickLabel ---</span>
+0182               set(gca,<span class="string">'XTickLabel'</span>,[]);
+0183            <span class="keyword">end</span>
+0184         <span class="keyword">case</span> <span class="string">'All'</span>
+0185            <span class="comment">% do nothing</span>
+0186         <span class="keyword">case</span> <span class="string">'None'</span>
+0187            set(gca,<span class="string">'XTickLabel'</span>,[]);
+0188         <span class="keyword">otherwise</span>
+0189            error(<span class="string">'Unknown XTickL option'</span>);
+0190        <span class="keyword">end</span>
+0191 
+0192        <span class="keyword">switch</span> YTickL
+0193         <span class="keyword">case</span> <span class="string">'Margin'</span>
+0194            <span class="keyword">if</span> (Col~=1),
+0195               <span class="comment">%--- erase YTickLabel ---</span>
+0196               set(gca,<span class="string">'YTickLabel'</span>,[]);
+0197            <span class="keyword">end</span>    
+0198         <span class="keyword">case</span> <span class="string">'All'</span>
+0199            <span class="comment">% do nothing</span>
+0200         <span class="keyword">case</span> <span class="string">'None'</span>
+0201            set(gca,<span class="string">'YTickLabel'</span>,[]);
+0202         <span class="keyword">otherwise</span>
+0203            error(<span class="string">'Unknown XTickL option'</span>);
+0204        <span class="keyword">end</span>
+0205 
+0206        <span class="keyword">switch</span> XScale
+0207         <span class="keyword">case</span> <span class="string">'linear'</span>
+0208            set(gca,<span class="string">'XScale'</span>,<span class="string">'linear'</span>);
+0209         <span class="keyword">case</span> <span class="string">'log'</span>
+0210            set(gca,<span class="string">'XScale'</span>,<span class="string">'log'</span>);
+0211         <span class="keyword">otherwise</span>
+0212          error(<span class="string">'Unknown XScale option'</span>);
+0213        <span class="keyword">end</span>
+0214 
+0215        <span class="keyword">switch</span> YScale
+0216         <span class="keyword">case</span> <span class="string">'linear'</span>
+0217            set(gca,<span class="string">'YScale'</span>,<span class="string">'linear'</span>);
+0218         <span class="keyword">case</span> <span class="string">'log'</span>
+0219            set(gca,<span class="string">'YScale'</span>,<span class="string">'log'</span>);
+0220         <span class="keyword">otherwise</span>
+0221          error(<span class="string">'Unknown YScale option'</span>);
+0222        <span class="keyword">end</span>
+0223 
+0224     <span class="keyword">end</span>
+0225 
+0226  <span class="keyword">otherwise</span>
+0227     error(<span class="string">'Unknown MoveFoc option'</span>);
+0228 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 16-Nov-2009 14:39:28 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ImageSetup</title>
+  <meta name="keywords" content="ImageSetup">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">.</a> &gt; ImageSetup.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for .&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ImageSetup
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function obj = ImageSetup()</a></li><li><a href="#_sub2" class="code">function obj = set.I_High(obj,high)</a></li><li><a href="#_sub3" class="code">function obj = set.I_Width(obj,width)</a></li><li><a href="#_sub4" class="code">function obj = set.I_Unit(obj,unit)</a></li><li><a href="#_sub5" class="code">function obj = set.I_DPI(obj,dpi)</a></li><li><a href="#_sub6" class="code">function obj = set.I_FontSize(obj,fontsize)</a></li><li><a href="#_sub7" class="code">function obj = set.I_FontName(obj,fontName)</a></li><li><a href="#_sub8" class="code">function obj = set.I_Legend(obj,onoff)</a></li><li><a href="#_sub9" class="code">function obj = set.I_LegendLocation(obj,location)</a></li><li><a href="#_sub10" class="code">function obj = set.I_Xlabel(obj,onoff)</a></li><li><a href="#_sub11" class="code">function obj = set.I_Ylabel(obj,onoff)</a></li><li><a href="#_sub12" class="code">function obj = set.I_Title(obj,onoff)</a></li><li><a href="#_sub13" class="code">function obj = set.I_Box(obj,onoff)</a></li><li><a href="#_sub14" class="code">function obj = set.I_Grid(obj,onoff)</a></li><li><a href="#_sub15" class="code">function obj = set.I_Space(obj,space)</a></li><li><a href="#_sub16" class="code">function obj = set.I_AutoYlim(obj,auto)</a></li><li><a href="#_sub17" class="code">function obj = set.I_Ylim(obj,lim)</a></li><li><a href="#_sub18" class="code">function obj = set.I_AutoXlim(obj,auto)</a></li><li><a href="#_sub19" class="code">function obj = set.I_Xlim(obj,lim)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 classdef <a href="#_sub1" class="code" title="subfunction obj = ImageSetup()">ImageSetup</a> &lt; hgsetget
+0002    properties 
+0003       I_Width;
+0004       I_High;
+0005       I_Unit;
+0006       I_DPI;
+0007       I_FontSize;
+0008       I_FontName;
+0009       I_Legend;
+0010       I_LegendLocation;
+0011       I_Xlabel;
+0012       I_Ylabel;
+0013       I_Title;
+0014       I_Box;
+0015       I_Grid;
+0016       I_Handles;
+0017       I_Space;
+0018       I_AutoYlim;
+0019       I_Ylim;
+0020       I_AutoXlim;
+0021       I_Xlim;
+0022       
+0023    <span class="keyword">end</span> 
+0024    properties (GetAccess = private)
+0025        verAddedHandles;
+0026        horAddedHandles;
+0027        hOutFig;
+0028    <span class="keyword">end</span>
+0029    methods 
+0030       <a name="_sub0" href="#_subfunctions" class="code">function obj = ImageSetup()</a>
+0031           obj.I_Width = 17.8;<span class="comment">% Hearing research 17.8 double column and 8.4single column</span>
+0032           obj.I_High = 16;
+0033           obj.I_Unit=<span class="string">'cent'</span>;
+0034           obj.I_DPI=1000;
+0035           obj.I_FontSize = 7;
+0036           obj.I_FontName = <span class="string">'Arial'</span>;
+0037           obj.I_Legend = <span class="string">'on'</span>;
+0038           obj.I_LegendLocation = <span class="string">'Best'</span>;
+0039           obj.I_Xlabel = <span class="string">'on'</span>;
+0040           obj.I_Ylabel = <span class="string">'on'</span>;
+0041           obj.I_Title = <span class="string">'on'</span>;
+0042           obj.I_Box = <span class="string">'on'</span>;
+0043           obj.I_Grid = <span class="string">'off'</span>;
+0044           obj.hOutFig = -1;
+0045           obj.I_Space = [0.015 0.015];
+0046           obj.I_AutoYlim = false;
+0047           obj.I_Ylim = [-inf inf];
+0048           obj.I_AutoXlim = false;
+0049           obj.I_Xlim = [-inf inf] ;
+0050       <span class="keyword">end</span>
+0051       <a name="_sub1" href="#_subfunctions" class="code">function obj = set.I_High(obj,high)</a>
+0052          <span class="keyword">if</span> isfloat(high)
+0053             obj.I_High = high;
+0054          <span class="keyword">else</span>
+0055             error(<span class="string">'high must be float'</span>)
+0056          <span class="keyword">end</span>
+0057       <span class="keyword">end</span>
+0058       <a name="_sub2" href="#_subfunctions" class="code">function obj = set.I_Width(obj,width)</a>
+0059          <span class="keyword">if</span> isfloat(width)
+0060             obj.I_Width = width;
+0061          <span class="keyword">else</span>
+0062             error(<span class="string">'width must be float'</span>)
+0063          <span class="keyword">end</span>
+0064       <span class="keyword">end</span>
+0065       <a name="_sub3" href="#_subfunctions" class="code">function obj = set.I_Unit(obj,unit)</a>
+0066          <span class="keyword">if</span> isstr(unit)
+0067             obj.I_Unit = unit;
+0068          <span class="keyword">else</span>
+0069             error(<span class="string">'unit must be string'</span>)
+0070          <span class="keyword">end</span>
+0071       <span class="keyword">end</span>
+0072       <a name="_sub4" href="#_subfunctions" class="code">function obj = set.I_DPI(obj,dpi)</a>
+0073          <span class="keyword">if</span> isfloat(dpi)
+0074             obj.I_DPI = dpi;
+0075          <span class="keyword">else</span>
+0076             error(<span class="string">'dpi must be float'</span>)
+0077          <span class="keyword">end</span>
+0078       <span class="keyword">end</span>
+0079       <a name="_sub5" href="#_subfunctions" class="code">function obj = set.I_FontSize(obj,fontsize)</a>
+0080          <span class="keyword">if</span> isfloat(fontsize)
+0081             obj.I_FontSize = fontsize;
+0082          <span class="keyword">else</span>
+0083             error(<span class="string">'fontsize must be float'</span>)
+0084          <span class="keyword">end</span>
+0085       <span class="keyword">end</span>
+0086       <a name="_sub6" href="#_subfunctions" class="code">function obj = set.I_FontName(obj,fontName)</a>
+0087          <span class="keyword">if</span> isstr(fontName)
+0088             obj.I_FontName = fontName;
+0089          <span class="keyword">else</span>
+0090             error(<span class="string">'fontName must be string'</span>)
+0091          <span class="keyword">end</span>
+0092       <span class="keyword">end</span>
+0093       
+0094       <a name="_sub7" href="#_subfunctions" class="code">function obj = set.I_Legend(obj,onoff)</a>
+0095          <span class="keyword">if</span> isstr(onoff)
+0096             obj.I_Legend = onoff;
+0097          <span class="keyword">else</span>
+0098             error(<span class="string">'onoff must be string'</span>)
+0099          <span class="keyword">end</span>
+0100       <span class="keyword">end</span>
+0101      
+0102       <a name="_sub8" href="#_subfunctions" class="code">function obj = set.I_LegendLocation(obj,location)</a>
+0103          <span class="keyword">if</span> isstr(location)
+0104             obj.I_LegendLocation = location;
+0105          <span class="keyword">else</span>
+0106             error(<span class="string">'location must be string'</span>)
+0107          <span class="keyword">end</span>
+0108       <span class="keyword">end</span>
+0109       <a name="_sub9" href="#_subfunctions" class="code">function obj = set.I_Xlabel(obj,onoff)</a>
+0110          <span class="keyword">if</span> isstr(onoff)
+0111             obj.I_Xlabel = onoff;
+0112          <span class="keyword">else</span>
+0113             error(<span class="string">'onoff must be string'</span>)
+0114          <span class="keyword">end</span>
+0115       <span class="keyword">end</span>
+0116       <a name="_sub10" href="#_subfunctions" class="code">function obj = set.I_Ylabel(obj,onoff)</a>
+0117          <span class="keyword">if</span> isstr(onoff)
+0118             obj.I_Ylabel = onoff;
+0119          <span class="keyword">else</span>
+0120             error(<span class="string">'onoff must be string'</span>)
+0121          <span class="keyword">end</span>
+0122       <span class="keyword">end</span>
+0123       <a name="_sub11" href="#_subfunctions" class="code">function obj = set.I_Title(obj,onoff)</a>
+0124          <span class="keyword">if</span> isstr(onoff)
+0125             obj.I_Title = onoff;
+0126          <span class="keyword">else</span>
+0127             error(<span class="string">'onoff must be string'</span>)
+0128          <span class="keyword">end</span>
+0129       <span class="keyword">end</span>
+0130       <a name="_sub12" href="#_subfunctions" class="code">function obj = set.I_Box(obj,onoff)</a>
+0131          <span class="keyword">if</span> isstr(onoff)
+0132             obj.I_Box = onoff;
+0133          <span class="keyword">else</span>
+0134             error(<span class="string">'onoff must be string'</span>)
+0135          <span class="keyword">end</span>
+0136       <span class="keyword">end</span>
+0137       <a name="_sub13" href="#_subfunctions" class="code">function obj = set.I_Grid(obj,onoff)</a>
+0138          <span class="keyword">if</span> isstr(onoff)
+0139             obj.I_Grid = onoff;
+0140          <span class="keyword">else</span>
+0141             error(<span class="string">'onoff must be string'</span>)
+0142          <span class="keyword">end</span>
+0143       <span class="keyword">end</span>
+0144       <a name="_sub14" href="#_subfunctions" class="code">function obj = set.I_Space(obj,space)</a>
+0145          <span class="keyword">if</span> isvector(space)
+0146             obj.I_Space = space;
+0147          <span class="keyword">else</span>
+0148             error(<span class="string">'width must be vector'</span>)
+0149          <span class="keyword">end</span>
+0150       <span class="keyword">end</span>
+0151       <a name="_sub15" href="#_subfunctions" class="code">function obj = set.I_AutoYlim(obj,auto)</a>
+0152          <span class="keyword">if</span> islogical(auto)
+0153             obj.I_AutoYlim = auto;
+0154          <span class="keyword">else</span>
+0155             error(<span class="string">'width must be logical'</span>)
+0156          <span class="keyword">end</span>
+0157       <span class="keyword">end</span>
+0158       <a name="_sub16" href="#_subfunctions" class="code">function obj = set.I_Ylim(obj,lim)</a>
+0159          <span class="keyword">if</span> isvector(lim)
+0160             obj.I_Ylim = lim;
+0161          <span class="keyword">else</span>
+0162             error(<span class="string">'width must be vector'</span>)
+0163          <span class="keyword">end</span>
+0164       <span class="keyword">end</span>
+0165       <a name="_sub17" href="#_subfunctions" class="code">function obj = set.I_AutoXlim(obj,auto)</a>
+0166          <span class="keyword">if</span> islogical(auto)
+0167             obj.I_AutoXlim = auto;
+0168          <span class="keyword">else</span>
+0169             error(<span class="string">'width must be logical'</span>)
+0170          <span class="keyword">end</span>
+0171       <span class="keyword">end</span>
+0172       <a name="_sub18" href="#_subfunctions" class="code">function obj = set.I_Xlim(obj,lim)</a>
+0173          <span class="keyword">if</span> isvector(lim)
+0174             obj.I_Xlim = lim;
+0175          <span class="keyword">else</span>
+0176             error(<span class="string">'width must be a vector'</span>)
+0177          <span class="keyword">end</span>
+0178       <span class="keyword">end</span>
+0179    <span class="keyword">end</span>
+0180 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 16-Nov-2009 14:39:28 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
