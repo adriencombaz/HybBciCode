@@ -1,18 +1,30 @@
 function plotResults
     
-    fileList = ls('Results*.txt');
+%     fileList = ls('Results*.txt');
+%     
+%     for iF = 1:size(fileList, 1)
+%         
+%         showPlotResults(fileList(iF,:));
+%         
+%     end
     
-    for iF = 1:size(fileList, 1)
-        
-        showPlotResults(fileList(iF,:));
-        
-    end
+    showPlotResults('resultsSPMD.mat');
     
 end
 
 function showPlotResults(textfile)
     
-    results = dataset('File', textfile, 'Delimiter' ,',');
+    [dum1, name, ext] = fileparts(textfile);
+    
+    switch ext
+        case '.txt'
+            results = dataset('File', textfile, 'Delimiter' ,',');
+        case '.mat'
+            load(textfile);
+            results = eval(name);
+        otherwise
+            error('file extension not expected');
+    end
     
     subs = unique(results.subject);
     nSub = numel(subs);
@@ -23,11 +35,16 @@ function showPlotResults(textfile)
     FS = 9;
     fWidth = 25;
     fHeight = 8;
-    
+    cmap = colormap; close(gcf);
+    nCmap = size(cmap, 1);
+    colorList = zeros(nCond, 3);
+    for i = 1:nCond
+        colorList(i, :) = cmap( round((i-1)*(nCmap-1)/(nCond-1)+1) , : );
+    end
 
-    lineStyles = {'--', ':', '-.'};
-    markers = {'o', 's', '^'};
-    colors = {'b', 'r', 'g'};
+
+    lineStyles = {'--', ':', '-.', '-.', '--'};
+    markers = {'o', 's', '^', 'd', 'v'};
     figure('Name', textfile, 'Units', 'centimeters', 'Position', [1 1 fWidth fHeight]);
     for iS = 1:nSub
         subplot(1, nSub, iS);%, 'YGrid', 'on')
@@ -41,11 +58,11 @@ function showPlotResults(textfile)
 %             plot(x, y, '-+', 'color', colors{iC} )
             plot(x, y ...
                 , 'LineStyle', lineStyles{iC} ...
-                , 'Color', colors{iC} ...
+                , 'Color', colorList(iC, :) ...
                 , 'LineWidth', LW ...
                 , 'Marker', markers{iC} ...
-                , 'MarkerFaceColor', colors{iC} ...
-                , 'MarkerEdgeColor', colors{iC} ...
+                , 'MarkerFaceColor', colorList(iC, :) ...
+                , 'MarkerEdgeColor', colorList(iC, :) ...
                 , 'MarkerSize', MS ...
                 );
         end

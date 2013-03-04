@@ -30,14 +30,14 @@ end
 TableName   = '..\01-preprocess-plot\watchErpDataset2.xlsx';
 fileList    = dataset('XLSFile', TableName);
 
-nSub    = 1;%numel( unique( fileList.subjectTag ) );
-nCond   = 1;%numel(unique( fileList.condition ) );
-nAveMax = 4;%10;
+nSub    = numel( unique( fileList.subjectTag ) );
+nCond   = numel(unique( fileList.condition ) );
+nAveMax = 10;
 
 nIterations = nSub*nCond*nAveMax;
-iSlist      = zeros(nIterations, 1);
-iClist      = zeros(nIterations, 1);
-iAvelist    = zeros(nIterations, 1);
+iSlist      = 1;%zeros(nIterations, 1);
+iClist      = 1;%zeros(nIterations, 1);
+iAvelist    = 1;%zeros(nIterations, 1);
 % indList     = (1:nIterations)';
 
 ind = 1;
@@ -53,13 +53,6 @@ for iS = 1:nSub
 end
 
 
-%% =====================================================================================
- 
-fprintf('\nSEQUENTIAL EXECUTION: ');
-tic
-[subjectSeq, conditionSeq, nAveragesSeq, accuracySeq, nCorrectSeq, nCuedSeq] = p3Classif_crossValTrainSession_fct(iSlist, iClist, iAvelist);
-timeSequential = toc;
-fprintf('time = %d seconds\n', timeSequential);
 
 %% =====================================================================================
 
@@ -68,6 +61,7 @@ fprintf('time = %d seconds\n', timeSequential);
 % 
 sched           = findResource('scheduler', 'type', 'local');
 nLabs           = sched.ClusterSize;
+% nLabs           = str2double( getenv('NUMBER_OF_PROCESSORS') );
 nIndPerLabMin   = floor(nIterations / nLabs);
 nIndLeft        = nIterations - nLabs*nIndPerLabMin;
 nIndPerLab      = nIndPerLabMin*ones(1, nLabs);
@@ -79,7 +73,6 @@ for iLab = 1:nLabs
 
     i1 = sum(temp(1:iLab));
     i2 = sum(nIndPerLab(1:iLab));
-%     inputArg(iLab) = { iSlist(i1:i2), iClist(i1:i2),iAvelist(i1:i2) };
     inputArg{iLab} = { iSlist(i1:i2), iClist(i1:i2), iAvelist(i1:i2) };
 
 end
@@ -110,62 +103,109 @@ end
 % % % % fprintf('\n total time = %d seconds\n', tDfeval);
 
 %% =====================================================================================
-
-fprintf('\nPARFOR EXECUTION: ');
-tic
-subjectPF     = cell(nIterations, 1);
-conditionPF   = cell(nIterations, 1);
-nAveragesPF   = zeros(nIterations, 1);
-accuracyPF    = zeros(nIterations, 1);
-nCorrectPF    = zeros(nIterations, 1);
-nCuedPF       = zeros(nIterations, 1);
-matlabpool
-parfor i = 1:nIterations
-    [subjectPF(i), conditionPF(i), nAveragesPF(i), accuracyPF(i), nCorrectPF(i), nCuedPF(i)] = p3Classif_crossValTrainSession_fct(iSlist(i), iClist(i), iAvelist(i));
-end
-matlabpool close
-timeParFor = toc;
-fprintf('\n total time = %d seconds\n', timeParFor);
-
+% 
+% fprintf('\nPARFOR EXECUTION: ');
+% tic
+% subjectPF     = cell(nIterations, 1);
+% conditionPF   = cell(nIterations, 1);
+% nAveragesPF   = zeros(nIterations, 1);
+% accuracyPF    = zeros(nIterations, 1);
+% nCorrectPF    = zeros(nIterations, 1);
+% nCuedPF       = zeros(nIterations, 1);
+% matlabpool
+% parfor i = 1:nIterations
+%     [subjectPF(i), conditionPF(i), nAveragesPF(i), accuracyPF(i), nCorrectPF(i), nCuedPF(i)] = p3Classif_crossValTrainSession_fct(iSlist(i), iClist(i), iAvelist(i));
+% end
+% matlabpool close
+% timeParFor = toc;
+% fprintf('\n total time = %d seconds\n', timeParFor);
+% 
 
 %% =====================================================================================
 
 fprintf('\nSPMD EXECUTION: ');
 
-tic
-subjectSPMD     = cell(nLabs, 1);
-conditionSPMD   = cell(nLabs, 1);
-nAveragesSPMD   = cell(nLabs, 1);
-accuracySPMD    = cell(nLabs, 1);
-nCorrectSPMD    = cell(nLabs, 1);
-nCuedSPMD       = cell(nLabs, 1);
-matlabpool
-spmd (nLabs)
-    [subject, condition, nAverages, accuracy, nCorrect,nCued] = p3Classif_crossValTrainSession_fct( inputArg{iLab}{:} );
+sched           = findResource('scheduler', 'type', 'local');
+nLabs           = sched.ClusterSize;
+nIndPerLabMin   = floor(nIterations / nLabs);
+nIndLeft        = nIterations - nLabs*nIndPerLabMin;
+nIndPerLab      = nIndPerLabMin*ones(1, nLabs);
+nIndPerLab(1:nIndLeft) = nIndPerLab(1:nIndLeft) + 1;
+
+inputArg = cell(1, nLabs);
+temp = [ 1 , nIndPerLab ];
+for iLab = 1:nLabs
+
+    i1 = sum(temp(1:iLab));
+    i2 = sum(nIndPerLab(1:iLab));
+    inputArg{iLab} = { iSlist(i1:i2), iClist(i1:i2), iAvelist(i1:i2) };
+
 end
+
+
+tic
+subjectSPMD     = cell(nIterations, 1);
+conditionSPMD   = cell(nIterations, 1);
+nAveragesSPMD   = zeros(nIterations, 1);
+accuracySPMD    = zeros(nIterations, 1);
+nCorrectSPMD    = zeros(nIterations, 1);
+nCuedSPMD       = zeros(nIterations, 1);
+matlabpool(nLabs)
+spmd (nLabs)
+    [subject, condition, nAverages, accuracy, nCorrect,nCued] = p3Classif_crossValTrainSession_fct( inputArg{labindex}{:} );
+end
+temp = [ 1 , nIndPerLab ];
 for i = 1:nLabs
-    subjectSPMD{i}     = subject{i};
-    conditionSPMD{i}   = condition{i};
-    nAveragesSPMD{i}   = nAverages{i};
-    accuracySPMD{i}    = accuracy{i};
-    nCorrectSPMD{i}    = nCorrect{i};
-    nCuedSPMD{i}       = nCued{i};
+    i1 = sum(temp(1:i));
+    i2 = sum(nIndPerLab(1:i));
+    subjectSPMD(i1:i2)      = subject{i};
+    conditionSPMD(i1:i2)    = condition{i};
+    nAveragesSPMD(i1:i2)    = nAverages{i};
+    accuracySPMD(i1:i2)     = accuracy{i};
+    nCorrectSPMD(i1:i2)     = nCorrect{i};
+    nCuedSPMD(i1:i2)        = nCued{i};
 end
 matlabpool close
 timeSpmd = toc;
 fprintf('\n total time = %d seconds\n', timeSpmd);
 
-fprintf('bkablkabkabka');
+resultsSPMD = dataset( ...
+    {subjectSPMD, 'subject'} ...
+    ,{conditionSPMD, 'condition'} ...
+    ,{nAveragesSPMD, 'nAverages'} ...
+    ,{accuracySPMD, 'accuracy'} ...
+    ,{nCorrectSPMD, 'nCorrect'} ...
+    ,{nCuedSPMD, 'nCued'} ...
+    );
+
+save('resultsSPMD.mat', 'resultsSPMD', 'timeSpmd');
 
 
+%% =====================================================================================
+ 
+fprintf('\nSEQUENTIAL EXECUTION: ');
+tic
+[subjectSeq, conditionSeq, nAveragesSeq, accuracySeq, nCorrectSeq, nCuedSeq] = p3Classif_crossValTrainSession_fct(iSlist, iClist, iAvelist);
+timeSequential = toc;
+fprintf('time = %d seconds\n', timeSequential);
 
+resultsSeq = dataset( ...
+    {subjectSeq, 'subject'} ...
+    ,{conditionSeq, 'condition'} ...
+    ,{nAveragesSeq, 'nAverages'} ...
+    ,{accuracySeq, 'accuracy'} ...
+    ,{nCorrectSeq, 'nCorrect'} ...
+    ,{nCuedSeq, 'nCued'} ...
+    );
+
+save('resultsSeq.mat', 'resultsSeq', 'timeSequential');
 
 end
 
 
 
 
-function [subject, condition, nAverages, accuracy, nCorrect,nCued] = p3Classif_crossValTrainSession_fct(iSL, iCL, iAveL)
+function [subject, condition, nAverages, accuracy, nCorrect, nCued] = p3Classif_crossValTrainSession_fct(iSL, iCL, iAveL)
 
 if numel(iSL) ~= numel(iCL) || numel(iSL) ~= numel(iAveL)
     error('iSL, iCL and iAveL must have the number of elements');
@@ -265,9 +305,9 @@ for ii = 1:numel(iSL)
         
         % spatial filtering
         %------------------------------------------------------------------------------
-        W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
-        %                 nSPcomp = size(cuts, 2);
-        %                 W = eye( nSPcomp );
+%         W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
+        nSPcomp = size(cuts, 2);
+        W = eye( nSPcomp );
         newCuts = zeros( size(cuts, 1), nSPcomp, size(cuts, 3) ); % , 'single' );
         for iTr = 1:size(cuts, 3)
             newCuts( :, :, iTr ) = cuts( :, :, iTr ) * W;
