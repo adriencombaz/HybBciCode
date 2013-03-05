@@ -3,6 +3,7 @@ function watchERP
 addpath( '../deps' );
 addpath( '../deps/lptIO' );
 
+% desiredScreenID = 2;
 % desiredScreenID = 1;
 desiredScreenID = 0;
 
@@ -109,9 +110,9 @@ switch hostName,
     case 'neu-wrk-0161',
         eegDataDir  = 'C:/EEG-recordings/watchERP/';
     case 'kuleuven-24b13c',
-        eegDataDir  = 'd:/KULeuven/PhD/Work/EEG-Recording/watchERP/';
+        eegDataDir  = 'd:/KULeuven/PhD/Work/Hybrid-BCI/HybBciRecordedData/watchERP/';
     case 'neu-wrk-0158',
-        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/HybBciData/watchERP/';
+        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/HybBciRecordedData/watchERP/';
     otherwise,
         eegDataDir  = './EEG-recordings/watchERP/';
 end

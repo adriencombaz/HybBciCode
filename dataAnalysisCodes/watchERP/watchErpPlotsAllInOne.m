@@ -15,12 +15,12 @@ function watchErpPlotsAllInOne
     switch hostName,
         case 'kuleuven-24b13c',
             addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-            dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\watchERP\';
-%             dataDir2 = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\oddball\';
+            dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
+%             dataDir2 = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\oddball\';
         case 'neu-wrk-0158',
             addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-            dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\watchERP\';
-%             dataDir2= 'd:\Adrien\Work\Hybrid-BCI\HybBciData\oddball\';
+            dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
+%             dataDir2= 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\oddball\';
         otherwise,
             error('host not recognized');
     end

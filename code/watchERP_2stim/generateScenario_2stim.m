@@ -51,10 +51,12 @@ end
 SSVEPSizeH = 2*SSVEPMarginH + eltMatrix(2)*eltSizeH + (eltMatrix(2)-1)*eltGapH;
 SSVEPSizeV = 2*SSVEPMarginV + eltMatrix(1)*eltSizeV + (eltMatrix(1)-1)*eltGapV;
 
-if scrPos(4) <= ( ssvepMatrix(1)*(SSVEPSizeV+SSVEPGapV) - SSVEPGapV )
+ssvepStartV = round( scrPos(4) - ( ssvepMatrix(1)*(SSVEPSizeV+SSVEPGapV) - SSVEPGapV ) )/2;
+if ssvepStartV <= 0
     error('generateScenario_2stim:OutScreen', 'ssvep stimuli is vertically out of the screen');
 end
-if scrPos(3) <= ( ssvepMatrix(2)*(SSVEPSizeH+SSVEPGapH) - SSVEPGapH )
+ssvepStartH = round( scrPos(3) - ( ssvepMatrix(2)*(SSVEPSizeH+SSVEPGapH) - SSVEPGapH ) )/2;
+if ssvepStartH <= 0
     error('generateScenario_2stim:OutScreen', 'ssvep stimuli is horizontally out of the screen');
 end
 %%
@@ -254,46 +256,62 @@ sc.texturesDir = fullfile(cd, texturesDir);
         vEnd        = vStart + imSizeV;
         P300StimPos = [ hStart+1 vStart+1 hEnd vEnd ];
         
-        CuePos      = zeros(nItems, 4); % for .xml scenario (and PTB)
+        CuePos      = zeros(nSsvep*nItems, 4); % for .xml scenario (and PTB)
         
-        for iIcon = 1:nItems
+        for iSsvep = 1:nSsvep
             
-            [vPosInMatrix hPosInMatrix] = ind2sub(eltMatrix, iIcon);
+            [vIndSsvep hIndSsvep] = ind2sub(ssvepMatrix, iSsvep);
+            distFromLeft    = ssvepStartH + (hIndSsvep-1)*(SSVEPSizeH+SSVEPGapH);
+            distFromTop     = ssvepStartV + (vIndSsvep-1)*(SSVEPSizeV+SSVEPGapV);
             
-            distFromLeft    = (hPosInMatrix-1) * ( eltSizeH + eltGapH );
-            distFromTop     = (vPosInMatrix-1) * ( eltSizeV + eltGapV ); 
-            
-            CuePos(iIcon, :) = ...
-                [ imStartH + distFromLeft + hPaddL + 1, ...
-                imStartV + distFromTop + vPaddT + 1, ...
-                imStartH + distFromLeft + hPaddL + eltSizeH, ...
-                imStartV + distFromTop + vPaddT + eltSizeV ];
-            
+            for iIcon = 1:nItems
+                
+                [vPosInMatrix hPosInMatrix] = ind2sub(eltMatrix, iIcon);
+                
+                distFromLeft2    = distFromLeft + SSVEPMarginH + (hPosInMatrix-1) * ( eltSizeH + eltGapH );
+                distFromTop2     = distFromTop  + SSVEPMarginV + (vPosInMatrix-1) * ( eltSizeV + eltGapV );
+                
+                CuePos( (iSsvep-1)*nItems + iIcon, :) = ...
+                    [ distFromLeft2 + 1, ...
+                    distFromTop2 + 1, ...
+                    distFromLeft2 + eltSizeH, ...
+                    distFromTop2 + eltSizeV ];
+                
+            end
         end
         
         %--------------------------------------------------------------------------
         % SSVEP stimuli
-        hStart  = round( ( scrPos(3) - SSVEPSizeH ) / 2 );  % from left
-        vStart  = round( ( scrPos(4) - SSVEPSizeV ) / 2 );  % from top
-        hEnd    = hStart + SSVEPSizeH;
-        vEnd    = vStart + SSVEPSizeV;
-        SSVEPStimPos = [ hStart+1 vStart+1 hEnd vEnd ];
+        SSVEPStimPos = zeros(nSsvep, 4);
+        for iSsvep = 1:nSsvep
+            
+            [vIndSsvep hIndSsvep] = ind2sub(ssvepMatrix, iSsvep);
+            hStart = ssvepStartH +(hIndSsvep-1)*(SSVEPSizeH+SSVEPGapH);
+            vStart = ssvepStartV +(vIndSsvep-1)*(SSVEPSizeV+SSVEPGapV);
+            SSVEPStimPos(iSsvep, :) = [ ...
+                hStart + 1 ...
+                vStart + 1 ...
+                hStart + SSVEPSizeH ...
+                vStart + SSVEPSizeV ...
+                ];
+                
+        end        
         
         
         %% Create scenario structure
         %==========================================================================
         sc = [];
-        sc.description = 'Watch ERP with SSVEP flicker';
+        sc.description = 'Watch ERP with 2 SSVEP flicker';
         sc.desired.scr.nCols = scrPos(3);
         sc.desired.scr.nRows = scrPos(4);
         
         %--------------------------------------------------------------------------
         % textures
-        sc.textures(1).filename = 'ssvep-pixel.png';                       % SSVEP texture
+        sc.textures(1).filename = 'ssvep-pixel.png';                                % SSVEP texture
         for iStim = 1:nItems+1
             sc.textures(iStim+1).filename = sprintf('stimulus-%.2d.png', iStim);    % P3 textures
         end
-        sc.textures(nItems+3).filename = 'target-crosshair.png';                             % cue texture
+        sc.textures(nItems+3).filename = 'target-crosshair.png';                    % cue texture
 
         %--------------------------------------------------------------------------
         % Events
@@ -329,62 +347,63 @@ sc.texturesDir = fullfile(cd, texturesDir);
         
         %--------------------------------------------------------------------------
         % SSVEP stimuli
-        sc.stimuli(1).description               = 'SSVEP stimulus';
-        sc.stimuli(1).stateSequence             = 1;
-        sc.stimuli(1).durationSequenceInSec     = Inf;
-        sc.stimuli(1).desired.position          = SSVEPStimPos;
-        sc.stimuli(1).states(1).frequency       = 15;
-        sc.stimuli(1).states(1).initialPhase    = 0.00000000000000000000000000;
-        sc.stimuli(1).states(1).views.iTexture  = 1;
-        sc.stimuli(1).states(2).frequency       = 0;
-        sc.stimuli(1).states(2).initialPhase    = 0.00000000000000000000000000;
-        sc.stimuli(1).states(2).views.iTexture  = 0;
-        sc.stimuli(1).eventMatrix               = [ 0  find( cellfun( @(x) strcmp(x, 'SSVEP stim off'), {sc.events(:).desc} ) ) ; ...
-                                                    find( cellfun( @(x) strcmp(x, 'SSVEP stim on'), {sc.events(:).desc} ) ) 0  ];
-
+        for iSsvep = 1:nSsvep
+            sc.stimuli(iSsvep).description               = 'SSVEP stimulus';
+            sc.stimuli(iSsvep).stateSequence             = 1;
+            sc.stimuli(iSsvep).durationSequenceInSec     = Inf;
+            sc.stimuli(iSsvep).desired.position          = SSVEPStimPos(iSsvep, :);
+            sc.stimuli(iSsvep).states(1).frequency       = 15;
+            sc.stimuli(iSsvep).states(1).initialPhase    = 0.00000000000000000000000000;
+            sc.stimuli(iSsvep).states(1).views.iTexture  = 1;
+            sc.stimuli(iSsvep).states(2).frequency       = 0;
+            sc.stimuli(iSsvep).states(2).initialPhase    = 0.00000000000000000000000000;
+            sc.stimuli(iSsvep).states(2).views.iTexture  = 0;
+            sc.stimuli(iSsvep).eventMatrix               = [ 0  find( cellfun( @(x) strcmp(x, 'SSVEP stim off'), {sc.events(:).desc} ) ) ; ...
+                find( cellfun( @(x) strcmp(x, 'SSVEP stim on'), {sc.events(:).desc} ) ) 0  ];
+        end
         
         %--------------------------------------------------------------------------
         % P300 stimuli
-        sc.stimuli(2).description               = 'P300 stimulus';
-        sc.stimuli(2).stateSequence             = 1;
-        sc.stimuli(2).durationSequenceInSec     = Inf;
-        sc.stimuli(2).desired.position          = P300StimPos;
+        sc.stimuli(nSsvep+1).description               = 'P300 stimulus';
+        sc.stimuli(nSsvep+1).stateSequence             = 1;
+        sc.stimuli(nSsvep+1).durationSequenceInSec     = Inf;
+        sc.stimuli(nSsvep+1).desired.position          = P300StimPos;
         iState = 1;
-        sc.stimuli(2).eventMatrix = zeros(2*nItems+1);
+        sc.stimuli(nSsvep+1).eventMatrix = zeros(2*nItems+1);
         for iS = 1:nItems
-            sc.stimuli(2).states(iState).views.iTexture  = iS+1;    % real
-            sc.stimuli(2).states(iState+1).views.iTexture  = iS+1;  % fake
+            sc.stimuli(nSsvep+1).states(iState).views.iTexture  = iS+1;    % real
+            sc.stimuli(nSsvep+1).states(iState+1).views.iTexture  = iS+1;  % fake
             
-            sc.stimuli(2).eventMatrix(iState, 2:2:2*nItems) = find( cellfun( @(x) strcmp(x, 'P300 stim off'), {sc.events(:).desc} ) ); % from real to fake (reset binary marker)
-            sc.stimuli(2).eventMatrix(iState+1, 1:2:2*nItems-1) = find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from fake to real (set binary marker)
+            sc.stimuli(nSsvep+1).eventMatrix(iState, 2:2:2*nItems) = find( cellfun( @(x) strcmp(x, 'P300 stim off'), {sc.events(:).desc} ) ); % from real to fake (reset binary marker)
+            sc.stimuli(nSsvep+1).eventMatrix(iState+1, 1:2:2*nItems-1) = find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from fake to real (set binary marker)
             
             iState = iState+2;
         end
         
-        sc.stimuli(2).states(iState).views.iTexture  = nItems+2;
-        sc.stimuli(2).eventMatrix(2*nItems+1, 1:2:2*nItems-1) = ...
+        sc.stimuli(nSsvep+1).states(iState).views.iTexture  = nItems+2;
+        sc.stimuli(nSsvep+1).eventMatrix(2*nItems+1, 1:2:2*nItems-1) = ...
             find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from nothing to real (set binary marker)
-        sc.stimuli(2).eventMatrix(1:2:2*nItems-1, 2*nItems+1) = ...
+        sc.stimuli(nSsvep+1).eventMatrix(1:2:2*nItems-1, 2*nItems+1) = ...
             find( cellfun( @(x) strcmp(x, 'P300 stim off'), {sc.events(:).desc} ) ); % from real to nothing (reset binary marker)
 
         
         
         %--------------------------------------------------------------------------
         % cue stimulus
-        sc.stimuli(3).description               = 'Look here stimulus';
-        sc.stimuli(3).stateSequence             = 1;
-        sc.stimuli(3).durationSequenceInSec     = Inf;
-        sc.stimuli(3).desired.position          = [0 0 0 0];
-        for iEl = 1:nItems
-            sc.stimuli(3).states(iEl).position = CuePos(iEl, :);
-            sc.stimuli(3).states(iEl).views.iTexture = nItems+3;
+        sc.stimuli(nSsvep+2).description               = 'Look here stimulus';
+        sc.stimuli(nSsvep+2).stateSequence             = 1;
+        sc.stimuli(nSsvep+2).durationSequenceInSec     = Inf;
+        sc.stimuli(nSsvep+2).desired.position          = [0 0 0 0];
+        for iEl = 1:nSsvep*nItems
+            sc.stimuli(nSsvep+2).states(iEl).position = CuePos(iEl, :);
+            sc.stimuli(nSsvep+2).states(iEl).views.iTexture = nItems+3;
         end
-        sc.stimuli(3).states(nItems+1).position = [0 0 0 0];
-        sc.stimuli(3).states(nItems+1).views.iTexture = 0;
-        sc.stimuli(3).eventMatrix = zeros(nItems+1);
-        sc.stimuli(3).eventMatrix(nItems+1, 1:nItems) = ...
+        sc.stimuli(nSsvep+2).states(nSsvep*nItems+1).position = [0 0 0 0];
+        sc.stimuli(nSsvep+2).states(nSsvep*nItems+1).views.iTexture = 0;
+        sc.stimuli(nSsvep+2).eventMatrix = zeros(nSsvep*nItems+1);
+        sc.stimuli(nSsvep+2).eventMatrix(nSsvep*nItems+1, 1:nSsvep*nItems) = ...
             find( cellfun( @(x) strcmp(x, 'Cue on'), {sc.events(:).desc} ) );
-        sc.stimuli(3).eventMatrix(1:nItems, nItems+1) = ...
+        sc.stimuli(nSsvep+2).eventMatrix(1:nSsvep*nItems, nSsvep*nItems+1) = ...
             find( cellfun( @(x) strcmp(x, 'Cue off'), {sc.events(:).desc} ) );
         
         

@@ -270,7 +270,8 @@ sc.texturesDir = fullfile(cd, texturesDir);
         for iStim = 1:nItems+1
             sc.textures(iStim+1).filename = sprintf('stimulus-%.2d.png', iStim);    % P3 textures
         end
-        sc.textures(nItems+3).filename = 'target-crosshair.png';                             % cue texture
+%         sc.textures(nItems+3).filename = 'target-crosshair.png';                             % cue texture
+        sc.textures(nItems+3).filename = 'target-crosshair-cyan.png';                             % cue texture
 
         %--------------------------------------------------------------------------
         % Events
@@ -313,7 +314,7 @@ sc.texturesDir = fullfile(cd, texturesDir);
         sc.stimuli(1).states(1).frequency       = 15;
         sc.stimuli(1).states(1).initialPhase    = 0.00000000000000000000000000;
         sc.stimuli(1).states(1).views.iTexture  = 1;
-        sc.stimuli(1).states(2).frequency       = 0;
+        sc.stimuli(1).states(2).frequency       = 0;    
         sc.stimuli(1).states(2).initialPhase    = 0.00000000000000000000000000;
         sc.stimuli(1).states(2).views.iTexture  = 0;
         sc.stimuli(1).eventMatrix               = [ 0  find( cellfun( @(x) strcmp(x, 'SSVEP stim off'), {sc.events(:).desc} ) ) ; ...
@@ -355,9 +356,11 @@ sc.texturesDir = fullfile(cd, texturesDir);
         for iEl = 1:nItems
             sc.stimuli(3).states(iEl).position = CuePos(iEl, :);
             sc.stimuli(3).states(iEl).views.iTexture = nItems+3;
+            sc.stimuli(3).states(iEl).frequency      = 2;
         end
         sc.stimuli(3).states(nItems+1).position = [0 0 0 0];
         sc.stimuli(3).states(nItems+1).views.iTexture = 0;
+        sc.stimuli(3).states(nItems+1).frequency      = 0;
         sc.stimuli(3).eventMatrix = zeros(nItems+1);
         sc.stimuli(3).eventMatrix(nItems+1, 1:nItems) = ...
             find( cellfun( @(x) strcmp(x, 'Cue on'), {sc.events(:).desc} ) );
