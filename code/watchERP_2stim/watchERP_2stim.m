@@ -3,8 +3,8 @@ function watchERP_2stim
 addpath( '../deps' );
 addpath( '../deps/lptIO' );
 
-% desiredScreenID = 1;
-desiredScreenID = 0;
+desiredScreenID = 2;
+% desiredScreenID = 0;
 
 %%                        SCANNER PARAMETERS
 %==========================================================================
@@ -111,9 +111,9 @@ switch hostName,
     case 'neu-wrk-0161',
         eegDataDir  = 'C:/EEG-recordings/watchERP/';
     case 'kuleuven-24b13c',
-        eegDataDir  = 'd:/KULeuven/PhD/Work/EEG-Recording/watchERP/';
+        eegDataDir  = 'd:/KULeuven/PhD/Work/Hybrid-BCI/HybBciRecordedData/watchERP_2stim/';
     case 'neu-wrk-0158',
-        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/HybBciData/watchERP/';
+        eegDataDir  = 'd:/Adrien/Work/Hybrid-BCI/HybBciRecordedData/watchERP_2stim/';
     otherwise,
         eegDataDir  = './EEG-recordings/watchERP/';
 end
@@ -169,9 +169,17 @@ iSSVEPStimuli       = find( cellfun( @(x) strcmp(x, 'SSVEP stimulus'), {st.sc.st
 
 iP3off  = numel( st.sc.stimuli(iP300Stimuli).states );
 iCueOff = numel( st.sc.stimuli(iLookHereStimulus).states );
+nP3item = (iP3off-1)/2;
+if round(nP3item)~=nP3item, error('something wrong here'); end
 nItems  = iCueOff-1;
 
-st.setFrequency( ssvepFreq, iSSVEPStimuli );
+if numel(ssvepFreq) ~= numel(iSSVEPStimuli)
+    error('number of ssveo squares do not match the number of frequencies');
+end
+nSsvep = numel(iSSVEPStimuli);
+for iSsvep = 1:nSsvep
+    st.setFrequency( ssvepFreq(iSsvep), iSSVEPStimuli(iSsvep) );
+end
 
 % st.sc.stimuli(iSSVEPStimuli).states(1).frequency = ssvepFreq;
 % st.sc.stimuli(iSSVEPStimuli).states(2).frequency = 0;
@@ -241,11 +249,11 @@ for iSR = 1:nCuesToShow
     
     
     % --- P300 stimulation state and duration sequence ----
-    stateSeq = randperm(nItems);
+    stateSeq = randperm(nP3item);
     for iRep = 2:nRepetitions
-        newSeq = randperm(nItems);
+        newSeq = randperm(nP3item);
         while stateSeq(end) == newSeq(1)
-            newSeq = randperm(nItems);
+            newSeq = randperm(nP3item);
         end
         stateSeq = [ stateSeq newSeq ];
     end
@@ -285,13 +293,13 @@ end
 [lookHereStateSeq lookHereDurationSeq]  = shrinkSequence(lookHereStateSeq, lookHereDurationSeq);
 [p3StateSeq p3DurationSeq]              = shrinkSequence(p3StateSeq, p3DurationSeq);
 
-if ssvepFreq    % ssvep stimulation on (ssvep baseline, hybrid)
+% if ssvepFreq    % ssvep stimulation on (ssvep baseline, hybrid)
     [SSVEPStateSeq SSVEPDurationSeq] = shrinkSequence(SSVEPStateSeq, SSVEPDurationSeq);
-else            % ssvep stimulation off (p300 baseline)
-%     SSVEPStateSeq       = 1;
-    SSVEPStateSeq       = 2;
-    SSVEPDurationSeq    = sum(lookHereDurationSeq);
-end
+% else            % ssvep stimulation off (p300 baseline)
+% %     SSVEPStateSeq       = 1;
+%     SSVEPStateSeq       = 2;
+%     SSVEPDurationSeq    = sum(lookHereDurationSeq);
+% end
 
 % if sum(lookHereDurationSeq) ~= sum(p3DurationSeq)
 if sum(lookHereDurationSeq) - sum(p3DurationSeq) > 1e-10
@@ -309,9 +317,10 @@ st.sc.stimuli(iP300Stimuli).stateSequence               = p3StateSeq;
 st.sc.stimuli(iP300Stimuli).durationSequenceInSec       = p3DurationSeq;
 st.sc.stimuli(iLookHereStimulus).stateSequence          = lookHereStateSeq;
 st.sc.stimuli(iLookHereStimulus).durationSequenceInSec  = lookHereDurationSeq;
-st.sc.stimuli(iSSVEPStimuli).stateSequence              = SSVEPStateSeq;
-st.sc.stimuli(iSSVEPStimuli).durationSequenceInSec      = SSVEPDurationSeq;
-
+for iSsvep = 1:nSsvep
+    st.sc.stimuli(iSSVEPStimuli(iSsvep)).stateSequence              = SSVEPStateSeq;
+    st.sc.stimuli(iSSVEPStimuli(iSsvep)).durationSequenceInSec      = SSVEPDurationSeq;
+end
 
 st.sc.desired.stimulationDuration = roundDurationInSec;
 

@@ -5,11 +5,11 @@ hostName = lower( strtok( getenv( 'COMPUTERNAME' ), '.') );
 switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\watchERP\';
+        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
-        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\watchERP\';
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
     otherwise,
         error('host not recognized');
 end

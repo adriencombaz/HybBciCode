@@ -16,10 +16,10 @@ hostName = lower( strtok( getenv( envVarName ), '.') );
 switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\watchERP\';
+        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\watchERP\';
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
     otherwise,
         error('host not recognized');
 end
@@ -31,8 +31,9 @@ end
 if isnumeric(bdfFileName) && bdfFileName == 0
     return;
 end
-bdfFileName = {bdfFileName};
-
+if ~iscell(bdfFileName)
+    bdfFileName = {bdfFileName};
+end
 
 for iF = 1:numel(bdfFileName)
     paramFileName                   = [bdfFileName{iF}(1:19) '.mat'];

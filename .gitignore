@@ -3,3 +3,5 @@
 *.csv
 *.tif
 *.tiff
+*stimulus*.png
+*ssvep-pixel.png
