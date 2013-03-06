@@ -271,7 +271,7 @@ sc.texturesDir = fullfile(cd, texturesDir);
             sc.textures(iStim+1).filename = sprintf('stimulus-%.2d.png', iStim);    % P3 textures
         end
 %         sc.textures(nItems+3).filename = 'target-crosshair.png';                             % cue texture
-        sc.textures(nItems+3).filename = 'target-crosshair-cyan.png';                             % cue texture
+        sc.textures(nItems+3).filename = 'target-crosshair-yellow2.png';                             % cue texture
 
         %--------------------------------------------------------------------------
         % Events
