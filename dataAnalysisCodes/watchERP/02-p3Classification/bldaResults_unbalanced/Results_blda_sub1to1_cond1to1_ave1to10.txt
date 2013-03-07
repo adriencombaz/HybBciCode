@@ -1,0 +1,9 @@
+subject, condition, nAverages, accuracy, nCorrect, nCued
+S1, hybrid-10Hz, 1, 72.22, 52, 72
+S1, hybrid-10Hz, 2, 81.94, 59, 72
+S1, hybrid-10Hz, 3, 77.78, 56, 72
+S1, hybrid-10Hz, 4, 81.94, 59, 72
+S1, hybrid-10Hz, 5, 87.50, 63, 72
+S1, hybrid-10Hz, 6, 86.11, 62, 72
+S1, hybrid-10Hz, 7, 94.44, 68, 72
+S1, hybrid-10Hz, 8, 87.50, 63, 72

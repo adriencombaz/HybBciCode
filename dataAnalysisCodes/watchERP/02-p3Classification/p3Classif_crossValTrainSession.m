@@ -173,7 +173,7 @@ for iS = 1:nSub
                 igam        = 1;    % Central value of the regularization paramter for the first line search
                 B_init      = [];
                 error_type  = 1;    % 1: calculate mean square error on misclassified data
-                % 2: calculate mean square error on active data (data that are not beyond the margin...even if correctly classified)
+                                    % 2: calculate mean square error on active data (data that are not beyond the margin...even if correctly classified)
                 
                 ntrain      = size(Xtrain,1);
                 Xtrain      = [Xtrain ones(ntrain,1)];

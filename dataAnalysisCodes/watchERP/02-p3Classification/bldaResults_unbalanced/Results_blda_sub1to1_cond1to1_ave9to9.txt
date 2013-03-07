@@ -1,0 +1,2 @@
+subject, condition, nAverages, accuracy, nCorrect, nCued
+S1, hybrid-10Hz, 9, 93.06, 67, 72

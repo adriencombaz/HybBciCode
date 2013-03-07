@@ -312,7 +312,6 @@ for ii = 1:numel(iSL)
         for iTr = 1:size(cuts, 3)
             newCuts( :, :, iTr ) = cuts( :, :, iTr ) * W;
         end
-        
         clear cuts
         
         % downsample
