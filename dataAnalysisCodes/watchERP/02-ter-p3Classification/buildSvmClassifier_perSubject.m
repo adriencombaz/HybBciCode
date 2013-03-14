@@ -4,7 +4,6 @@ function buildSvmClassifier_perSubject( iS )
 %--------------------------------------------------------------------------
 if isunix,
     envVarName = 'HOSTNAME';
-    rootDir = '~/PhD/hybridBCI-stuffs/';
 else
     envVarName = 'COMPUTERNAME';
 end
@@ -61,76 +60,77 @@ targetFS = 128;
 
 for iC = 1:nCond
     
-    for iAve = 1:nAveMax
+    
+    subset = fileList( ismember( fileList.subjectTag, sub{iS} ) & ismember( fileList.condition, cond{iC} ), : );
+    
+    runIds = unique( subset.run );
+    nRuns = numel( runIds );
+    
+    for iRunTrain = 1:nRuns
         
-        subset = fileList( ismember( fileList.subjectTag, sub{iS} ) & ismember( fileList.condition, cond{iC} ), : );
+        %==============================================================================
+        %==============================================================================
         
-        runIds = unique( subset.run );
-        nRuns = numel( runIds );
+        %% train the classifier on run nb 1
         
-        for iRunTrain = 1:nRuns
+        %==============================================================================
+        %==============================================================================
+        
+        % read data
+        %------------------------------------------------------------------------------
+        subsetTrain         = subset( ismember( subset.run, runIds( iRunTrain ) ), : );
+        sessionDir          = fullfile(dataDir, subsetTrain.sessionDirectory{1});
+        %             filename    = ls(fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']));
+        [dum, name, ext]    = fileparts( ls( fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']) ) );
+        filename            = strtrim( [name ext] );
+        
+        erpData     = eegDataset( sessionDir, filename );
+        
+        erpData.tBeforeOnset = tBeforeOnset;
+        erpData.tAfterOnset = tAfterOnset;
+        
+        iT  = find(ismember(erpData.eventLabel, 'target'));
+        iNT = find(ismember(erpData.eventLabel, 'nonTarget'));
+        
+        % filter the eeg data
+        %------------------------------------------------------------------------------
+        erpData.butterFilter( butterFilt.lowMargin, butterFilt.highMargin, butterFilt.order );
+        
+        % get cuts
+        %------------------------------------------------------------------------------
+        cuts = erpData.getCuts2(); % single( erpData.getCuts2() );
+        cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
+        
+        % spatial filtering
+        %------------------------------------------------------------------------------
+        %             W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
+        nSPcomp = size(cuts, 2);
+        W = eye( nSPcomp );
+        newCuts = zeros( size(cuts, 1), nSPcomp, size(cuts, 3) ); % , 'single' );
+        for iTr = 1:size(cuts, 3)
+            newCuts( :, :, iTr ) = cuts( :, :, iTr ) * W;
+        end
+        clear cuts
+        
+        % downsample
+        %------------------------------------------------------------------------------
+        DSF = erpData.fs / targetFS;
+        if DSF ~= floor(DSF), error('something wrong with the sampling rate'); end
+        if DSF == 1
+            cuts_DS = newCuts;
+        else
+            nbins = floor( size(newCuts, 1) / DSF );
+            cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3) ); % , 'single' );
+            for i = 1:nbins
+                cuts_DS(i,:,:) = mean( newCuts( (i-1)*DSF+1:i*DSF, :, : ), 1 );
+            end
+        end
+        clear newCuts
+        
+        for iAve = 1:nAveMax
             
             fprintf('Subject %s, condition %s, %d averages, fold %d\n', sub{iS}, cond{iC}, iAve, iRunTrain);
-            
-            %==============================================================================
-            %==============================================================================
-            
-            %% train the classifier on run nb 1
-            
-            %==============================================================================
-            %==============================================================================
-            
-            % read data
-            %------------------------------------------------------------------------------
-            subsetTrain         = subset( ismember( subset.run, runIds( iRunTrain ) ), : );
-            sessionDir          = fullfile(dataDir, subsetTrain.sessionDirectory{1});
-%             filename    = ls(fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']));
-            [dum, name, ext]    = fileparts( ls( fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']) ) );
-            filename            = strtrim( [name ext] );
-            classifierFilename  = fullfile( resDir, sprintf('%s-%.2dAverages.mat', resDir) );
-            
-            erpData     = eegDataset( sessionDir, filename );
-            
-            erpData.tBeforeOnset = tBeforeOnset;
-            erpData.tAfterOnset = tAfterOnset;
-            
-            iT  = find(ismember(erpData.eventLabel, 'target'));
-            iNT = find(ismember(erpData.eventLabel, 'nonTarget'));
-            
-            % filter the eeg data
-            %------------------------------------------------------------------------------
-            erpData.butterFilter( butterFilt.lowMargin, butterFilt.highMargin, butterFilt.order );
-            
-            % get cuts
-            %------------------------------------------------------------------------------
-            cuts = erpData.getCuts2(); % single( erpData.getCuts2() );
-            cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
-            
-            % spatial filtering
-            %------------------------------------------------------------------------------
-%             W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
-            nSPcomp = size(cuts, 2);
-            W = eye( nSPcomp );
-            newCuts = zeros( size(cuts, 1), nSPcomp, size(cuts, 3) ); % , 'single' );
-            for iTr = 1:size(cuts, 3)
-                newCuts( :, :, iTr ) = cuts( :, :, iTr ) * W;
-            end
-            clear cuts
-            
-            % downsample
-            %------------------------------------------------------------------------------
-            DSF = erpData.fs / targetFS;
-            if DSF ~= floor(DSF), error('something wrong with the sampling rate'); end
-            if DSF == 1
-                cuts_DS = newCuts;
-            else
-                nbins = floor( size(newCuts, 1) / DSF );
-                cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3) ); % , 'single' );
-                for i = 1:nbins
-                    cuts_DS(i,:,:) = mean( newCuts( (i-1)*DSF+1:i*DSF, :, : ), 1 );
-                end
-            end
-            clear newCuts
+            classifierFilename  = fullfile( resDir, sprintf('%s-%.2dAverages.mat', name, iAve) );
             
             % select/balance/average trials w.r.t. the desired number of repetitions
             %------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ for iC = 1:nCond
                 selection           = selection(1:iAve);
                 SigTrainNT(:,:,i)   = mean( cuts_DS( :, :, indNonTargetEvents(selection) ), 3 );
             end
-            clear cuts_DS
+%             clear cuts_DS
             
             % reshape
             %------------------------------------------------------------------------------
@@ -189,13 +189,12 @@ for iC = 1:nCond
             close all
             best_gamma          = exp(Xm);
             [B iter_final]  = Lin_SVM_Keerthi(Xtrain,Ytrain,B_init,best_gamma);
-            
             clear Xtrain
             
             save( classifierFilename, 'butterFilt', 'W', 'targetFS', 'maxx', 'minx', 'B', 'tBeforeOnset', 'tAfterOnset', 'nSPcomp' );
             
         end
-                
+        
     end
 end
 
