@@ -81,12 +81,12 @@ for iC = 1:nCond
             
             % read data
             %------------------------------------------------------------------------------
-            subsetTrain = subset( ismember( subset.run, runIds( iRunTrain ) ), : );
-            sessionDir  = fullfile(dataDir, subsetTrain.sessionDirectory{1});
+            subsetTrain         = subset( ismember( subset.run, runIds( iRunTrain ) ), : );
+            sessionDir          = fullfile(dataDir, subsetTrain.sessionDirectory{1});
 %             filename    = ls(fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']));
-            [dum, name, ext] = fileparts( ls( fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']) ) );
-            filename    = strtrim( [name ext] );
-            classifierFilename = fullfile( resDir, [name '.mat'] );
+            [dum, name, ext]    = fileparts( ls( fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']) ) );
+            filename            = strtrim( [name ext] );
+            classifierFilename  = fullfile( resDir, sprintf('%s-%.2dAverages.mat', resDir) );
             
             erpData     = eegDataset( sessionDir, filename );
             
