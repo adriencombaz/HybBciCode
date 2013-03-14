@@ -86,7 +86,7 @@ for iC = 1:nCond
 %             filename    = ls(fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']));
             [dum, name, ext] = fileparts( ls( fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']) ) );
             filename    = strtrim( [name ext] );
-            classifierFilename = fullfile( resDir, filename );
+            classifierFilename = fullfile( resDir, [name '.mat'] );
             
             erpData     = eegDataset( sessionDir, filename );
             

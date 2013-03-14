@@ -49,6 +49,7 @@ resDir = fullfile( resDir, folderName, 'LinSvm', sprintf('subject_%s', sub{iS}) 
 
 fid = fopen( fullfile( resDir, 'Results.txt' ),'wt' );
 fprintf(fid, 'subject, conditionTrain, conditionTest, nAverages, accuracy, nCorrect, nCued\n');
+fprintf('subject, conditionTrain, conditionTest, nAverages, accuracy, nCorrect, nCued\n');
 
 
 %================================================================================================================================
@@ -78,7 +79,7 @@ for iCTrain = 1:nCond
             nCorrect    = 0;
             nCued       = 0;
             for iCrossVal = 1:nRuns
-                
+                                
                 % load corresponding classifier
                 %==============================================================================
                 %==============================================================================
@@ -207,6 +208,9 @@ for iCTrain = 1:nCond
             end
             
         fprintf( fid, ...
+            '%s, %s, %s, %d, %5.2f, %d, %d\n', ...
+            sub{iS}, cond{iCTrain}, cond{iCTest}, iAve, 100*nCorrect/nCued, nCorrect, nCued );
+        fprintf( ...
             '%s, %s, %s, %d, %5.2f, %d, %d\n', ...
             sub{iS}, cond{iCTrain}, cond{iCTest}, iAve, 100*nCorrect/nCued, nCorrect, nCued );
             
