@@ -4,25 +4,25 @@ addpath( genpath( 'deps/' ) );
 rmpath( genpath('deps/eeglab10_0_1_0b/external/SIFT_01_alpha') );
 
     
-% % % % % hostName = lower( strtok( getenv( 'COMPUTERNAME' ), '.') );
-% % % % % 
-% % % % % switch hostName,
-% % % % %     case 'kuleuven-24b13c',
-% % % % %         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-% % % % %         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\watchERP\';
-% % % % %     case 'neu-wrk-0158',
-% % % % %         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-% % % % %         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
-% % % % %         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
-% % % % %         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\watchERP\';
-% % % % %     otherwise,
-% % % % %         error('host not recognized');
-% % % % % end
+hostName = lower( strtok( getenv( 'COMPUTERNAME' ), '.') );
 
-dataDir = 'data/';
+switch hostName,
+    case 'kuleuven-24b13c',
+        addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
+        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
+    case 'neu-wrk-0158',
+        addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
+        addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
+        rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
+    otherwise,
+        error('host not recognized');
+end
+
+% dataDir = 'data/';
 
 % TableName   = '..\01-preprocess-plot\watchErpDataset.xlsx';
-TableName   = 'watchErpDataset2.xlsx';
+TableName   = '..\01-preprocess-plot\watchErpDataset2.xlsx';
 fileList    = dataset('XLSFile', TableName);
 
 
@@ -34,7 +34,7 @@ nRuns   = max( unique( fileList.run ) );
 nAveMax = 10;
 
 fid = fopen( sprintf( 'Results-%s.txt', sub{iS} ),'wt' );
-% fid = fopen('Results.txt','at');
+% fid = fopen( sprintf( 'Results-%s.txt', sub{iS} ),'at' );
 fprintf(fid, 'subject, condition, nAverages, accuracy, nCorrect, nCued\n');
 
 tBeforeOnset = 0;
@@ -45,6 +45,7 @@ nCorrect    = zeros(nSub, nCond, nAveMax);
 nCued       = zeros(nSub, nCond, nAveMax);
 
 for iC = 1:nCond
+    
     for iAve = 1:nAveMax
         
         subset = fileList( ismember( fileList.subjectTag, sub{iS} ) & ismember( fileList.condition, cond{iC} ), : );
@@ -53,6 +54,8 @@ for iC = 1:nCond
         nRuns = numel( runIds );
         
         for iRunTrain = 1:nRuns
+            
+            fprintf('Subject %s, condition %s, %d averages, fold %d\n', sub{iS}, cond{iC}, iAve, iRunTrain);
             
             %==============================================================================
             %==============================================================================

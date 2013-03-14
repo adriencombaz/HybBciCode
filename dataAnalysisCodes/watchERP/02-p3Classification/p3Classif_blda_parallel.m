@@ -1,4 +1,13 @@
-function p3Classif_blda
+function t = p3Classif_blda_parallel
+
+allJobs = get(findResource, 'Jobs'); 
+if ~isempty(allJobs), destroy(allJobs); end
+
+if matlabpool('size') > 0
+    matlabpool close
+end
+
+%% =========================================================================================================
 
 hostName = lower( strtok( getenv( 'COMPUTERNAME' ), '.') );
 
@@ -15,16 +24,13 @@ switch hostName,
         error('host not recognized');
 end
 
-% TableName   = '..\01-preprocess-plot\watchErpDataset.xlsx';
+%% =========================================================================================================
+
 TableName   = '..\01-preprocess-plot\watchErpDataset2.xlsx';
 fileList    = dataset('XLSFile', TableName);
 
-% iSubs   = 1;    % 1:numel( unique( fileList.subjectTag ) );
-% iConds  = 1;    % 1:numel( unique( fileList.condition ) );
-% iAves   = 1:10;   % 1:10;
-
-iSubs   = 1:numel( unique( fileList.subjectTag ) );
-iConds  = 1:numel( unique( fileList.condition ) );
+iSubs   = 1;    % 1:numel( unique( fileList.subjectTag ) );
+iConds  = 1;    % 1:numel( unique( fileList.condition ) );
 iAves   = 1:10;   % 1:10;
 
 nSub    = numel( iSubs );
@@ -37,7 +43,7 @@ iClist      = zeros(nIterations, 1);
 iAvelist    = zeros(nIterations, 1);
 
 ind = 1;
-for iS = 1%:nSub
+for iS = 1:nSub
     for iC = 1:nCond
         for iAve = 1:nAveMax
             iSlist(ind)     = iSubs( iS );
@@ -48,7 +54,40 @@ for iS = 1%:nSub
     end
 end
 
-classifyData(iSlist, iClist, iAvelist, TableName);
+%% =====================================================================================
+
+fprintf('\nSEQUENTIAL EXECUTION\n');
+resDir = fullfile(cd, 'bldaResultsSeq');
+tic
+classifyData(iSlist, iClist, iAvelist, TableName, resDir);
+t(1) = toc;
+
+%% =====================================================================================
+
+sched           = findResource('scheduler', 'type', 'local');
+nLabs           = sched.ClusterSize;
+nIndPerLabMin   = floor(nIterations / nLabs);
+nIndLeft        = nIterations - nLabs*nIndPerLabMin;
+nIndPerLab      = nIndPerLabMin*ones(1, nLabs);
+nIndPerLab(1:nIndLeft) = nIndPerLab(1:nIndLeft) + 1;
+
+inputArg = cell(1, nLabs);
+temp = [ 1 , nIndPerLab ];
+for iLab = 1:nLabs
+
+    i1 = sum(temp(1:iLab));
+    i2 = sum(nIndPerLab(1:iLab));
+    inputArg{iLab} = { iSlist(i1:i2), iClist(i1:i2), iAvelist(i1:i2) };
+
+end
+resDir = fullfile(cd, 'bldaResultsParrallel');
+
+tic
+matlabpool(nLabs)
+spmd (nLabs)
+    classifyData(inputArg{labindex}{:}, TableName, resDir);
+end
+t(2) = toc;
 
 end
 
@@ -59,7 +98,7 @@ end
 %% =========================================================================================================
 
 
-function classifyData(iSL, iCL, iAveL, TableName)
+function classifyData(iSL, iCL, iAveL, TableName, resDir)
 
 
 if numel(iSL) ~= numel(iCL) || numel(iSL) ~= numel(iAveL)
@@ -93,7 +132,6 @@ if max(iSL) > nSub, error('invalid subject index'); end
 if max(iCL) > nCond, error('invalid condition index'); end
 
 resFilename = sprintf( 'Results_blda_sub%dto%d_cond%dto%d_ave%dto%d.txt', min(iSL), max(iSL), min(iCL), max(iCL), min(iAveL), max(iAveL) );
-resDir = fullfile(cd, 'bldaResults');
 if ~exist(resDir, 'dir'), mkdir(resDir); end
 fid = fopen( fullfile(resDir, resFilename), 'wt' );
 % fid = fopen('Results.txt','at');

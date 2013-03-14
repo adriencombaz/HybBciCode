@@ -7,10 +7,10 @@ hostName = lower( strtok( getenv( 'COMPUTERNAME' ), '.') );
 switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciData\watchERP\';
+        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciData\watchERP\';
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
     otherwise,
         error('host not recognized');
 end
@@ -99,7 +99,7 @@ for iS = 1:nSub
                 eventChan       = logical( bitand( statusChannel, onsetEventValue ) );
                 
                 stimOnsets      = find( diff( eventChan ) == 1 ) + 1;
-               stimOffsets     = find( diff( eventChan ) == -1 ) + 1;
+                stimOffsets     = find( diff( eventChan ) == -1 ) + 1;
                 minEpochLenght  = min( stimOffsets - stimOnsets + 1 ) / samplingRate;
                 if timesToWatch(iT) > minEpochLenght, error('Time to watch is larger (%g sec) than smallest SSVEP epoch lenght (%g sec)', timesToWatch(iT), minEpochLenght); end
                 
