@@ -282,6 +282,78 @@ for iS = 1:nSubjects
     
 end
 
+% Grand average
+avg = cell(1, nCond*nErpType);
+axisOfEvent = zeros(1, nCond*nErpType);
+legendStr = {'target', 'nonTarget'};
+axisTitle = cell(1, nCond);
+ind = 1;
+for iC = 1:nCond
+    
+    temp = meanErpDataset( ...
+        ismember( meanErpDataset.condition, cond{iC} ) ...
+        & ismember( meanErpDataset.type, legendStr{1} ) ...
+        , : );
+    
+    chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList, 'UniformOutput', false ) );
+    avg{ind}            = temp.meanERP{1}(:, chanListInd);
+    axisOfEvent(ind)    = iC;
+    
+    temp = meanErpDataset( ...
+        ismember( meanErpDataset.condition, cond{iC} ) ...
+        & ismember( meanErpDataset.type, legendStr{2} ) ...
+        , : );
+    chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList, 'UniformOutput', false ) );
+    avg{ind+1}          = temp.meanERP{1}(:, chanListInd);
+    axisOfEvent(ind+1)  = iC;
+    
+    axisTitle{iC} = cond{iC};
+    
+    ind = ind+2;
+    
+end
+
+fs = unique( meanErpDataset.fs( ismember( meanErpDataset.subject, sub{iS} ) ) );
+if numel(fs) ~= 1, error('not all data were recorded with the same sampling rate for subject %s', subject{iS}); end
+
+plotERPsFromCutData2( ...
+    avg, ...
+    'axisOfEvent', axisOfEvent, ...
+    'axisTitle', axisTitle, ...
+    'legendStr', legendStr, ...
+    'samplingRate', fs, ...
+    'chanLabels', chanList, ...
+    'timeBeforeOnset', unique(tBeforeOnset), ...
+    'nMaxChanPerAx', 32, ...
+    'scale', 8, ...
+    'title', 'Grand average' ...
+    );
+
+
+h = ImageSetup;
+h.I_Width       = fWidth; % cm
+h.I_High        = fHeight; % cm
+h.I_KeepColor   = 1;
+h.I_Box         = 'off';
+h.I_FontSize    = FS;
+h.I_LineWidth   = LW;
+h.I_AlignAxesTexts = 0;
+h.I_TitleInAxis = 1;
+h.OptimizeSpace = 0;
+
+h.prepareAllFigures;
+
+% set(findobj('parent', gcf, 'tag', 'legend'), 'Box', 'off');
+set(findobj(gcf,'Type','uicontrol'),'Visible','off');
+
+s.Format = 'tiff';
+s.Resolution = h.I_DPI;
+hgexport(gcf,fullfile(cd, 'allChan_grandMean.png'),s);
+
+close(gcf);
+
+
+
 %% ========================================================================================================
 %  PLOT TARGET ERPs FOR ALL CONDITIONS ON THE SAME AXE, ONE SUBJECT PER AXE
 % =========================================================================================================
@@ -307,7 +379,7 @@ if numel(allFs) ~= 1
     end    
 end
 
-chanList = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
+chanList2 = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
 
 avg         = cell(1, nCond*nSubjects);
 axisOfEvent = zeros(1, nCond*nSubjects);
@@ -324,7 +396,7 @@ for iS = 1:nSubjects
             & ismember( meanErpDataset.type, 'target' ) ...
             , : );
         
-        chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList, 'UniformOutput', false ) );
+        chanListInd = cell2mat( cellfun( @(x) find(strcmp(temp.chanList{:}, x)), chanList2, 'UniformOutput', false ) );
         avg{ind}            = temp.meanERP{1}(:, chanListInd);
         axisOfEvent(ind)    = iS;
         colors(ind, :) = colorList(iC, :);
@@ -338,7 +410,7 @@ plotERPsFromCutData2( ...
     'axisTitle', axisTitle, ...
     'legendStr', legendStr, ...
     'samplingRate', unique( meanErpDataset.fs ), ...
-    'chanLabels', chanList, ...
+    'chanLabels', chanList2, ...
     'timeBeforeOnset', unique(tBeforeOnset), ...
     'nMaxChanPerAx', 12, ...
     'scale', 8, ...
@@ -369,6 +441,63 @@ s.Resolution = h.I_DPI;
 hgexport(gcf,fullfile(cd, 'targetERPs.png'),s);
 
 close(gcf);
+
+
+% grand average
+avg         = cell(1, nCond);
+% legendStr   = unique(meanErpDataset.condition);
+legendStr   = cond;
+colors = zeros(nCond, 3);
+ind = 1;
+for iC = 1:nCond
+    temp = meanErpDataset( ...
+        ismember( meanErpDataset.condition, legendStr{iC} ) ...
+        & ismember( meanErpDataset.type, 'target' ) ...
+        , : );
+    
+    avg{ind}            = temp.meanERP{1};
+    colors(ind, :) = colorList(iC, :);
+    ind = ind+1;
+end
+
+
+plotERPsFromCutData2( ...
+    avg, ...
+    'axisOfEvent', ones(1, nCond), ...
+    'legendStr', legendStr, ...
+    'samplingRate', unique( meanErpDataset.fs ), ...
+    'chanLabels', chanList, ...
+    'timeBeforeOnset', unique(tBeforeOnset), ...
+    'nMaxChanPerAx', 8, ...
+    'scale', 8, ...
+    'EventColors', colors, ...
+    'title', 'target ERPs' ...
+    );
+
+h = ImageSetup;
+h.I_Width       = fWidth; % cm
+h.I_High        = fHeight; % cm
+h.I_DPI         = 300;
+h.I_KeepColor   = 1;
+h.I_Box         = 'off';
+h.I_Grid        = 'on';
+h.I_FontSize    = FS;
+h.I_LineWidth   = LW;
+h.I_AlignAxesTexts = 0;
+h.I_TitleInAxis = 1;
+h.OptimizeSpace = 0;
+
+h.prepareAllFigures;
+
+set(findobj('parent', gcf, 'tag', 'legend'), 'Location', 'NorthWest');
+set(findobj(gcf,'Type','uicontrol'),'Visible','off');
+
+s.Format = 'tiff';
+s.Resolution = h.I_DPI;
+hgexport(gcf,fullfile(cd, 'targetERPs_grandMean.png'),s);
+
+close(gcf);
+
 
 
 %% ========================================================================================================

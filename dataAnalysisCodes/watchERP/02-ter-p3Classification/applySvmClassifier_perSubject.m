@@ -65,7 +65,7 @@ fprintf('subject, conditionTrain, conditionTest, nAverages, accuracy, nCorrect, 
 
 for iCTrain = 1:nCond
     for iCTest = 1:nCond
-        for iAve = 1:nAve
+        for iAve = 1:nAveMax
             
             subsetTrain = fileList( ismember( fileList.subjectTag, sub{iS} ) & ismember( fileList.condition, cond{iCTrain} ), : );
             subsetTest  = fileList( ismember( fileList.subjectTag, sub{iS} ) & ismember( fileList.condition, cond{iCTest} ), : );
@@ -96,7 +96,7 @@ for iCTrain = 1:nCond
                 sessionDir          = fullfile(dataDir, subsetTrainIcv.sessionDirectory{1});
 %                 filename    = ls(fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']));
                 [dum, name, ext]    = fileparts( ls( fullfile(sessionDir, [subsetTrainIcv.fileName{1} '*.bdf']) ) );
-                filename            = strtrim( [name ext] );
+                filename            = sprintf('%s-%.2dAverages.mat', name, iAve);
                 classifierFilename  = fullfile( resDir, filename );
                 classifier          = load(classifierFilename);
                 
