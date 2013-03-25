@@ -171,7 +171,7 @@ for iS = 1:nSub,
                     
                     for iTrial = 1:nTrials
                         epoch       = sig( stimOnsets(iTrial):stimOnsets(iTrial)+epochLenght-1, : );
-                        [SNRs Ns]   = getSNRs( mcdObj, epoch' );
+                        [SNRs Ns]   = mcdObj.getSNRs( epoch' );
                         
                         
                         subject{iData}      = sub{iS};

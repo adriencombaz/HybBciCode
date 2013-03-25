@@ -24,8 +24,6 @@ switch hostName,
         error('host not recognized');
 end
 
-%%
-
 
 [bdfFileName, sessionDir, ~]    = uigetfile([dataDir '*.bdf'], 'MultiSelect', 'on');
 if isnumeric(bdfFileName) && bdfFileName == 0
@@ -36,6 +34,8 @@ if ~iscell(bdfFileName)
 end
 
 for iF = 1:numel(bdfFileName)
+
+    %% CKECK STATUS CHANNEL
     
     %---------------------------------------------------------------------------------
     hdr                 = sopen( fullfile(sessionDir, bdfFileName{iF}) );
@@ -64,6 +64,12 @@ for iF = 1:numel(bdfFileName)
     
     plotBitWise( statChan );
     set( gcf, 'name', paramFileName );
+
+    
+    %% CKECK EEG CHANNELS
+    eegData = eegDataset(sessionDir, bdfFileName{iF});
+    eegData.butterFilter(.5, 30, 4);
+    eegData.plotContinuousSignal;
     
 end
 
