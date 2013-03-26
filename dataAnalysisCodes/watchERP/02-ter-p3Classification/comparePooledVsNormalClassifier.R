@@ -40,8 +40,30 @@ for (iS in 1:3)
 }
 
 # graph
+fontsize <- 12;
 barplot <- ggplot(accData)
-barplot <- barplot + geom_point( aes(nAverages, accuracy, shape=condition, colour=classifier), position = position_jitter(w = 0.2, h = 0)  ) 
+barplot <- barplot + geom_point( 
+  aes(nAverages, accuracy, shape=condition, colour=classifier)
+  , position = position_jitter(w = 0.2, h = 0)
+  , size = 3  
+  ) 
 barplot <- barplot + facet_wrap( ~subject )
+barplot <- barplot + theme(
+  panel.background =  element_rect(fill='white')
+  ,panel.grid.major = element_line(colour = "black", size = 0.5, linetype = "dotted")
+#   ,panel.grid.minor = element_line(colour = "black", size = 0.5, linetype = "dotted")
+#   , panel.grid.major = element_blank() # switch off major gridlines
+  , panel.grid.minor = element_blank() # switch off minor gridlines
+  , axis.ticks = element_line(colour = 'black')
+  , axis.line = element_line(colour = 'black')
+  , panel.border = theme_border(c("left","bottom"), size=0.25)
+  , axis.title.y = element_text(face="plain", size = fontsize, angle=90, colour = 'black')
+  , axis.title.x = element_text(face="plain", size = fontsize, angle=0, colour = 'black')
+  , axis.text.x = element_text(face="plain", size = fontsize, colour = 'black')
+  , axis.text.y = element_text(face="plain", size = fontsize, colour = 'black')
+  , plot.title = element_text(face="plain", size = fontsize, colour = "black")
+  , legend.text = element_text(face="plain", size = fontsize)
+  , legend.title = element_text(face="plain", size = fontsize)
+  , strip.background = element_blank()
+  )
 barplot
-pp1 = plot_set(list(barplot),fwidth = unit(32, "cm"), fheight = unit(16, "cm"),fontsize = 8,keepColor=T)

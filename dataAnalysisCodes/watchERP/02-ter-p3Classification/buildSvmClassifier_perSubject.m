@@ -22,7 +22,7 @@ switch hostName,
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
         resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\';
         codeDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
-    case {'sunny', 'solaris'}
+    case {'sunny', 'solaris', ''}
         addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );
         rmpath( genpath('~/PhD/hybridBCI-stuffs/deps/eeglab10_0_1_0b/external/SIFT_01_alpha') );
         dataDir = '~/PhD/hybridBCI-stuffs/data/';
