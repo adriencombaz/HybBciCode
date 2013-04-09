@@ -1,6 +1,6 @@
 function plotBitWise( annons )
 
-nBits = ceil( log2( max( annons ) ) );
+nBits = ceil( log2( max( double(annons) ) ) );
 
 if nBits < 32,
     annons = uint32( annons );

@@ -1,0 +1,9 @@
+%-------------------------------------------------------------------------------------------------------------------
+% oddball pix
+%-------------------------------------------------------------------------------------------------------------------
+\begin{figure}[t]
+\centering
+\includegraphics{figures/Fig03_oddballPix.pdf}
+\caption{Results from the oddball experiment: average responses to target and non-target stimuli at electrode site \emph{FCz} from \SI{200}{\ms} before stimulus onset until \SI{800}{\ms} after.}
+\label{fig:oddball}
+\end{figure}

@@ -2,6 +2,9 @@ setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP/04-
 rm(list = ls())
 library(ggplot2)
 library(reshape2)
+library(grid)
+
+source("http://egret.psychol.cam.ac.uk/statistics/R/extensions/rnc_ggplot2_border_themes_2013_01.r")
 
 snrDataOz <- read.csv("snrDatasetOz.csv", header = TRUE)
 
@@ -9,18 +12,93 @@ snrDataOz$frequency = as.factor(snrDataOz$frequency)
 snrDataOz$oddball = as.factor(snrDataOz$oddball)
 snrDataOz$fileNb = as.factor(snrDataOz$fileNb)
 snrDataOz$trial = as.factor(snrDataOz$trial)
-snrDataOz$stimDuration = as.factor(snrDataOz$stimDuration)
+# snrDataOz$stimDuration = as.factor(snrDataOz$stimDuration)
 str(snrDataOz)
 summary(snrDataOz)
 
-dataS1 = subset( snrDataOz, subject == "S1", select = c("frequency", "oddball", "stimDuration", "snr") )
-dataS1 = subset( dataS1, stimDuration == "14", select = -stimDuration )
-str(dataS1)
-summary(dataS1)
 
-pp <- ggplot( dataS1 ) + geom_point( aes(frequency, snr, shape=oddball, colour=oddball), position = position_jitter(w = 0.1, h = 0)  ) 
+# graph
+fontsize <- 12;
+barplot <- ggplot(snrDataOz)
+barplot <- barplot + geom_point( 
+  aes(frequency, snr, shape=subject, colour=oddball)
+  , position = position_jitter(w = 0.2, h = 0)
+  , size = 3  
+) 
+barplot <- barplot + facet_wrap( ~stimDuration, scale="free_y" )
+barplot <- barplot + theme(
+  panel.background =  element_rect(fill='white')
+  ,panel.grid.major = element_line(colour = "black", size = 0.5, linetype = "dotted")
+  #   ,panel.grid.minor = element_line(colour = "black", size = 0.5, linetype = "dotted")
+  #   , panel.grid.major = element_blank() # switch off major gridlines
+  , panel.grid.minor = element_blank() # switch off minor gridlines
+  , axis.ticks = element_line(colour = 'black')
+  , axis.line = element_line(colour = 'black')
+  , panel.border = theme_border(c("left","bottom"), size=0.25)
+  , axis.title.y = element_text(face="plain", size = fontsize, angle=90, colour = 'black')
+  , axis.title.x = element_text(face="plain", size = fontsize, angle=0, colour = 'black')
+  , axis.text.x = element_text(face="plain", size = fontsize, colour = 'black')
+  , axis.text.y = element_text(face="plain", size = fontsize, colour = 'black')
+  , plot.title = element_text(face="plain", size = fontsize, colour = "black")
+  , legend.text = element_text(face="plain", size = fontsize)
+  , legend.title = element_text(face="plain", size = fontsize)
+  , strip.background = element_blank()
+)
+barplot
 
-gpBoxplot <- ggplot(dataS1)
-gpBoxplot + 
-  geom_boxplot(aes(x=frequency, y=snr, fill=oddball), position = position_dodge(width = .9), width=.7) + 
-  scale_fill_grey(start = 0.8, end = 0.4)
+pp <- ggplot(snrDataOz,aes(stimDuration, snr, shape=oddball, colour=oddball) )
+pp <- pp + geom_point( 
+ position = position_jitter(w = 0.2, h = 0)
+  , size = 3  
+) 
+pp <- pp + facet_wrap( ~frequency )
+pp <- pp + geom_smooth(method="lm", aes(fill=oddball), se = F)
+pp <- pp + theme(
+  panel.background =  element_rect(fill='white')
+  ,panel.grid.major = element_line(colour = "black", size = 0.5, linetype = "dotted")
+  #   ,panel.grid.minor = element_line(colour = "black", size = 0.5, linetype = "dotted")
+  #   , panel.grid.major = element_blank() # switch off major gridlines
+  , panel.grid.minor = element_blank() # switch off minor gridlines
+  , axis.ticks = element_line(colour = 'black')
+  , axis.line = element_line(colour = 'black')
+  , panel.border = theme_border(c("left","bottom"), size=0.25)
+  , axis.title.y = element_text(face="plain", size = fontsize, angle=90, colour = 'black')
+  , axis.title.x = element_text(face="plain", size = fontsize, angle=0, colour = 'black')
+  , axis.text.x = element_text(face="plain", size = fontsize, colour = 'black')
+  , axis.text.y = element_text(face="plain", size = fontsize, colour = 'black')
+  , plot.title = element_text(face="plain", size = fontsize, colour = "black")
+  , legend.text = element_text(face="plain", size = fontsize)
+  , legend.title = element_text(face="plain", size = fontsize)
+  , strip.background = element_blank()
+)
+pp
+
+
+
+pp2 <- ggplot(snrDataOz,aes(stimDuration, snr, shape=frequency, colour=frequency) )
+pp2 <- pp2 + geom_point( 
+  position = position_jitter(w = 0.2, h = 0)
+  , size = 3  
+) 
+pp2 <- pp2 + facet_wrap( ~oddball )
+pp2 <- pp2 + geom_smooth(method="lm", aes(fill=frequency), se = F)
+pp2 <- pp2 + theme(
+  panel.background =  element_rect(fill='white')
+  ,panel.grid.major = element_line(colour = "black", size = 0.5, linetype = "dotted")
+  #   ,panel.grid.minor = element_line(colour = "black", size = 0.5, linetype = "dotted")
+  #   , panel.grid.major = element_blank() # switch off major gridlines
+  , panel.grid.minor = element_blank() # switch off minor gridlines
+  , axis.ticks = element_line(colour = 'black')
+  , axis.line = element_line(colour = 'black')
+  , panel.border = theme_border(c("left","bottom"), size=0.25)
+  , axis.title.y = element_text(face="plain", size = fontsize, angle=90, colour = 'black')
+  , axis.title.x = element_text(face="plain", size = fontsize, angle=0, colour = 'black')
+  , axis.text.x = element_text(face="plain", size = fontsize, colour = 'black')
+  , axis.text.y = element_text(face="plain", size = fontsize, colour = 'black')
+  , plot.title = element_text(face="plain", size = fontsize, colour = "black")
+  , legend.text = element_text(face="plain", size = fontsize)
+  , legend.title = element_text(face="plain", size = fontsize)
+  , strip.background = element_blank()
+)
+pp2
+

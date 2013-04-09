@@ -41,7 +41,7 @@ for iF = 1:numel(bdfFileName)
     
     %---------------------------------------------------------------------------------
     hdr                 = sopen( fullfile(sessionDir, bdfFileName{iF}) );
-    statusChannel       = bitand(hdr.BDF.ANNONS, 255);    
+    statusChannel       = bitand( uint32(hdr.BDF.ANNONS), uint32(255) );    
     plotBitWise( statusChannel );
     set( gcf, 'name', bdfFileName{iF} );
     

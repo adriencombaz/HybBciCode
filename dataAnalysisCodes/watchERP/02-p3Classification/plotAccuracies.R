@@ -17,7 +17,7 @@ gpBoxplot +
 
 # setting up the contrast for the stimulation condition, knowing that the factor levels are ordered in this wau:
 # hybrid-10Hz, hybrid-12Hz, hybrid-15Hz, hybrid-8-57Hz, oddball
-contrasts(accData$condition) = cbind(
+contrasts(accData$condition) <- cbind(
   c(1, 1, 1, 1, -4)    # oddball vs. hybrid
   , c(1, 1, 1, -3, 0)  # hybrid-8-57Hz vs. hybrid-10-12-15-Hz
   , c(-2, 1, 1, 0, 0)  # hybrid-10Hz vs. hybrid-12-15-Hz

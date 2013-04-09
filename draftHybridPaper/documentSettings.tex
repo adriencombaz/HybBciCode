@@ -1,0 +1,258 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                              LOAD PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{ifpdf}
+\usepackage[load-configurations=abbreviations]{siunitx}     % define units
+\usepackage{color}                                          % add colors to text (and highlight)
+\usepackage{soul}                                           % for highlighting
+\usepackage{amsmath}                                        % for mathematical formula
+\usepackage{amssymb}                                        % mathematical symbols (might not be useful)
+\usepackage{booktabs}                                       % for arrays: toprule, midrule, bottomrule
+\usepackage{multirow}                                       % for arrays
+\usepackage{graphicx}                                       % for \includegraphics
+\usepackage{rotating}                                       % for sideways and other rotating stuffs
+\usepackage{authblk}                                        % for authors and affiliations
+
+\ifpdf
+    \usepackage[subrefformat=parens]{subcaption}                % for subfigures (replaces the subfig package:
+                                                                % more up-to-date and works well with hyperref)
+    \pdfoptionpdfminorversion=6                                 % Solves "found PDF version 1.6, but at most version
+                                                                % 1.5 allowed" warning
+\fi
+
+\usepackage[
+            style         = authoryear-comp,%numeric-comp, authoryear-comp
+            sorting       = nyt,           % name, title, year
+            maxbibnames   = 10,            % maximum number of authors to mention in the bibliography, if reached,
+            minbibnames   = 1,             % the number of authors to cite is set to minbibnames (et al.)
+            maxcitenames  = 2,             % same for within the text (makes sense with only specific cite styles)
+            mincitenames  = 1,
+            backref       = false,         % indicate or not the page on which the bibliography item is cited
+            backrefstyle  = three,
+            abbreviate    = true,          % default (Volume -> Vol., pages -> pp., ...)
+            doi           = false,
+            isbn          = false,
+            url           = false,
+            eprint        = false,
+            firstinits    = true,           % all first and middle names as initials
+            uniquename    = init,           % Disambiguate names using initials only (to be compatible with firstinits = true)
+            ]{biblatex}
+
+\addbibresource{d:/KULeuven/PhD/MendeleyBiblioAbbr.bib}
+\addbibresource{d:/KULeuven/PhD/Publish/JournalPublications/Neuroimage/draft/AdditionalBiblioAbbr.bib}
+%\addbibresource{d:/KULeuven/PhD/MendeleyBiblio.bib}
+%\addbibresource{d:/KULeuven/PhD/Publish/JournalPublications/Neuroimage/draft/AdditionalBiblio.bib}
+
+% TO LOAD LAST FOR COMMANDS NOT TO BE OVERWRITTEN
+\usepackage[bookmarksopen,colorlinks,linkcolor=blue,citecolor=blue]{hyperref} % for \autoref and hyperlinks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                           DOCUMENT OPTIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%--------------------------------------------------
+% biblatex options
+%--------------------------------------------------
+
+%% remove "in:" from articles
+%\renewbibmacro*{in:}{%
+%  \ifentrytype{article}{}{%
+%    \printtext{%
+%      \bibstring{in}\intitlepunct}}}
+
+%\renewcommand{\newunitpunct}{}
+%\renewcommand{\newblockpunct}{}
+
+% remove "in" before journal/conference/... title
+\renewbibmacro*{in:}{}
+
+% remove "month" from all entries
+\AtEveryBibitem{%
+  \clearfield{month}%
+}
+
+% in bibliography: last name, first name
+\DeclareNameAlias{sortname}{last-first}
+
+% remove quote for title (remove italic for book title) (check original in biblatex.def)
+\DeclareFieldFormat
+  [article,inbook,incollection,inproceedings,patent,thesis,unpublished,book]
+  {title}{#1\isdot}
+
+% remove pp. for pages
+\DeclareFieldFormat
+  [article,inbook,incollection,inproceedings]
+  {pages}{#1}
+
+% remove italic for journal/collection/proceeding title
+\DeclareFieldFormat{journaltitle}{#1}
+\DeclareFieldFormat{booktitle}{{#1}}
+
+% remove parenthesis from year
+\makeatletter
+\def\act@on@bibmacro#1#2{%
+  \expandafter#1\csname abx@macro@\detokenize{#2}\endcsname
+}
+\def\patchbibmacro{\act@on@bibmacro\patchcmd}
+\def\pretobibmacro{\act@on@bibmacro\pretocmd}
+\def\apptobibmacro{\act@on@bibmacro\apptocmd}
+\def\showbibmacro{\act@on@bibmacro\show}
+\makeatother
+
+\patchbibmacro{date+extrayear}{%
+  \printtext[parens]%
+}{%
+  \addcomma\space%
+  \printtext%
+}{}{}
+
+% volume (number) formatting
+\newbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  %\space%
+  \iffieldundef{number}{}{
+  \printtext[parens]{%
+  \printfield{number}}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}}
+
+% Citation Hyperlinks (not just years), thanks to Audrey.
+\makeatletter
+\renewbibmacro*{cite}{% Based on cite bib macro from authoryear-comp.cbx
+  \iffieldundef{shorthand}
+    {\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}
+       {\printtext[bibhyperref]{% Include labelname in hyperlink
+          \DeclareFieldAlias{bibhyperref}{default}% Prevent nested hyperlinks
+          \usebibmacro{cite:label}%
+          \setunit{\addspace}%
+          \usebibmacro{cite:labelyear+extrayear}}%
+          \usebibmacro{cite:reinit}}
+       {\iffieldequals{namehash}{\cbx@lasthash}
+          {\ifthenelse{\iffieldequals{labelyear}{\cbx@lastyear}\AND
+                       \(\value{multicitecount}=0\OR\iffieldundef{postnote}\)}
+             {\setunit{\addcomma}%
+              \usebibmacro{cite:extrayear}}
+             {\setunit{\compcitedelim}%
+              \usebibmacro{cite:labelyear+extrayear}%
+              \savefield{labelyear}{\cbx@lastyear}}}
+          {\printtext[bibhyperref]{% Include labelname in hyperlink
+             \DeclareFieldAlias{bibhyperref}{default}% Prevent nested hyperlinks
+             \printnames{labelname}%
+             \setunit{\nameyeardelim}%
+             \usebibmacro{cite:labelyear+extrayear}}%
+             \savefield{namehash}{\cbx@lasthash}%
+             \savefield{labelyear}{\cbx@lastyear}}}}
+    {\usebibmacro{cite:shorthand}%
+     \usebibmacro{cite:reinit}}%
+  \setunit{\multicitedelim}}
+
+\renewbibmacro*{textcite}{% Based on textcite bib macro from authoryear-comp.cbx
+  \iffieldequals{namehash}{\cbx@lasthash}
+    {\iffieldundef{shorthand}
+       {\ifthenelse{\iffieldequals{labelyear}{\cbx@lastyear}\AND
+                    \(\value{multicitecount}=0\OR\iffieldundef{postnote}\)}
+          {\setunit{\addcomma}%
+           \usebibmacro{cite:extrayear}}
+          {\setunit{\compcitedelim}%
+           \usebibmacro{cite:labelyear+extrayear}%
+           \savefield{labelyear}{\cbx@lastyear}}}
+       {\setunit{\compcitedelim}%
+        \usebibmacro{cite:shorthand}%
+        \global\undef\cbx@lastyear}}
+    {\ifnameundef{labelname}
+       {\printtext[bibhyperref]{% Include labelname in hyperlink
+          \DeclareFieldAlias{bibhyperref}{default}% Prevent nested hyperlinks
+          \iffieldundef{shorthand}
+            {\usebibmacro{cite:label}%
+             \setunit{%
+               \global\booltrue{cbx:parens}%
+               \addspace\bibopenparen}%
+             \ifnumequal{\value{citecount}}{1}
+               {\usebibmacro{prenote}}
+               {}%
+             \usebibmacro{cite:labelyear+extrayear}}
+            {\usebibmacro{cite:shorthand}}%
+          \ifthenelse{\iffieldundef{postnote}\AND
+                      \(\value{multicitetotal}=0\AND\value{citetotal}=1\)}
+            {\bibcloseparen% Include closing parenthesis in hyperlink
+             \global\boolfalse{cbx:parens}}
+            {}}}
+       {\printtext[bibhyperref]{% Include labelname in hyperlink
+          \DeclareFieldAlias{bibhyperref}{default}% Prevent nested hyperlinks
+          \printnames{labelname}%
+          \setunit{%
+            \global\booltrue{cbx:parens}%
+            \addspace\bibopenparen}%
+          \ifnumequal{\value{citecount}}{1}
+            {\usebibmacro{prenote}}
+            {}%
+          \iffieldundef{shorthand}
+            {\iffieldundef{labelyear}
+               {\usebibmacro{cite:label}}
+               {\usebibmacro{cite:labelyear+extrayear}}%
+             \savefield{labelyear}{\cbx@lastyear}}
+            {\usebibmacro{cite:shorthand}%
+             \global\undef\cbx@lastyear}%
+          \ifthenelse{\iffieldundef{postnote}\AND
+                      \(\value{multicitetotal}=0\AND\value{citetotal}=1\)}
+            {\bibcloseparen% Include closing parenthesis in hyperlink
+             \global\boolfalse{cbx:parens}}
+            {}}%
+          \savefield{namehash}{\cbx@lasthash}}}%
+  \setunit{%
+    \ifbool{cbx:parens}
+      {\bibcloseparen\global\boolfalse{cbx:parens}}
+      {}%
+    \multicitedelim}}
+
+\makeatother
+
+
+
+%--------------------------------------------------
+% Define highlight color
+%--------------------------------------------------
+\definecolor{hlColor}{RGB}{255, 255, 102}
+\sethlcolor{hlColor}
+
+%--------------------------------------------------
+% superscripts
+%--------------------------------------------------
+\newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
+\newcommand{\nth}[0]{\superscript{th} }
+\newcommand{\rd}[0]{\superscript{rd} }
+%\newcommand{\st}[0]{\superscript{st}}
+
+%--------------------------------------------------
+% autoref names for hyperref package
+%--------------------------------------------------
+\def\figureautorefname{Fig.}
+\def\sectionautorefname{sec.}
+\def\subsectionautorefname{sec.}
+\def\subsubsectionautorefname{sec.}
+\def\equationautorefname{eq.}
+
+
+%--------------------------------------------------
+% line space: 1.3->1.5, 1.6->2
+%--------------------------------------------------
+%\linespread{1.6}
+
+\ifpdf
+    %--------------------------------------------------
+    % page layout
+    %--------------------------------------------------
+    \addtolength{\topmargin}{-2cm}
+    \addtolength{\textheight}{3cm}
+    \addtolength{\evensidemargin}{-1.5cm}
+    \addtolength{\oddsidemargin}{-1.5cm}
+    \addtolength{\textwidth}{3cm}
+\else
+    %--------------------------------------------------
+    %
+    %--------------------------------------------------
+    \makeatletter
+    \newcommand\blx@unitmark{23sp}
+    \makeatother
+\fi
+

@@ -18,13 +18,21 @@ switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        %             dataDir2 = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\oddball\';
+        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\';
+        codeDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        %             dataDir2= 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\oddball\';
+        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\';
+        codeDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
+    case {'sunny', 'solaris', ''}
+        addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );
+        rmpath( genpath('~/PhD/hybridBCI-stuffs/deps/eeglab10_0_1_0b/external/SIFT_01_alpha') );
+        dataDir = '~/PhD/hybridBCI-stuffs/data/';
+        resDir = '~/PhD/hybridBCI-stuffs/results/';
+        codeDir = '~/PhD/hybridBCI-stuffs/code/';
     otherwise,
         error('host not recognized');
 end
@@ -32,7 +40,7 @@ end
 % ========================================================================================================
 % ========================================================================================================
 
-TableName   = 'watchFftDatasetTest.xlsx';
+TableName   = 'watchFftDataset.xlsx';
 fileList    = dataset('XLSFile', TableName);
 
 sub     = unique( fileList.subjectTag );
@@ -107,7 +115,13 @@ for iS = 1:nSub,
                 filename        = ls(fullfile(sessionDir, [subset.fileName{iFile} '*.bdf']));
                 hdr             = sopen( fullfile(sessionDir, filename) );
                 [sig hdr]       = sread(hdr);
-                statusChannel   = bitand(hdr.BDF.ANNONS, 255);
+                
+                if strcmp(filename, '2013-03-13-10-16-47-hybrid-12Hz.bdf')
+                    statusChannel = fix_2013_13_10_16_47_hybrid_12Hz( fullfile(sessionDir, filename) );
+                else                
+                    statusChannel = bitand(hdr.BDF.ANNONS, 255);
+                end
+                
                 hdr.BDF         = rmfield(hdr.BDF, 'ANNONS'); % just saving up some space...
                 samplingRate    = hdr.SampleRate;
                 [filter.a filter.b] = butter(filter.order, [filter.fr_low_margin filter.fr_high_margin]/(samplingRate/2));
@@ -151,6 +165,7 @@ for iS = 1:nSub,
                 eventChan       = eventChan(1:DSF:end,:);
                 stimOnsets      = find( diff( eventChan ) == 1 ) + 1;
                 stimOffsets     = find( diff( eventChan ) == -1 ) + 1;
+                stimOffsets( stimOffsets <= stimOnsets(1) ) = [];
                 minEpochLenght  = min( stimOffsets - stimOnsets + 1 ) / targetFS;
                 if max(timesInSec) > minEpochLenght, error('Time to watch is larger (%g sec) than smallest SSVEP epoch lenght (%g sec)', max(timesInSec), minEpochLenght); end
                 nTrials         = numel(stimOnsets);
@@ -192,6 +207,16 @@ for iS = 1:nSub,
         end % of loop over oddball condition
     end % of loop over frequency condition
 end % of loop over subject
+
+
+subject(iData:end)      = [];
+frequency(iData:end)    = [];
+oddball(iData:end)      = [];
+fileNb(iData:end)       = [];
+trial(iData:end)        = [];
+stimDuration(iData:end) = [];
+snr(iData:end)          = [];
+chanList(iData:end)     = [];
 
 snrDataset = dataset( ...
     subject ...
@@ -249,11 +274,13 @@ channels = {'O1', 'Oz', 'O2'};
  nChan = numel(channels);
  
  iSub = 1;
- legStr = cell(1, nFreq*nOdd);
+ 
  for iCh = 1:nChan
      
      subplot(nChan, 1, iCh);
      hold on;
+     legStr = cell(1, nFreq*nOdd);
+     i = 1;
      for iFreq = 1:nFreq
          for iOdd = 1:nOdd
              
@@ -281,14 +308,14 @@ channels = {'O1', 'Oz', 'O2'};
                 , 'MarkerSize', 2 ...
                 );
              
-            legStr{i} = [ legStr{i}];
-            
+            legStr{i} = sprintf('freq %.2d, oddball %d', freq(iFreq), oddb(iOdd));
+            i = i+1;
          end
      end
  
  
  end
- 
+ legend(legStr)
  
  
  

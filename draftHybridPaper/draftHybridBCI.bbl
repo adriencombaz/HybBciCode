@@ -1,0 +1,106 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 1.7 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{Brainard1997}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Brainard}{B.}%
+     {David~H.}{D.~H.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{CiteNeuroImageArticle,Computer Terminals,Data
+  Display,Humans,Microcomputers,Psychophysics,Research,Software,User-Computer
+  Interface}
+  \strng{namehash}{BDH1}
+  \strng{fullhash}{BDH1}
+  \field{labelyear}{1997}
+  \field{sortinit}{B}
+  \field{abstract}{%
+  The Psychophysics Toolbox is a software package that supports visual
+  psychophysics. Its routines provide an interface between a high-level
+  interpreted language (MATLAB on the Macintosh) and the video display
+  hardware. A set of example programs is included with the Toolbox
+  distribution.%
+  }
+  \field{issn}{0169-1015}
+  \field{number}{4}
+  \field{pages}{433\bibrangedash 436}
+  \field{title}{{The Psychophysics Toolbox}}
+  \verb{url}
+  \verb http://www.ncbi.nlm.nih.gov/pubmed/9176952
+  \endverb
+  \field{volume}{10}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Brainard (1997) The Psychophysi
+  \verb cs Toolbox.pdf:pdf
+  \endverb
+  \field{journaltitle}{Spat. Vis.}
+  \field{month}{01}
+  \field{year}{1997}
+\endentry
+
+\entry{Pelli1997}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Pelli}{P.}%
+     {Dennis~G.}{D.~G.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{Calibration,CiteNeuroImageArticle,Computer Terminals,Data
+  Display,Humans,Microcomputers,Motion Perception,Pattern
+  Recognition,Psychophysics,Software,Software Design,User-Computer
+  Interface,Visual}
+  \strng{namehash}{PDG1}
+  \strng{fullhash}{PDG1}
+  \field{labelyear}{1997}
+  \field{sortinit}{P}
+  \field{abstract}{%
+  The VideoToolbox is a free collection of two hundred C subroutines for
+  Macintosh computers that calibrates and controls the computer-display
+  interface to create accurately specified visual stimuli. High-level
+  platform-independent languages like MATLAB are best for creating the numbers
+  that describe the desired images. Low-level, computer-specific VideoToolbox
+  routines control the hardware that transforms those numbers into a movie.
+  Transcending the particular computer and language, we discuss the nature of
+  the computer-display interface, and how to calibrate and control it.%
+  }
+  \field{issn}{0169-1015}
+  \field{number}{4}
+  \field{pages}{437\bibrangedash 442}
+  \field{title}{{The VideoToolbox software for visual psychophysics:
+  transforming numbers into movies.}}
+  \verb{url}
+  \verb http://www.ncbi.nlm.nih.gov/pubmed/9176953
+  \endverb
+  \field{volume}{10}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Pelli (1997) The videotoolbox s
+  \verb oftware for visual psychophysics Transforming numbers into movies.pdf:p
+  \verb df
+  \endverb
+  \field{journaltitle}{Spat. Vis.}
+  \field{month}{01}
+  \field{year}{1997}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput

@@ -6,9 +6,10 @@ library(ez)
 
 source("d:/KULeuven/PhD/rLibrary/plot_set.R")
 
-for (iS in 1:3)
+for (iS in 1:7)
 {
   filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvm/subject_S%d/Results.txt", iS)
+#  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/Blda/subject_S%d/Results.txt", iS)
   accData1 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
   accData1$nAverages = as.factor(accData1$nAverages)
   accData1 <- subset( accData1, conditionTrain == conditionTest)
@@ -19,13 +20,14 @@ for (iS in 1:3)
   summary(accData1)
 
   filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvmPooled/subject_S%d/Results.txt", iS)
+#  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/BldaPooled/subject_S%d/Results.txt", iS)
   accData2 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
   accData2$nAverages = as.factor(accData2$nAverages)
   accData2$condition = accData2$conditionTest;
   accData2 <- subset(accData2, select = -conditionTest)
   accData2 <- subset(accData2, condition != "oddball")
-  str(accData2)
-  summary(accData2)
+#   str(accData2)
+#   summary(accData2)
 
   temp1 <- accData1;
   temp2 <- accData2;
@@ -38,6 +40,9 @@ for (iS in 1:3)
   else { accData <- rbind(accData, temp) }
   
 }
+accData$condition <- droplevels(accData)$condition
+str(accData)
+summary(accData)
 
 # graph
 fontsize <- 12;
@@ -67,3 +72,40 @@ barplot <- barplot + theme(
   , strip.background = element_blank()
   )
 barplot
+
+
+anovaModelType2 <- ezANOVA( data=accData
+                            , dv=.(accuracy)
+                            , wid=.(subject)
+                            , within=.(condition, nAverages, classifier)
+                            , type=2
+                            , detailed=TRUE 
+)
+
+anovaModelType3 <- ezANOVA( data=accData
+                            , dv=.(accuracy)
+                            , wid=.(subject)
+                            , within=.(condition, nAverages, classifier)
+                            , type=3
+                            , detailed=TRUE 
+                            , return_aov=TRUE
+)
+
+pairwise.t.test( accData$accuracy
+                 , accData$condition
+                 , paired=TRUE
+                 , p.adjust.method="bonferroni"
+)
+
+pairwise.t.test( accData$accuracy
+                 , accData$nAverages
+                 , paired=TRUE
+                 , p.adjust.method="bonferroni"
+)
+
+pairwise.t.test( accData$accuracy
+                 , accData$classifier
+                 , paired=TRUE
+                 , p.adjust.method="bonferroni"
+)
+
