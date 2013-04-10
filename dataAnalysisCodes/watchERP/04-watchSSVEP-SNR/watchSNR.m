@@ -230,7 +230,7 @@ snrDataset = dataset( ...
     );
 
 
-save('snrDatasetTest', 'snrDataset');
+save('snrDataset', 'snrDataset');
 
 
 

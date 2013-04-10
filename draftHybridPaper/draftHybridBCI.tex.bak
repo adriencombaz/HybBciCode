@@ -2,12 +2,15 @@
 
 \include{documentSettings}
 
+\acrodef{SSVEP}{Steady-State Visually Evoked Potential}
+\acrodef{BCI}{Brain-Computer Interface}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Hybrid oddball - SSvEP BCI}
+\title{Hybrid oddball - SSVEP BCI}
 
 \author[ * ]{A. Combaz}
 \affil[ * ]{Computational Neuroscience Group, Laboratory for Neuro- and Psychophysiology, KU Leuven, Leuven, Belgium}
@@ -24,8 +27,10 @@
 
 \begin{abstract}
 Objectives:
+blablabla blalabbla \ac{SSVEP}-based BCIs.
 
 Results:
+blablabla blablabla \ac{SSVEP} responses.
 
 Conclusion:
 \end{abstract}
@@ -34,6 +39,7 @@ Conclusion:
 %%                                           MAIN TEXT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\acresetall
 
 %===================================================================================================================
 %                                             1 INTRODUCTION
@@ -65,13 +71,13 @@ Conclusion:
 
     \subsection{Material}
     \label{sec:2.1Material}
-    
+
     % EEG acq
     The EEG signals were recorded using a BioSemi Active Two system with 32~channels (following the 10-20 international system) at a sampling rate of \SI{1024}{\Hz}.
-    Two additional electrodes were positioned on the right and left mastoids and the mean of the signals recorded at those two sites was used as reference for the 32~EEG electrodes.
+    Two additional electrodes were positioned on the right and left mastoids and the mean of the signals recorded at those two sites was used to reference the activity measured by the 32~EEG electrodes.
 
     % Stimuli presentation
-    All recordings and stimulation employed MATLAB\textsuperscript{\textregistered}, the stimuli were visually presented on a laptop's LCD screen (\SI{60}{\Hz} refresh rate) and their display and timing used the \emph{Psychophysics Toolbox Extensions} (\cite{Brainard1997,Pelli1997}).
+    All stimulation employed MATLAB\textsuperscript{\textregistered}, the stimuli were visually presented on a laptop's LCD screen (\SI{60}{\Hz} refresh rate) and their display and timing used the \emph{Psychophysics Toolbox Extensions} (\cite{Brainard1997,Pelli1997}).
 
 
 
@@ -80,61 +86,69 @@ Conclusion:
 
         \subsubsection{Experimental protocol}
         \label{sec:2.2.1Protocol}
-        
+
         % Aim and subjects
-        The aim of this first experiment was to study the effect of a flickering background on the typical ERP response associated to an oddball-based BCI.
+        The aim of this first experiment was to study the effect of a flickering background on the typical ERP response associated to an oddball paradigm.
         N subjects participated in the experiment (age, gender).
 
         % exp description
-        As shown in the figure, a typical \emph{stimulation cycle}, started with a \SI{2000}{\ms} cue, indicating the participant his/her target item, followed by a \SI{1000}{\ms} pause during which the cue disappears and all icons remained gray.
-        The background rectangle would then start to flicker and the oddball stimulation would start after \SI{500}{\ms}.
+        As shown in \autoref{fig:stimSeq}, a typical \emph{stimulation cycle}, started with a \SI{2000}{\ms} cue, indicating the participant his/her target item, followed by a \SI{1000}{\ms} pause during which the cue disappears and all icons remained gray.
+        The background rectangle then started to flicker and the oddball stimulation started \SI{500}{\ms} later.
         The oddball stimulation consisted of 10~\emph{flashing sequences} during which each of the 6~icons was flashed one after another in random order for a duration randomly set between \SIlist[list-units = single]{200;300}{\ms}.
         As usually done for oddball experiments, the participants were instructed to focus on their target symbol and count the number of time it flashes.
         A \SI{1000}{\ms} pause followed the oddball stimulation and preceded the next cue.
-        A run consisted of 12 consecutive stimulation cycles, so that each of the 6~icons was cued twice (in random order) and lasted approximately 4~minutes.
-        
+        An \emph{experimental run} lasted approximately 4~minutes and consisted of 12 consecutive stimulation cycles, so that each of the 6~icons was cued twice (in random order).
+
         As we aimed here at studying the effect of the flickering background on the oddball ERP response, we defined 5~experimental conditions.
         The first one (baseline) consisted of a run as described in the previous paragraph but in which no flickering background was displayed.
         The 4~other conditions differed only by the frequency of the flickering background; the frequencies used were \SIlist[list-units = single]{8.57;10;12;15}{\Hz}, corresponding to the division of the refreshing rate of the screen by \numlist{7;6;5;4}, respectively.
-        
+
         For each of the 5~conditions, all subjects performed 3~runs, therefore the whole experiment consisted of 15~runs of approximately 4~minutes each.
         The order of the run was randomized for each subject and a 5~to~10~minutes pause was set up every 5~runs.
-        
+
         % use
-        The data collected were used to compare the shape of the oddball response (response to the flashing of the target icon) and the ERP classification accuracy (response to target \emph{v.s.} response to non-target flasing) across condition.
+        The data collected were used to compare the shape of the oddball response (response to the flashing of the target icon) and the ERP classification accuracy (response to target \emph{v.s.} response to non-target flasing) across conditions.
 
         \subsubsection{Data Analysis: ERP responses}
         \label{sec:2.2.2AnalysisErpShape}
-        
+
         % preprocessing: filtering
-        
+
         % studying the shape of ERP: epoch rejection
 
         \subsubsection{Data Analysis: ERP classification}
         \label{sec:2.2.3AnalysisErpClassification}
-        
-        % studying classification accuracy: no epoch rejection
-        
 
-    \subsection{Experiment 2: studying the SSVEP responses}
+        % studying classification accuracy: no epoch rejection
+
+
+    \subsection{Experiment 2: studying the \acs{SSVEP} responses}
     \label{sec:2.3SSVEP}
 
         \subsubsection{Experimental protocol}
         \label{sec:2.3.1Protocol}
-                
+
         % Aim and subjects
-        The aim of this second experiment was to study the effect of an oddball paradigm on the SSVEP responses.
+        The aim of this second experiment was to study the effect of an oddball paradigm on the \ac{SSVEP} responses.
         N subjects participated in the experiment (age, gender).
-        
+
         % exp description
-        A stimulation cycle
+        The experimental run was the same as described in \autoref{sec:2.2.1Protocol}.
+        Two experimental parameters were manipulated, the first one was the stimulation frequency; the same frequencies as for the first experiment were used (\SIlist[list-units = single]{8.57;10;12;15}{\Hz}).
+        The second experimental parameter was the presence or not of the oddball stimulation sequence.
+        When the oddball stimulation was displayed, the participants were instructed to count the number of flashes of the target icon, while when no oddball stimulation was displayed, their task was simply to focus on their target icon.
+        
+        The experiment consisted thus of 8~runs of approximately 4~minutes each.
+        The order of the run was randomized for each subject and a 5~to~10~minutes pause was set up after the first 4~runs.
 
         % use
-        
-        
+        This experimental design allows a comparison of the \ac{SSVEP} responses of the participants with and without an oddball stimulation superimposed on the \ac{SSVEP} stimulation for a different set of \ac{SSVEP} frequencies.
+
 
         \subsubsection{Data Analysis}
         \label{sec:2.3.2Analysis}
+        
+        % pre-processing
 
 
     \subsection{Experiment 3: hybrid classification}
@@ -156,7 +170,7 @@ Conclusion:
     \label{sec:2.2Oddball}
 
 
-    \subsection{Experiment 2: studying the SSVEP responses}
+    \subsection{Experiment 2: studying the \ac{SSVEP} responses}
     \label{sec:2.3SSVEP}
 
 
@@ -185,9 +199,11 @@ Conclusion:
 
 %\include{tablesAndFigures}
 
-\end{document}
+\include{tablesAndFigures}
 
-
-
+%\section{Acronyms}
+%\begin{acronym}
+%    \acro{SSVEP}{Steady-State Visually Evoked Potential}
+%\end{acronym}
 
 \end{document}

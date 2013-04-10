@@ -13,7 +13,6 @@
 \usepackage{rotating}                                       % for sideways and other rotating stuffs
 \usepackage{authblk}                                        % for authors and affiliations
 \usepackage[printonlyused,withpage]{acronym}
-%\usepackage[printonlyused,withpage,nohyperlinks]{acronym}
 
 \ifpdf
     \usepackage[subrefformat=parens]{subcaption}                % for subfigures (replaces the subfig package:
