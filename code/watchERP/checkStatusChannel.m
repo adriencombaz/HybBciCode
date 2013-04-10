@@ -69,7 +69,7 @@ for iF = 1:numel(bdfFileName)
 
     
     %% CKECK EEG CHANNELS
-    eegData = eegDataset(sessionDir, bdfFileName{iF});
+    eegData = eegDataset2(sessionDir, bdfFileName{iF});
     eegData.butterFilter(.5, 30, 4);
     eegData.plotContinuousSignal;
     
