@@ -83,7 +83,7 @@ pp2 <- pp2 + geom_point(
   position = position_jitter(w = 0.2, h = 0)
   , size = 3  
 ) 
-pp2 <- pp2 + facet_wrap( ~subject + oddball )
+pp2 <- pp2 + facet_wrap( ~oddball + subject )
 pp2 <- pp2 + geom_smooth(method="lm", aes(fill=frequency), se = F)
 pp2 <- pp2 + theme(
   panel.background =  element_rect(fill='white')

@@ -268,57 +268,55 @@ markers = {'o', '^', 's', 'd', 'v'};
 
 
 channels = {'O1', 'Oz', 'O2'}; 
+  
+nChan = numel(channels);
  
- figure;
- 
- nChan = numel(channels);
- 
- iSub = 1;
- 
- for iCh = 1:nChan
-     
-     subplot(nChan, 1, iCh);
-     hold on;
-     legStr = cell(1, nFreq*nOdd);
-     i = 1;
-     for iFreq = 1:nFreq
-         for iOdd = 1:nOdd
-             
-             toPlot = zeros( nStimDur, 1 );
-             for iSD = 1:nStimDur
-                 
-                 subDataset = snrDataset( ...
-                     ismember( snrDataset.subject, sub{iSub} ) ...
-                     & ismember( snrDataset.frequency, freq(iFreq) ) ...
-                     & ismember( snrDataset.oddball, oddb(iOdd) ) ...
-                     & ismember( snrDataset.stimDuration, stimDur(iSD) ) ...
-                     , :);
-                 
-                 toPlot(iSD) = mean( cellfun( @(x, y) x( ismember( y, channels{iCh} ) ), subDataset.snr, subDataset.chanList ) );
-                 
-             end
-             
-            plot(stimDur, toPlot ...
-                , 'LineStyle', lineStyles{iOdd} ...
-                , 'Color', colorList(iFreq, :) ...
-                , 'LineWidth', 2 ...
-                , 'Marker', markers{iOdd} ...
-                , 'MarkerFaceColor', colorList(iFreq, :) ...
-                , 'MarkerEdgeColor', colorList(iFreq, :) ...
-                , 'MarkerSize', 2 ...
-                );
-             
-            legStr{i} = sprintf('freq %.2d, oddball %d', freq(iFreq), oddb(iOdd));
-            i = i+1;
-         end
-     end
- 
- 
- end
- legend(legStr)
- 
- 
- 
- 
+for iSub = 1:nSub
+    
+    figure;
+    
+    for iCh = 1:nChan
+        
+        subplot(nChan, 1, iCh);
+        hold on;
+        legStr = cell(1, nFreq*nOdd);
+        i = 1;
+        for iFreq = 1:nFreq
+            for iOdd = 1:nOdd
+                
+                toPlot = zeros( nStimDur, 1 );
+                for iSD = 1:nStimDur
+                    
+                    subDataset = snrDataset( ...
+                        ismember( snrDataset.subject, sub{iSub} ) ...
+                        & ismember( snrDataset.frequency, freq(iFreq) ) ...
+                        & ismember( snrDataset.oddball, oddb(iOdd) ) ...
+                        & ismember( snrDataset.stimDuration, stimDur(iSD) ) ...
+                        , :);
+                    
+                    toPlot(iSD) = mean( cellfun( @(x, y) x( ismember( y, channels{iCh} ) ), subDataset.snr, subDataset.chanList ) );
+                    
+                end
+                
+                plot(stimDur, toPlot ...
+                    , 'LineStyle', lineStyles{iOdd} ...
+                    , 'Color', colorList(iFreq, :) ...
+                    , 'LineWidth', 2 ...
+                    , 'Marker', markers{iOdd} ...
+                    , 'MarkerFaceColor', colorList(iFreq, :) ...
+                    , 'MarkerEdgeColor', colorList(iFreq, :) ...
+                    , 'MarkerSize', 2 ...
+                    );
+                
+                legStr{i} = sprintf('freq %.2d, oddball %d', freq(iFreq), oddb(iOdd));
+                i = i+1;
+            end
+        end
+        
+        
+    end
+    legend(legStr)
+    
+end
 
 

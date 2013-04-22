@@ -1,4 +1,4 @@
-function buildSvmClassifier_perSubject( iS )
+function buildSvmClassifier_perSubject( iS, doEpochRejection )
 
 % init host name
 %--------------------------------------------------------------------------
@@ -48,13 +48,17 @@ nAveMax = 10;
 
 [dum1 folderName dum2] = fileparts(cd);
 resDir = fullfile( resDir, folderName, 'LinSvm', sprintf('subject_%s', sub{iS}) );
+if doEpochRejection,
+    resDir = [resDir '_EpochRejection'];
+end
 if ~exist( resDir, 'dir' ), mkdir(resDir); end
 
 tBeforeOnset = 0;
 tAfterOnset = .6;
 nSPcomp = 4;
 butterFilt.lowMargin = .5;
-butterFilt.highMargin = 30;
+% butterFilt.highMargin = 30;
+butterFilt.highMargin = 20;
 butterFilt.order = 3;
 targetFS = 128;
 
@@ -101,6 +105,12 @@ for iC = 1:nCond
         cuts = erpData.getCuts2(); % single( erpData.getCuts2() );
         cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
         
+        % reject epochs
+        %------------------------------------------------------------------------------
+        if doEpochRejection,
+            erpData.markEpochsForRejection('minMax', 'proportion', .15);
+        end
+        
         % spatial filtering
         %------------------------------------------------------------------------------
         %             W = beamformerCFMS( cuts( :, :, erpData.eventId == iT ), cuts( :, :, erpData.eventId == iNT ), nSPcomp, 1 );
@@ -139,14 +149,14 @@ for iC = 1:nCond
             SigTrainT   = zeros( size(cuts_DS, 1), size(cuts_DS, 2), nT_train ); %, 'single' );
             SigTrainNT  = zeros( size(cuts_DS, 1), size(cuts_DS, 2), nNT_train ); %, 'single' );
             
-            indTargetEvents = find( erpData.eventId == iT );
+            indTargetEvents = find( erpData.eventId == iT & erpData.keepReject == 1 );
             for i = 1:nT_train
                 selection           = randperm( numel(indTargetEvents) );
                 selection           = selection(1:iAve);
                 SigTrainT(:,:,i)    = mean( cuts_DS( :, :, indTargetEvents(selection) ), 3 );
             end
             
-            indNonTargetEvents = find( erpData.eventId == iNT );
+            indNonTargetEvents = find( erpData.eventId == iNT & erpData.keepReject == 1 );
             for i = 1:nNT_train
                 selection           = randperm( numel(indNonTargetEvents) );
                 selection           = selection(1:iAve);
