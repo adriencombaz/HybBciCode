@@ -1,11 +1,12 @@
 function watchERP
 
-addpath( '../deps' );
-addpath( '../deps/lptIO' );
+addpath( fullfile(fileparts(fileparts(mfilename('fullpath'))), 'deps') );
+addpath( fullfile(fileparts(fileparts(mfilename('fullpath'))), 'deps', 'lptIO') );
 
 % desiredScreenID = 2;
 % desiredScreenID = 1;
 desiredScreenID = 0;
+
 
 %%                        SCANNER PARAMETERS
 %==========================================================================
@@ -142,6 +143,7 @@ logThis( [], ...
     'logToScreen', showLog ...
     );
 
+logThis( 'path to sten                          %s', which('sten') );
 logThis( 'min stimulus duration [sec]           %g', min(stimDurationInSec) );
 logThis( 'max stimulus duration [sec]           %g', max(stimDurationInSec) );
 logThis( 'min gap duration [sec]                %g', min(gapDurationInSec) );
@@ -158,9 +160,11 @@ logThis( 'Show presentation progress bar        %s', yesNo( showProgressBar ) );
 
 %%                  INIT THE STIMULATION ENGINE
 %==========================================================================
+pwd
 st = sten( 'desiredScreenID' , desiredScreenID );
+pwd
 st.sc = generateScenario( desiredScreenID );
-
+pwd
 
 iP300Stimuli        = find( cellfun( @(x) strcmp(x, 'P300 stimulus'), {st.sc.stimuli(:).description} ) );
 iLookHereStimulus   = find( cellfun( @(x) strcmp(x, 'Look here stimulus'), {st.sc.stimuli(:).description} ) );

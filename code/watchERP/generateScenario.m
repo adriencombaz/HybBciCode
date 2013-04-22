@@ -49,7 +49,7 @@ SSVEPSizeV = 2*SSVEPMarginV + eltMatrix(1)*eltSizeV + (eltMatrix(1)-1)*eltGapV;
 %%
 %==========================================================================
 
-imageDir    = 'images\';
+imageDir    = fullfile( fileparts(mfilename('fullpath')), 'images' )
 imageName{1} = fullfile(imageDir, 'apple');
 imageName{2} = fullfile(imageDir, 'medicine');
 imageName{3} = fullfile(imageDir, 'lightBulb');
@@ -68,7 +68,7 @@ end
 
 
 
-texturesDir = 'textures\';
+texturesDir = fullfile( fileparts(mfilename('fullpath')), 'textures\' )
 if ~exist(texturesDir, 'dir'), mkdir(texturesDir); end
 
 %%
@@ -79,7 +79,7 @@ eltMarginV  = round( ( scrPos(4) - (eltMatrix(1)-1)*eltGapV - eltMatrix(1)*eltSi
 eltMarginH  = round( ( scrPos(3) - (eltMatrix(2)-1)*eltGapH - eltMatrix(2)*eltSizeH - hPaddL - hPaddR ) / 2 );
 generateStimuli();
 sc = generateScenarioAndStimuli();
-sc.texturesDir = fullfile(cd, texturesDir);
+sc.texturesDir = texturesDir;
 
 
     %==========================================================================
@@ -159,6 +159,8 @@ sc.texturesDir = fullfile(cd, texturesDir);
                                     flashImageName = [imageName{iIcon} '-yellow.png'];
                             end
                             
+                            pwd
+                            flashImageName
                             [A, ~, alpha]   = imread(flashImageName);
                             A               = imresize(A, [eltSizeH_flash, eltSizeV_flash]);
                             alpha           = imresize(alpha, [eltSizeH_flash, eltSizeV_flash]);
