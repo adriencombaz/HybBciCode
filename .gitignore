@@ -5,3 +5,5 @@
 *.tiff
 *stimulus*.png
 *ssvep-pixel.png
+*.aux
+*.log

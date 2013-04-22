@@ -259,7 +259,7 @@ summary(nAveModel2)
 # summary(condModel2)
 # summary(accModel2)
 
-anova(baseline, condModel2, nAveModel2, accModel2)
+anova(baseline, nAveModel2, condModel2, accModel2)
 
 #------------------------------------------------------------------------------------------------------
 # USING LMER

@@ -1,7 +1,6 @@
 setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP/02-ter-p3Classification/")
 rm(list = ls())
 library(ggplot2)
-library(reshape2)
 library(nlme)
 library(ez)
 library(reshape2)
@@ -12,7 +11,7 @@ library(Hmisc)
 
 source("d:/KULeuven/PhD/rLibrary/plot_set.R")
 
-for (iS in 1:7)
+for (iS in 1:8)
 {
   filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvm/subject_S%d/Results.txt", iS)
 #  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/Blda/subject_S%d/Results.txt", iS)
@@ -28,6 +27,12 @@ for (iS in 1:7)
 }
 
 accData10Rep <- accData
+
+accData10Rep$accOriginal <- accData10Rep$accuracy
+# accData10Rep$accuracy <- asin(sqrt(accData10Rep$accuracy/100))
+# accData10Rep$accuracy <- 1 / (1 + exp(-accData10Rep$accuracy))
+
+# accData10Rep$nAverages <- log(accData10Rep$nAverages)
 
 str(accData10Rep)
 summary(accData10Rep)
@@ -236,6 +241,10 @@ anova(baseline, condModel2, nAveModel2, accModel2)
 #------------------------------------------------------------------------------------------------------
 # USING LMER
 #------------------------------------------------------------------------------------------------------
+# accData10Rep$accTrans <-sqrt(accData10Rep$accuracy)
+# accData10Rep$accTrans <-log2(accData10Rep$accuracy)
+# accData10Rep$accTrans <-exp(accData10Rep$accuracy)
+
 lmH1 <- lmer( accuracy ~ nAverages*condition + ( 1 | subject ), data = accData10Rep, REM=F )
 
 

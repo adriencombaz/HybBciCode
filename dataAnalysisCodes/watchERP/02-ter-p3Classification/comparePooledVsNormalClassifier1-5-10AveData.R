@@ -6,7 +6,7 @@ library(ez)
 
 source("d:/KULeuven/PhD/rLibrary/plot_set.R")
 
-for (iS in 1:7)
+for (iS in 1:8)
 {
   filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvm/subject_S%d/Results.txt", iS)
   accData1 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
@@ -161,6 +161,12 @@ nAveragesBar <- nAveragesBar + stat_summary(fun.data = mean_cl_boot, geom = "poi
 nAveragesBar <- nAveragesBar + labs(x = "nAverages", y = "accuracy") 
 nAveragesBar
 
+conditionBar <- ggplot(accData, aes(condition, accuracy))
+conditionBar <- conditionBar + stat_summary(fun.y = mean, geom = "bar", fill = "White", colour = "Black") 
+conditionBar <- conditionBar + stat_summary(fun.data = mean_cl_boot, geom = "pointrange") 
+conditionBar <- conditionBar + labs(x = "nAverages", y = "accuracy") 
+conditionBar
+
 classifierBar <- ggplot(accData, aes(classifier, accuracy))
 classifierBar <- classifierBar + stat_summary(fun.y = mean, geom = "bar", fill = "White", colour = "Black") 
 classifierBar <- classifierBar + stat_summary(fun.data = mean_cl_boot, geom = "pointrange") 
@@ -180,6 +186,14 @@ interactionBar2 <- interactionBar2 + stat_summary(fun.y = mean, geom = "line", a
 interactionBar2 <- interactionBar2 + stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = 0.2)
 interactionBar2 <- interactionBar2 + labs(x = "nAverages", y = "accuracy", colour = "classifier") 
 interactionBar2
+
+interactionBar2 <- ggplot(accData, aes(condition, accuracy, colour = classifier))
+interactionBar2 <- interactionBar2 + stat_summary(fun.y = mean, geom = "point")
+interactionBar2 <- interactionBar2 + stat_summary(fun.y = mean, geom = "line", aes(group= classifier))
+interactionBar2 <- interactionBar2 + stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = 0.2)
+interactionBar2 <- interactionBar2 + labs(x = "condition", y = "accuracy", colour = "classifier") 
+interactionBar2
+
 
 #------------------------------------------------------------------------------------------------------
 # SLIGHTLY MORE COMPLICATED WAY (cf, chapter 13.7.5 Andy Field's book)

@@ -4,6 +4,7 @@
 
 \acrodef{SSVEP}{Steady-State Visually Evoked Potential}
 \acrodef{BCI}{Brain-Computer Interface}
+\acrodef{ERP}{Event Related Potential}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,14 +82,14 @@ Conclusion:
 
 
 
-    \subsection{Experiment 1: studying the oddball ERPs}
+    \subsection{Experiment 1: studying the oddball \acsp{ERP}}
     \label{sec:2.2Oddball}
 
         \subsubsection{Experimental protocol}
         \label{sec:2.2.1Protocol}
 
         % Aim and subjects
-        The aim of this first experiment was to study the effect of a flickering background on the typical ERP response associated to an oddball paradigm.
+        The aim of this first experiment was to study the effect of a flickering background on the typical \ac{ERP} response associated to an oddball paradigm.
         N subjects participated in the experiment (age, gender).
 
         % exp description
@@ -99,7 +100,7 @@ Conclusion:
         A \SI{1000}{\ms} pause followed the oddball stimulation and preceded the next cue.
         An \emph{experimental run} lasted approximately 4~minutes and consisted of 12 consecutive stimulation cycles, so that each of the 6~icons was cued twice (in random order).
 
-        As we aimed here at studying the effect of the flickering background on the oddball ERP response, we defined 5~experimental conditions.
+        As we aimed here at studying the effect of the flickering background on the oddball \ac{ERP} response, we considered 5~experimental conditions.
         The first one (baseline) consisted of a run as described in the previous paragraph but in which no flickering background was displayed.
         The 4~other conditions differed only by the frequency of the flickering background; the frequencies used were \SIlist[list-units = single]{8.57;10;12;15}{\Hz}, corresponding to the division of the refreshing rate of the screen by \numlist{7;6;5;4}, respectively.
 
@@ -107,19 +108,30 @@ Conclusion:
         The order of the run was randomized for each subject and a 5~to~10~minutes pause was set up every 5~runs.
 
         % use
-        The data collected were used to compare the shape of the oddball response (response to the flashing of the target icon) and the ERP classification accuracy (response to target \emph{v.s.} response to non-target flasing) across conditions.
+        The data collected were used to compare the shape of the oddball response (response to the flashing of the target icon) and the \ac{ERP} classification accuracy (response to target \emph{v.s.} response to non-target flasing) across conditions.
 
-        \subsubsection{Data Analysis: ERP responses}
+        \subsubsection{Data Analysis: \acs{ERP} responses}
         \label{sec:2.2.2AnalysisErpShape}
 
         % preprocessing: filtering
 
         % studying the shape of ERP: epoch rejection
 
-        \subsubsection{Data Analysis: ERP classification}
+        \subsubsection{Data Analysis: \acs{ERP} classification}
         \label{sec:2.2.3AnalysisErpClassification}
 
         % studying classification accuracy: no epoch rejection
+        We are also interested in studying the effect of the flickering stimulus on the target \ac{ERP} detection accuracy.
+        
+        
+        
+        Data were filtered between \SIlist[list-units = single]{0.3;15}{\Hz} (zero-phase 3\rd order Butterworth filter), cut into \SI{800}{\ms} epochs starting from the stimuli onsets and downsampled to \SI{128}{\Hz}.
+
+        For each trial (stimulus), we had 8~channels~$\times$~80~data~points~=~640~features to classify as a response to either a target stimulus or a non-target stimulus.
+        A linear \emph{Support Vector Machine} (SVM; \cite{Cristianini2000,Suykens2002}) with a 10-fold cross-validation and a linesearch for the optimization of the regularization parameter was built from the normalized training features.
+        Training the linear SVM with the modified finite Newton method proposed by \textcite{Keerthi2006} took around one minute.
+
+
 
 
     \subsection{Experiment 2: studying the \acs{SSVEP} responses}
@@ -137,7 +149,7 @@ Conclusion:
         Two experimental parameters were manipulated, the first one was the stimulation frequency; the same frequencies as for the first experiment were used (\SIlist[list-units = single]{8.57;10;12;15}{\Hz}).
         The second experimental parameter was the presence or not of the oddball stimulation sequence.
         When the oddball stimulation was displayed, the participants were instructed to count the number of flashes of the target icon, while when no oddball stimulation was displayed, their task was simply to focus on their target icon.
-        
+
         The experiment consisted thus of 8~runs of approximately 4~minutes each.
         The order of the run was randomized for each subject and a 5~to~10~minutes pause was set up after the first 4~runs.
 
@@ -147,8 +159,12 @@ Conclusion:
 
         \subsubsection{Data Analysis}
         \label{sec:2.3.2Analysis}
-        
+
         % pre-processing
+
+        % snr calculation
+
+        % statistics
 
 
     \subsection{Experiment 3: hybrid classification}
@@ -166,11 +182,11 @@ Conclusion:
 \section{Results}
 \label{sec:3Results}
 
-    \subsection{Experiment 1: studying the oddball ERPs}
+    \subsection{Experiment 1: studying the oddball \acsp{ERP}}
     \label{sec:2.2Oddball}
 
 
-    \subsection{Experiment 2: studying the \ac{SSVEP} responses}
+    \subsection{Experiment 2: studying the \acs{SSVEP} responses}
     \label{sec:2.3SSVEP}
 
 
