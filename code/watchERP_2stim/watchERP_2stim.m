@@ -167,14 +167,22 @@ iP300Stimuli        = find( cellfun( @(x) strcmp(x, 'P300 stimulus'), {st.sc.sti
 iLookHereStimulus   = find( cellfun( @(x) strcmp(x, 'Look here stimulus'), {st.sc.stimuli(:).description} ) );
 iSSVEPStimuli       = find( cellfun( @(x) strcmp(x, 'SSVEP stimulus'), {st.sc.stimuli(:).description} ) );
 
-iP3off  = numel( st.sc.stimuli(iP300Stimuli).states );
+if numel(iP300Stimuli) ~= numel(iSSVEPStimuli)
+    error('not the same number of p3 and SSVEP stimuli');
+end
+
+iP3off  = unique( cellfun(@numel, {st.sc.stimuli(iP300Stimuli).states}) );
+if numel(iP3off) ~= 1
+    error('the P3 stimuli do not have the same number of states');
+end
+
 iCueOff = numel( st.sc.stimuli(iLookHereStimulus).states );
-nP3item = (iP3off-1)/2;
+nP3item = (iP3off-1)/numel(iSSVEPStimuli);
 if round(nP3item)~=nP3item, error('something wrong here'); end
 nItems  = iCueOff-1;
 
 if numel(ssvepFreq) ~= numel(iSSVEPStimuli)
-    error('number of ssveo squares do not match the number of frequencies');
+    error('number of ssvep squares do not match the number of frequencies');
 end
 nSsvep = numel(iSSVEPStimuli);
 for iSsvep = 1:nSsvep
@@ -186,8 +194,12 @@ end
 
 %--------------------------------------------------------------------------
 % generate state sequence and duration sequence
-p3StateSeq          = [];
-realP3StateSeqOnsets= [];
+p3StateSeq              = cell(1, nSsvep);
+realP3StateSeqOnsets    = cell(1, nSsvep);
+for iSsvep = 1:nSsvep
+    p3StateSeq{iSsvep}          = [];
+    realP3StateSeqOnsets{iSsvep}= [];
+end
 p3DurationSeq       = [];
 lookHereStateSeq    = [];
 lookHereDurationSeq = [];
@@ -197,7 +209,7 @@ SSVEPDurationSeq    = 0;
 
 % initial pause
 if initialPauseinSec > 0
-    p3StateSeq          = iP3off;
+    p3StateSeq          = cellfun(@(x) {iP3off}, p3StateSeq);
     p3DurationSeq       = initialPauseinSec;
     lookHereStateSeq    = iCueOff;
     lookHereDurationSeq = initialPauseinSec;
@@ -222,14 +234,16 @@ for iSR = 1:nCuesToShow
     % ------------------- indication cue ------------------
     lookHereStateSeq    = [ lookHereStateSeq iItem ];
     lookHereDurationSeq = [ lookHereDurationSeq cueDurationInSec ];
-    p3StateSeq          = [ p3StateSeq iP3off ];
+%     p3StateSeq          = [ p3StateSeq iP3off ];
+    p3StateSeq          = cellfun(@(x) [x iP3off], p3StateSeq, 'UniformOutput', false);
     p3DurationSeq       = [ p3DurationSeq cueDurationInSec ];
     SSVEPStateSeq       = [ SSVEPStateSeq 2 ];
     SSVEPDurationSeq    = [ SSVEPDurationSeq cueDurationInSec ];
     
     % ------------------ pause after cue ------------------
     if pauseAfterCueInSec > 0
-        p3StateSeq              = [ p3StateSeq iP3off ];
+%         p3StateSeq              = [ p3StateSeq iP3off ];
+        p3StateSeq              = cellfun(@(x) [x iP3off], p3StateSeq, 'UniformOutput', false);
         p3DurationSeq           = [ p3DurationSeq pauseAfterCueInSec ];
         lookHereStateSeq        = [ lookHereStateSeq iCueOff ];
         lookHereDurationSeq     = [ lookHereDurationSeq pauseAfterCueInSec ];
@@ -239,7 +253,8 @@ for iSR = 1:nCuesToShow
     
     % -------------- start SSVEP before P300 --------------
     if p300DelayInSec > 0
-        p3StateSeq              = [ p3StateSeq iP3off ];
+%         p3StateSeq              = [ p3StateSeq iP3off ];
+        p3StateSeq              = cellfun(@(x) [x iP3off], p3StateSeq, 'UniformOutput', false);
         p3DurationSeq           = [ p3DurationSeq p300DelayInSec ];
         SSVEPStateSeq           = [ SSVEPStateSeq 1 ];
         SSVEPDurationSeq        = [ SSVEPDurationSeq p300DelayInSec];
@@ -249,30 +264,40 @@ for iSR = 1:nCuesToShow
     
     
     % --- P300 stimulation state and duration sequence ----
-    stateSeq = randperm(nP3item);
-    for iRep = 2:nRepetitions
-        newSeq = randperm(nP3item);
-        while stateSeq(end) == newSeq(1)
+    stateSeq = cell(1, nSsvep);
+    for iSsvep = 1:nSsvep
+        stateSeq{iSsvep} = randperm(nP3item);
+        for iRep = 2:nRepetitions
             newSeq = randperm(nP3item);
+            while stateSeq{iSsvep}(end) == newSeq(1)
+                newSeq = randperm(nP3item);
+            end
+            stateSeq{iSsvep} = [ stateSeq{iSsvep} newSeq ];
         end
-        stateSeq = [ stateSeq newSeq ];
     end
-    realP3StateSeqOnsets = [realP3StateSeqOnsets stateSeq];
-    stateSeq = 2*stateSeq-1;
+%     realP3StateSeqOnsets = [realP3StateSeqOnsets stateSeq];
+    realP3StateSeqOnsets = cellfun(@(x, y) [x y], realP3StateSeqOnsets, stateSeq, 'UniformOutput', false);
+
+%     stateSeq = 2*stateSeq-1;
+    stateSeq = cellfun(@(x) 2*x-1, stateSeq, 'UniformOutput', false);
+    stateSeqLength = nP3item*nRepetitions; % check that == size(stateSeq{i}, 2)
     
     if sum(gapDurationInSec) > 0
-        stateSeq        = [stateSeq ; iP3off*ones(size(stateSeq))];
-        stimDurationSeq = stimDurationInSec(1) + ( stimDurationInSec(2) - stimDurationInSec(1) ) .* rand( 1,size(stateSeq, 2) );
-        gapDurationSeq  = gapDurationInSec(1)  + ( gapDurationInSec(2)  - gapDurationInSec(1)  ) .* rand( 1,size(stateSeq, 2) );
+%         stateSeq        = [stateSeq ; iP3off*ones(size(stateSeq))];
+        stateSeq        = cellfun(@(x) [x ; iP3off*ones(size(x))], stateSeq, 'UniformOutput', false);
+        stimDurationSeq = stimDurationInSec(1) + ( stimDurationInSec(2) - stimDurationInSec(1) ) .* rand( 1, stateSeqLength );
+        gapDurationSeq  = gapDurationInSec(1)  + ( gapDurationInSec(2)  - gapDurationInSec(1)  ) .* rand( 1, stateSeqLength );
         durationSeq     = [stimDurationSeq ; gapDurationSeq];
     else
-        stateSeq        = [stateSeq ; stateSeq+1];
-        realStimDur     = stimDurationInSec(1) + (stimDurationInSec(2)-stimDurationInSec(1)) .* rand( 1,size(stateSeq, 2) );
-        fakeOnDurSeq    = fakeStimDurInSec .* ones(1,size(stateSeq, 2));
+%         stateSeq        = [stateSeq ; stateSeq+1];
+        stateSeq        = cellfun(@(x) [x ; x+1], stateSeq, 'UniformOutput', false);
+        realStimDur     = stimDurationInSec(1) + (stimDurationInSec(2)-stimDurationInSec(1)) .* rand( 1, stateSeqLength );
+        fakeOnDurSeq    = fakeStimDurInSec .* ones(1, stateSeqLength);
         fakeOffDurSeq   = realStimDur - fakeOnDurSeq;
         durationSeq     = [fakeOnDurSeq ; fakeOffDurSeq];
     end
-    p3StateSeq          = [ p3StateSeq stateSeq(:)' ];
+%     p3StateSeq          = [ p3StateSeq stateSeq(:)' ];
+    p3StateSeq          = cellfun(@(x,y) [x y(:)'], p3StateSeq, stateSeq, 'UniformOutput', false);
     p3DurationSeq       = [ p3DurationSeq durationSeq(:)' ];
     lookHereStateSeq    = [ lookHereStateSeq iCueOff ];
     lookHereDurationSeq = [ lookHereDurationSeq sum(durationSeq(:)) ];
@@ -280,7 +305,8 @@ for iSR = 1:nCuesToShow
     SSVEPDurationSeq    = [ SSVEPDurationSeq sum(durationSeq(:)) ];
     % ------------- Pause between stages ------------------
     if pauseBetweenStagesInSec > 0
-        p3StateSeq                  = [ p3StateSeq iP3off ];
+%         p3StateSeq                  = [ p3StateSeq iP3off ];
+        p3StateSeq                  = cellfun(@(x) [x iP3off], p3StateSeq, 'UniformOutput', false);
         p3DurationSeq               = [ p3DurationSeq pauseBetweenStagesInSec ];
         lookHereStateSeq            = [ lookHereStateSeq iCueOff ];
         lookHereDurationSeq         = [ lookHereDurationSeq pauseBetweenStagesInSec ];
@@ -291,7 +317,13 @@ for iSR = 1:nCuesToShow
 end
 
 [lookHereStateSeq lookHereDurationSeq]  = shrinkSequence(lookHereStateSeq, lookHereDurationSeq);
-[p3StateSeq p3DurationSeq]              = shrinkSequence(p3StateSeq, p3DurationSeq);
+% [p3StateSeq p3DurationSeq]              = shrinkSequence(p3StateSeq, p3DurationSeq);
+dum = p3DurationSeq;
+[p3StateSeq{1} p3DurationSeq] = shrinkSequence(p3StateSeq{1}, p3DurationSeq);
+for iSsvep = 2:nSsvep
+    [p3StateSeq{iSsvep} dum] = shrinkSequence(p3StateSeq{iSsvep}, dum);
+end
+if dum ~= p3DurationSeq, error('something wrong here!!'); end
 
 % if ssvepFreq    % ssvep stimulation on (ssvep baseline, hybrid)
     [SSVEPStateSeq SSVEPDurationSeq] = shrinkSequence(SSVEPStateSeq, SSVEPDurationSeq);
@@ -307,19 +339,21 @@ if sum(lookHereDurationSeq) - sum(p3DurationSeq) > 1e-10
 end
 
 if ~showP3
-    p3StateSeq      = iP3off;
+%     p3StateSeq      = iP3off;
+%     p3DurationSeq   = sum(lookHereDurationSeq);
+    p3StateSeq      = cellfun(@(x) {iP3off}, p3StateSeq);
     p3DurationSeq   = sum(lookHereDurationSeq);
 end
 
 roundDurationInSec = sum(lookHereDurationSeq);
 
-st.sc.stimuli(iP300Stimuli).stateSequence               = p3StateSeq;
-st.sc.stimuli(iP300Stimuli).durationSequenceInSec       = p3DurationSeq;
 st.sc.stimuli(iLookHereStimulus).stateSequence          = lookHereStateSeq;
 st.sc.stimuli(iLookHereStimulus).durationSequenceInSec  = lookHereDurationSeq;
 for iSsvep = 1:nSsvep
     st.sc.stimuli(iSSVEPStimuli(iSsvep)).stateSequence              = SSVEPStateSeq;
     st.sc.stimuli(iSSVEPStimuli(iSsvep)).durationSequenceInSec      = SSVEPDurationSeq;
+    st.sc.stimuli(iP300Stimuli(iSsvep)).stateSequence               = p3StateSeq{iSsvep};
+    st.sc.stimuli(iP300Stimuli(iSsvep)).durationSequenceInSec       = p3DurationSeq;
 end
 
 st.sc.desired.stimulationDuration = roundDurationInSec;
@@ -395,7 +429,8 @@ if saveData
     screenInfo  = st.scr;
     flipTimeLog = st.flipTimeLog;
     scenario    = st.sc;
-    frameRenderDurationLog = st.frameRenderDurationLog;
+    frameRenderDurationLog  = st.frameRenderDurationLog;
+    targetSquares           = ceil( lookHereStateSeq( lookHereStateSeq ~= iCueOff ) / nP3item );
     listOfVariablesToSave = { ...
         'subjectName', ...
         'stimDurationInSec', ...
@@ -416,6 +451,7 @@ if saveData
         'p3DurationSeq', ...
         'lookHereStateSeq', ...
         'lookHereDurationSeq', ...
+        'targetSquares', ...
         'labelList', ...
         'screenInfo', ...
         'presentationStartTime', ...
@@ -424,6 +460,9 @@ if saveData
         'frameRenderDurationLog' ...
         'gapOrNoGap', ...
         'ssvepFreq', ...
+        'nP3item', ...
+        'nItems', ...
+        'nSsvep' ...
        };
    save( dataFilename, listOfVariablesToSave{:} );
 end

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.17)  15 APR 2013 10:48
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.17)  25 APR 2013 10:18
 entering extended mode
 **D:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/draftHybridBCI.te
 x
@@ -959,20 +959,20 @@ LaTeX Warning: Label `sec:2.4Hybrid' multiply defined.
 
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\tablesAndFigures.a
 ux))
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
  ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count406
@@ -1009,10 +1009,10 @@ Package biblatex Info: ... file 'draftHybridBCI.bbl' found.
 
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\draftHybridBCI.bbl
 )
-Package biblatex Info: Reference section=0 on input line 21.
-Package biblatex Info: Reference segment=0 on input line 21.
+Package biblatex Info: Reference section=0 on input line 24.
+Package biblatex Info: Reference segment=0 on input line 24.
 \AtBeginShipoutBox=\box46
-Package hyperref Info: Link coloring ON on input line 21.
+Package hyperref Info: Link coloring ON on input line 24.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
 
@@ -1021,9 +1021,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count412
 )
-LaTeX Info: Redefining \ref on input line 21.
-LaTeX Info: Redefining \pageref on input line 21.
-LaTeX Info: Redefining \nameref on input line 21.
+LaTeX Info: Redefining \ref on input line 24.
+LaTeX Info: Redefining \pageref on input line 24.
+LaTeX Info: Redefining \nameref on input line 24.
 
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\draftHybridBCI.out
 )
@@ -1031,11 +1031,11 @@ LaTeX Info: Redefining \nameref on input line 21.
 )
 \@outlinefile=\write4
 \c_siunitx_mathsf_int=\count413
-LaTeX Font Info:    Try loading font information for U+msa on input line 21.
+LaTeX Font Info:    Try loading font information for U+msa on input line 24.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 21.
+LaTeX Font Info:    Try loading font information for U+msb on input line 24.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -1043,16 +1043,21 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 \c_siunitx_mathtt_int=\count414
 Package acronym Info: Label `acro:SSVEP' newly defined as it shall be overridde
 n
-although it is yet undefined on input line 31.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 81.
+although it is yet undefined on input line 33.
+Package acronym Info: Label `acro:BCI' newly defined as it shall be overridden
+although it is yet undefined on input line 54.
+Package acronym Info: Label `acro:EEG' newly defined as it shall be overridden
+although it is yet undefined on input line 55.
+Package acronym Info: Label `acro:ERP' newly defined as it shall be overridden
+although it is yet undefined on input line 58.
+Package acronym Info: Label `acro:SSVEP' overridden on input line 65.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 98.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <7> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 81.
-Package acronym Info: Label `acro:ERP' newly defined as it shall be overridden
-although it is yet undefined on input line 92.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 98.
  [1
 
 
@@ -1060,11 +1065,9 @@ although it is yet undefined on input line 92.
 \reset@newl@bel
 
 {C:/Documents and Settings/Adrien/Local Settings/Application Data/MiKTeX/2.9/pd
-ftex/config/pdftex.map}]
-Package acronym Info: Label `acro:SSVEP' overridden on input line 133.
- [2] [3]
+ftex/config/pdftex.map}] [2] [3] [4]
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\tablesAndFigures.t
-ex <pix/stimulationSequence.pdf, id=116, 484.209pt x 284.74379pt>
+ex <pix/stimulationSequence.pdf, id=153, 484.209pt x 284.74379pt>
 File: pix/stimulationSequence.pdf Graphic file (type pdf)
 
 <use pix/stimulationSequence.pdf>
@@ -1075,17 +1078,17 @@ Overfull \hbox (53.84955pt too wide) in paragraph at lines 16--17
  [][] 
  []
 
-) [4 <D:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/pix/stimulati
+) [5 <D:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/pix/stimulati
 onSequence.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 214.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 214.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 245.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 245.
 
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\draftHybridBCI.aux
 
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\tablesAndFigures.a
 ux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 214.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 214.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 245.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 245.
 Package rerunfilecheck Info: File `draftHybridBCI.out' has not changed.
 (rerunfilecheck)             Checksum: C496BD193BCAB8272945340FDEA4F870;1391.
 
@@ -1095,13 +1098,13 @@ LaTeX Warning: There were multiply-defined labels.
 Package logreq Info: Writing requests to 'draftHybridBCI.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
- 19588 strings out of 494045
- 366436 string characters out of 3148329
- 493594 words of memory out of 3000000
- 22579 multiletter control sequences out of 15000+200000
+ 19750 strings out of 494045
+ 369677 string characters out of 3148329
+ 497479 words of memory out of 3000000
+ 22724 multiletter control sequences out of 15000+200000
  15590 words of font info for 61 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 46i,10n,42p,890b,1476s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 46i,10n,56p,890b,1476s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Program Files/MiKTe
@@ -1109,13 +1112,15 @@ X 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fo
 nts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
 msfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb
-><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on draftHybridBCI.pdf (4 pages, 267521 bytes).
+m/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb
+><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Progr
+am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmti10.pfb>
+Output written on draftHybridBCI.pdf (5 pages, 298347 bytes).
 PDF statistics:
- 180 PDF objects out of 1000 (max. 8388607)
- 32 named destinations out of 1000 (max. 500000)
+ 228 PDF objects out of 1000 (max. 8388607)
+ 49 named destinations out of 1000 (max. 500000)
  158 words of extra memory for PDF output out of 10000 (max. 10000000)
 

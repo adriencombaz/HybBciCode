@@ -18,13 +18,13 @@ switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        %             dataDir2 = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\oddball\';
+        resultsDir  = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciResults\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        %             dataDir2= 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\oddball\';
+        resultsDir  = 'd:\Adrien\Work\Hybrid-BCI\HybBciResults\watchERP\';
     otherwise,
         error('host not recognized');
 end
@@ -43,8 +43,8 @@ nErpType = 2; % target and non-target ERPs
 
 chanListToPlot = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
 
-
-outputPath = fullfile( fileparts(mfilename('fullpath')), 'detailsPerRun' );
+[~, folderName, ~]  = fileparts( fileparts(mfilename('fullpath')) );
+outputPath = fullfile( resultsDir, folderName, 'detailsPerRun' );
 if ~exist(outputPath, 'dir'), mkdir(outputPath); end
 tBeforeOnset    = 0.2; % lower time range in secs
 tAfterOnset     = 0.8; % upper time range in secs

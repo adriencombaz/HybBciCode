@@ -1,4 +1,4 @@
-function applySvmClassifier_perSubject_forLogisticRegression( iS )
+function applySvmClassifier_perSubject_forLogisticRegression( iS, doEpochRejection )
 
 %================================================================================================================================
 %================================================================================================================================
@@ -54,7 +54,9 @@ nAveMax = 10;
 
 [dum1 folderName dum2] = fileparts(cd);
 resDir = fullfile( resDir, folderName, 'LinSvm', sprintf('subject_%s', sub{iS}) );
-
+if doEpochRejection,
+    resDir = [resDir '_EpochRejection'];
+end
 fid = fopen( fullfile( resDir, 'Results_forLogisiticRegression.txt' ),'wt' );
 fprintf(fid, 'subject, conditionTrain, conditionTest, nAverages, foldTrain, foldTest, correctness\n');
 fprintf('subject, conditionTrain, conditionTest, nAverages, foldTrain, foldTest, correctness\n');

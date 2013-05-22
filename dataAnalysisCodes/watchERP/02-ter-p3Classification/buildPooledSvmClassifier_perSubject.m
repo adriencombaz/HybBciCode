@@ -133,6 +133,12 @@ for iRun = 1:nRuns
             SigTrainNT  = zeros( size(cuts_DS, 1), size(cuts_DS, 2), nNT_train_perCond ); %, 'single' );
             
             indTargetEvents = find( erpData.eventId == iT );
+            
+            % restrict the number of available indices in order to be fair with the baseline condition
+            subsetInd       = randperm( numel(indTargetEvents) );
+            nIndsToKeep     = round( numel(indTargetEvents) / nCond );
+            indTargetEvents = indTargetEvents( subsetInd(1:nIndsToKeep) );
+            
             for i = 1:nT_train_perCond
                 selection           = randperm( numel(indTargetEvents) );
                 selection           = selection(1:iAve);

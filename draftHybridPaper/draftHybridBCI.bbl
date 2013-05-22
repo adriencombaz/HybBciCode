@@ -16,11 +16,94 @@
   {}
 \endgroup
 
+\entry{Bianchi2010}{article}{}
+  \name{author}{6}{}{%
+    {{}%
+     {Bianchi}{B.}%
+     {Luigi}{L.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Sami}{S.}%
+     {Saber}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hillebrand}{H.}%
+     {Arjan}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Fawcett}{F.}%
+     {Ian~P}{I.~P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Quitadamo}{Q.}%
+     {Lucia~Rita}{L.~R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Seri}{S.}%
+     {Stefano}{S.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{Adult,Brain,Brain Mapping,Brain:
+  physiology,CiteNeuroImageArticle,Computer-Assisted,Discriminant
+  Analysis,Electroencephalography,Event-Related Potentials,Evoked
+  Potentials,Female,Humans,Linear Models,Magnetoencephalography,Male,Middle
+  Aged,Models,Neurological,Occipital Lobe,Occipital Lobe:
+  physiology,P300,Scalp,Scalp: physiology,Signal Processing,User-Computer
+  Interface,Writing}
+  \strng{namehash}{BL+1}
+  \strng{fullhash}{BLSSHAFIPQLRSS1}
+  \field{labelyear}{2010}
+  \field{sortinit}{B}
+  \field{abstract}{%
+  We investigated which evoked response component occurring in the first 800 ms
+  after stimulus presentation was most suitable to be used in a classical
+  P300-based brain-computer interface speller protocol. Data was acquired from
+  275 Magnetoencephalographic sensors in two subjects and from 61
+  Electroencephalographic sensors in four. To better characterize the evoked
+  physiological responses and minimize the effect of response overlap, a 1000
+  ms Inter Stimulus Interval was preferred to the short (<400 ms) trial length
+  traditionally used in this class of BCIs. To investigate which scalp regions
+  conveyed information suitable for BCI, a stepwise linear discriminant
+  analysis classifier was used. The method iteratively analyzed each individual
+  sensor and determined its performance indicators. These were then plotted on
+  a 2-D topographic head map. Preliminary results for both EEG and MEG data
+  suggest that components other than the P300 maximally represented in the
+  occipital region, could be successfully used to improve classification
+  accuracy and finally drive this class of BCIs.%
+  }
+  \verb{doi}
+  \verb 10.1007/s10548-010-0143-0
+  \endverb
+  \field{issn}{1573-6792}
+  \field{number}{2}
+  \field{pages}{180\bibrangedash 185}
+  \field{title}{{Which physiological components are more suitable for visual
+  ERP based brain-computer interface? A preliminary MEG/EEG study}}
+  \verb{url}
+  \verb http://www.ncbi.nlm.nih.gov/pubmed/20405196
+  \endverb
+  \field{volume}{23}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Bianchi et al. (2010) Which Phy
+  \verb siological Components are More Suitable for Visual ERP Based BCI A Prel
+  \verb iminary MEG EEG Study.pdf:pdf
+  \endverb
+  \field{journaltitle}{Brain topography}
+  \field{month}{06}
+  \field{year}{2010}
+\endentry
+
 \entry{Brainard1997}{article}{}
   \name{author}{1}{}{%
     {{}%
      {Brainard}{B.}%
-     {David~H.}{D.~H.}%
+     {David~H}{D.~H.}%
      {}{}%
      {}{}}%
   }
@@ -50,16 +133,356 @@
   \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Brainard (1997) The Psychophysi
   \verb cs Toolbox.pdf:pdf
   \endverb
-  \field{journaltitle}{Spat. Vis.}
+  \field{journaltitle}{Spatial vision}
   \field{month}{01}
   \field{year}{1997}
+\endentry
+
+\entry{Cristianini2000}{book}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Cristianini}{C.}%
+     {Nello}{N.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Shawe-Taylor}{S.-T.}%
+     {John}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Cambridge University Press}%
+  }
+  \keyw{CiteNeuroImageArticle}
+  \strng{namehash}{CNSTJ1}
+  \strng{fullhash}{CNSTJ1}
+  \field{labelyear}{2000}
+  \field{sortinit}{C}
+  \field{title}{{An Introduction to Support Vector Machines and Other
+  Kernel-based Learning Methods}}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/N. Cristianini et al. (2000) An
+  \verb  Introduction to Support Vector Machines.pdf:pdf
+  \endverb
+  \field{year}{2000}
+\endentry
+
+\entry{Donchin2000}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Donchin}{D.}%
+     {Emanuel}{E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Spencer}{S.}%
+     {Kevin~M}{K.~M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Wijesinghe}{W.}%
+     {Ranjith}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {IEEE}%
+  }
+  \keyw{CiteNeuroImageArticle}
+  \strng{namehash}{DE+1}
+  \strng{fullhash}{DESKMWR1}
+  \field{labelyear}{2000}
+  \field{sortinit}{D}
+  \verb{doi}
+  \verb 10.1109/86.847808
+  \endverb
+  \field{issn}{10636528}
+  \field{number}{2}
+  \field{pages}{174\bibrangedash 179}
+  \field{title}{{The mental prosthesis: assessing the speed of a P300-based
+  brain-computer interface}}
+  \verb{url}
+  \verb http://ieeexplore.ieee.org/xpls/abs\_all.jsp?arnumber=847808 http://iee
+  \verb explore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=847808
+  \endverb
+  \field{volume}{8}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Donchin et al. (2000) Assesing
+  \verb The Speed Of A P300-Based BCI.pdf:pdf
+  \endverb
+  \field{journaltitle}{IEEE Transactions on Rehabilitation Engineering}
+  \field{month}{06}
+  \field{year}{2000}
+\endentry
+
+\entry{Farwell1988}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Farwell}{F.}%
+     {L~A}{L.~A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Donchin}{D.}%
+     {Emanuel}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Elsevier}%
+  }
+  \keyw{CiteNeuroImageArticle}
+  \strng{namehash}{FLADE1}
+  \strng{fullhash}{FLADE1}
+  \field{labelyear}{1988}
+  \field{sortinit}{F}
+  \field{number}{6}
+  \field{pages}{510\bibrangedash 523}
+  \field{title}{{Talking off the top of your head: toward a mental prosthesis
+  utilizing event-related brain potentials}}
+  \verb{url}
+  \verb http://www.sciencedirect.com/science/article/pii/0013469488901496
+  \endverb
+  \field{volume}{70}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Farwell and Donchin (1988) Talk
+  \verb ing off the top of your head.pdf:pdf
+  \endverb
+  \field{journaltitle}{Electroencephalography and Clinical Neurophysiology}
+  \field{year}{1988}
+\endentry
+
+\entry{Gray2003}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Gray}{G.}%
+     {M}{M}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kemp}{K.}%
+     {A~H}{A.~H.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Silberstein}{S.}%
+     {R~B}{R.~B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Nathan}{N.}%
+     {P~J}{P.~J.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{Adult,Anxiety,Anxiety: physiopathology,Anxiety:
+  psychology,Artifacts,Brain Mapping,Cerebral Cortex,Cerebral Cortex: blood
+  supply,Cerebral Cortex: physiology,Cerebral Cortex: radionuclide
+  imaging,Cerebrovascular Circulation,CiteNeuroImageArticle,Cluster
+  Analysis,Cognition,Cognition:
+  physiology,Computer-Assisted,Electroencephalography,Electromyography,Electrooculography,Electrophysiology,Electroshock,Evoked
+  Potentials,Galvanic Skin Response,Galvanic Skin Response:
+  physiology,Humans,Male,Principal Component Analysis,Psychological
+  Tests,Signal Processing,Somatosensory,Somatosensory:
+  physiology,Visual,Visual: physiology}
+  \strng{namehash}{GM+1}
+  \strng{fullhash}{GMKAHSRBNPJ1}
+  \field{labelyear}{2003}
+  \field{sortinit}{G}
+  \field{abstract}{%
+  The precise role of the cortex in human anxiety is not well characterised.
+  Previous imaging research among healthy controls has reported alterations in
+  regional cerebral blood flow (rCBF) within the prefrontal and temporal
+  cortices during periods of anxious anticipation; however, the temporal
+  dynamics of this activity has yet to be examined in detail. The present study
+  examined cortical Steady State Probe Topography (SSPT) changes associated
+  with anticipatory anxiety (AA), allowing examination of the temporal
+  continuity and the excitatory or inhibitory nature of AA activations. We
+  recorded Steady State Visually Evoked Potentials (SSVEPs) at 64 scalp
+  locations, skin conductance, and self reported anxiety among 26 right-handed
+  males while relaxed and during the anticipation of an electric shock.
+  Relative to the baseline condition, the AA condition was associated with
+  significantly higher levels of self-reported anxiety and increased phasic
+  skin conductance levels. Across the seven second imaging window, AA was
+  associated with increased SSVEP latency within medial anterior frontal, left
+  dorsolateral prefrontal and bilateral temporal regions. In contrast,
+  increased SSVEP amplitude and decreased SSVEP latency were observed within
+  occipital regions. The observed SSVEP latency increases within frontal and
+  temporal cortical regions are suggestive of increased localised inhibitory
+  processes within regions reciprocally connected to subcortical limbic
+  structures. Occipital SSVEP latency decreases are suggestive of increased
+  excitatory activity. SSVEP amplitude increases within occipital regions may
+  be associated with an attentional shift from external to internal
+  environment. The current findings provide further support for the involvement
+  of frontal, anterior temporal, and occipital cortical regions during
+  anticipatory anxiety, and suggest that both excitatory and inhibitory
+  processes are associated with AA alterations.%
+  }
+  \verb{doi}
+  \verb 10.1016/S1053-8119(03)00401-4
+  \endverb
+  \field{issn}{1053-8119}
+  \field{number}{2}
+  \field{pages}{975\bibrangedash 986}
+  \field{title}{{Cortical neurophysiology of anticipatory anxiety: an
+  investigation utilizing steady state probe topography (SSPT).}}
+  \verb{url}
+  \verb http://www.ncbi.nlm.nih.gov/pubmed/14568467
+  \endverb
+  \field{volume}{20}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Gray et al. (2003) Cortical neu
+  \verb rophysiology of anticipatory anxiety an investigation utilizing steady
+  \verb state probe topography.pdf:pdf
+  \endverb
+  \field{journaltitle}{NeuroImage}
+  \field{month}{10}
+  \field{year}{2003}
+\endentry
+
+\entry{Herrmann2001}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Herrmann}{H.}%
+     {Christoph~S}{C.~S.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{CiteNeuroImageArticle,alpha,eeg,flicker,gamma,resonance,ssvep,steady-state
+  potentials}
+  \strng{namehash}{HCS1}
+  \strng{fullhash}{HCS1}
+  \field{labelyear}{2001}
+  \field{sortinit}{H}
+  \verb{doi}
+  \verb 10.1007/s002210100682
+  \endverb
+  \field{issn}{0014-4819}
+  \field{number}{3-4}
+  \field{pages}{346\bibrangedash 353}
+  \field{title}{{Human EEG responses to 1-100 Hz flicker: resonance phenomena
+  in visual cortex and their potential correlation to cognitive phenomena}}
+  \verb{url}
+  \verb http://www.springerlink.com/Index/10.1007/s002210100682
+  \endverb
+  \field{volume}{137}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Herrmann (2001) Human EEG respo
+  \verb nses to 1-100 Hz flicker resonance phenomena in visual cortex and their
+  \verb  potential correlation to cognitive phenomena.pdf:pdf
+  \endverb
+  \field{journaltitle}{Experimental Brain Research}
+  \field{month}{04}
+  \field{year}{2001}
+\endentry
+
+\entry{Kaufmann2011}{inproceedings}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Kaufmann}{K.}%
+     {T}{T}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hammer}{H.}%
+     {E~M}{E.~M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {K\"{u}bler}{K.}%
+     {Andrea}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{CiteNeuroImageArticle}
+  \strng{namehash}{KT+1}
+  \strng{fullhash}{KTHEMKA1}
+  \field{labelyear}{2011}
+  \field{sortinit}{K}
+  \field{booktitle}{5th International Brain-Computer Interface Conference}
+  \field{pages}{49\bibrangedash 52}
+  \field{title}{{ERPs contributing to classification in the P300 BCI}}
+  \verb{url}
+  \verb http://www.tobi-project.org/sites/default/files/public/Publications/103
+  \verb 91\_Kaufmann\_Graz.pdf
+  \endverb
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Kaufmann et al. (2011) ERPs con
+  \verb tributing to classification in the P300 BCI.pdf:pdf
+  \endverb
+  \field{year}{2011}
+\endentry
+
+\entry{Keerthi2006}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Keerthi}{K.}%
+     {S.~Sathiya}{S.~S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {DeCoste}{D.}%
+     {Dennis}{D.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {THE MIT PRESS}%
+  }
+  \keyw{CiteNeuroImageArticle,classification,conjugate gradient,linear svms}
+  \strng{namehash}{KSSDD1}
+  \strng{fullhash}{KSSDD1}
+  \field{labelyear}{2006}
+  \field{sortinit}{K}
+  \field{number}{1}
+  \field{pages}{341\bibrangedash 361}
+  \field{title}{{A modified finite Newton method for fast solution of large
+  scale linear SVMs}}
+  \verb{url}
+  \verb http://jmlr.csail.mit.edu/papers/volume6/keerthi05a/keerthi05a.pdf
+  \endverb
+  \field{volume}{6}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Keerthi et al (2005) A Modified
+  \verb  Finite Newton Method for Fast Solution of Large Scale Linear SVMs.pdf:
+  \verb pdf
+  \endverb
+  \field{journaltitle}{Journal of Machine Learning Research}
+  \field{year}{2006}
+\endentry
+
+\entry{Luck2005}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Luck}{L.}%
+     {Steven~J}{S.~J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {MIT Press}%
+  }
+  \keyw{CiteNeuroImageArticle}
+  \strng{namehash}{LSJ1}
+  \strng{fullhash}{LSJ1}
+  \field{labelyear}{2005}
+  \field{sortinit}{L}
+  \field{issn}{1465-7309}
+  \field{title}{{An Introduction to the Event-Related Potential Technique}}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Luck (2005) An Introduction to
+  \verb the Event-Related Potential Technique.PDF:PDF
+  \endverb
+  \field{month}{01}
+  \field{year}{2005}
 \endentry
 
 \entry{Pelli1997}{article}{}
   \name{author}{1}{}{%
     {{}%
      {Pelli}{P.}%
-     {Dennis~G.}{D.~G.}%
+     {Dennis~G}{D.~G.}%
      {}{}%
      {}{}}%
   }
@@ -95,9 +518,272 @@
   \verb oftware for visual psychophysics Transforming numbers into movies.pdf:p
   \verb df
   \endverb
-  \field{journaltitle}{Spat. Vis.}
+  \field{journaltitle}{Spatial vision}
   \field{month}{01}
   \field{year}{1997}
+\endentry
+
+\entry{Perlstein2003}{article}{}
+  \name{author}{6}{}{%
+    {{}%
+     {Perlstein}{P.}%
+     {William~M}{W.~M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cole}{C.}%
+     {Michael~A}{M.~A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Larson}{L.}%
+     {Michael}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kelly}{K.}%
+     {Kiesa}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Seignourel}{S.}%
+     {Paul}{P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Keil}{K.}%
+     {Andreas}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{1,CiteNeuroImageArticle,behavior,cognitive processes
+  that,extensive,involve maintaining and manipulating,is a set of,low
+  resolution electromagnetic tomography,prefrontal cortex,steady-state visual
+  evoked potentials,symbolic represen-,tations to guide
+  task-appropriate,wm,working memory}
+  \strng{namehash}{PWM+1}
+  \strng{fullhash}{PWMCMALMKKSPKA1}
+  \field{labelyear}{2003}
+  \field{sortinit}{P}
+  \verb{doi}
+  \verb 10.1016/S0304-3940(03)00226-X
+  \endverb
+  \field{issn}{03043940}
+  \field{number}{3}
+  \field{pages}{191\bibrangedash 195}
+  \field{title}{{Steady-state visual evoked potentials reveal
+  frontally-mediated working memory activity in humans}}
+  \verb{url}
+  \verb http://linkinghub.elsevier.com/retrieve/pii/S030439400300226X
+  \endverb
+  \field{volume}{342}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Perlstein et al. (2003) SSVEPs
+  \verb reveal frontally mediated working memory activity in humans.pdf:pdf
+  \endverb
+  \field{journaltitle}{Neuroscience Letters}
+  \field{month}{05}
+  \field{year}{2003}
+\endentry
+
+\entry{Regan1966}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Regan}{R.}%
+     {D}{D}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{Adult,CiteNeuroImageArticle,Color,Electroencephalography,Female,Humans,Light,Male,Occipital
+  Lobe,Occipital Lobe: physiology,Ocular,Potentiometry,Reaction
+  Time,Retina,Retina: physiology,Vision}
+  \strng{namehash}{RD1}
+  \strng{fullhash}{RD1}
+  \field{labelyear}{1966}
+  \field{sortinit}{R}
+  \field{issn}{0013-4694}
+  \field{number}{3}
+  \field{pages}{238\bibrangedash 248}
+  \field{title}{{Some characteristics of average steady-state and transient
+  responses evoked by modulated light}}
+  \verb{url}
+  \verb http://www.sciencedirect.com/science/article/pii/0013469466900885 http:
+  \verb //www.ncbi.nlm.nih.gov/pubmed/4160391
+  \endverb
+  \field{volume}{20}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Regan (1966) Some characteristi
+  \verb cs of average steady-state and transient responses evoked by modulated
+  \verb light.pdf:pdf
+  \endverb
+  \field{journaltitle}{Electroencephalography and Clinical Neurophysiology}
+  \field{month}{03}
+  \field{year}{1966}
+\endentry
+
+\entry{Sutton1965}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Sutton}{S.}%
+     {Samuel}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Braren}{B.}%
+     {Margery}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {John}{J.}%
+     {E~R}{E.~R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zubin}{Z.}%
+     {Joseph}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{CiteNeuroImageArticle}
+  \strng{namehash}{SS+1}
+  \strng{fullhash}{SSBMJERZJ1}
+  \field{labelyear}{1965}
+  \field{sortinit}{S}
+  \verb{doi}
+  \verb 10.1126/science.150.3700.1187
+  \endverb
+  \field{issn}{0036-8075}
+  \field{number}{3700}
+  \field{pages}{1187\bibrangedash 1188}
+  \field{title}{{Evoked-Potential Correlates of Stimulus Uncertainty}}
+  \verb{url}
+  \verb http://www.sciencemag.org/cgi/doi/10.1126/science.150.3700.1187
+  \endverb
+  \field{volume}{150}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Sutton et al. (1965) evoked-pot
+  \verb ential correlates stimulus uncertainty.pdf:pdf
+  \endverb
+  \field{journaltitle}{Science}
+  \field{month}{11}
+  \field{year}{1965}
+\endentry
+
+\entry{Suykens2002}{book}{}
+  \name{author}{5}{}{%
+    {{}%
+     {Suykens}{S.}%
+     {Johan A~K}{J.~A.~K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {{Van Gestel}}{V.}%
+     {Tony}{T.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {{De Brabanter}}{D.}%
+     {Jos}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {{De Moor}}{D.}%
+     {Bart}{B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Vandewalle}{V.}%
+     {Joos}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {World Scientific}%
+  }
+  \keyw{CiteNeuroImageArticle}
+  \strng{namehash}{SJAK+1}
+  \strng{fullhash}{SJAKVTDJDBVJ1}
+  \field{labelyear}{2002}
+  \field{sortinit}{S}
+  \field{title}{{Least squares support vector machines}}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Suykens et al. Least Squares Su
+  \verb pport Vector Machines.pdf:pdf
+  \endverb
+  \field{year}{2002}
+\endentry
+
+\entry{Vialatte2010}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Vialatte}{V.}%
+     {Fran\c{c}ois-Beno\^{\i}t}{F.-B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Maurice}{M.}%
+     {Monique}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dauwels}{D.}%
+     {Justin}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Cichocki}{C.}%
+     {Andrzej}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{Animals,Binocular,Binocular: physiology,Brain Diseases,Brain Diseases:
+  physiopathology,Brain Mapping,Brain Mapping:
+  methods,CiteNeuroImageArticle,Cognition,Cognition:
+  physiology,Electroencephalography,Evoked
+  Potentials,Humans,Vision,Visual,Visual Cortex,Visual Cortex: anatomy \&
+  histology,Visual Cortex: physiology,Visual Pathways,Visual Pathways: anatomy
+  \& histology,Visual Pathways: physiology,Visual Perception,Visual Perception:
+  physiology,Visual: physiology}
+  \strng{namehash}{VFB+1}
+  \strng{fullhash}{VFBMMDJCA1}
+  \field{labelyear}{2010}
+  \field{sortinit}{V}
+  \field{abstract}{%
+  After 40 years of investigation, steady-state visually evoked potentials
+  (SSVEPs) have been shown to be useful for many paradigms in cognitive (visual
+  attention, binocular rivalry, working memory, and brain rhythms) and clinical
+  neuroscience (aging, neurodegenerative disorders, schizophrenia, ophthalmic
+  pathologies, migraine, autism, depression, anxiety, stress, and epilepsy).
+  Recently, in engineering, SSVEPs found a novel application for SSVEP-driven
+  brain-computer interface (BCI) systems. Although some SSVEP properties are
+  well documented, many questions are still hotly debated. We provide an
+  overview of recent SSVEP studies in neuroscience (using implanted and scalp
+  EEG, fMRI, or PET), with the perspective of modern theories about the visual
+  pathway. We investigate the steady-state evoked activity, its properties, and
+  the mechanisms behind SSVEP generation. Next, we describe the SSVEP-BCI
+  paradigm and review recently developed SSVEP-based BCI systems. Lastly, we
+  outline future research directions related to basic and applied aspects of
+  SSVEPs.%
+  }
+  \verb{doi}
+  \verb 10.1016/j.pneurobio.2009.11.005
+  \endverb
+  \field{issn}{1873-5118}
+  \field{number}{4}
+  \field{pages}{418\bibrangedash 38}
+  \field{title}{{Steady-state visually evoked potentials: focus on essential
+  paradigms and future perspectives}}
+  \verb{url}
+  \verb http://www.ncbi.nlm.nih.gov/pubmed/19963032
+  \endverb
+  \field{volume}{90}
+  \verb{file}
+  \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Vialatte et al. (2010) SSVEPs f
+  \verb ocus on essential paradigms and future perspectives.pdf:pdf
+  \endverb
+  \field{journaltitle}{Progress in neurobiology}
+  \field{month}{04}
+  \field{year}{2010}
 \endentry
 
 \lossort

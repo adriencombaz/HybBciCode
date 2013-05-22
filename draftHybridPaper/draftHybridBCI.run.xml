@@ -82,8 +82,7 @@
       <file>draftHybridBCI-blx.bib</file>
     </requires>
     <requires type="editable">
-      <file>d:/KULeuven/PhD/MendeleyBiblioAbbr.bib</file>
-      <file>d:/KULeuven/PhD/Publish/JournalPublications/Neuroimage/draft/AdditionalBiblioAbbr.bib</file>
+      <file>d:/KULeuven/PhD/MendeleyBiblio.bib</file>
     </requires>
     <requires type="static">
       <file>biblatex.bst</file>

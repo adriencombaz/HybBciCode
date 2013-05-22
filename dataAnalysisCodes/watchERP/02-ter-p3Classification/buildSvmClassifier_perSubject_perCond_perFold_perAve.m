@@ -1,4 +1,4 @@
-function buildSvmClassifier_perSubject_perCond_perFold_perAve( iSList, iCList, iFList, iAveList )
+function buildSvmClassifier_perSubject_perCond_perFold_perAve( iSList, iCList, iFList, iAveList, doEpochRejection )
 
 % init host name
 %--------------------------------------------------------------------------
@@ -54,7 +54,8 @@ tBeforeOnset = 0;
 tAfterOnset = .6;
 nSPcomp = 4;
 butterFilt.lowMargin = .5;
-butterFilt.highMargin = 30;
+% butterFilt.highMargin = 30;
+butterFilt.highMargin = 20;
 butterFilt.order = 3;
 targetFS = 128;
 
@@ -63,6 +64,9 @@ for iS = iSList
     
     [dum1 folderName dum2] = fileparts(cd);
     resDir = fullfile( resDir, folderName, 'LinSvm_temp', sprintf('subject_%s', sub{iS}) );
+    if doEpochRejection,
+        resDir = [resDir '_EpochRejection'];
+    end
     if ~exist( resDir, 'dir' ), mkdir(resDir); end
     
     
@@ -109,6 +113,12 @@ for iS = iSList
             %------------------------------------------------------------------------------
             cuts = erpData.getCuts2(); % single( erpData.getCuts2() );
             cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
+            
+            % reject epochs
+            %------------------------------------------------------------------------------
+            if doEpochRejection,
+                erpData.markEpochsForRejection('minMax', 'proportion', .15);
+            end
             
             % spatial filtering
             %------------------------------------------------------------------------------

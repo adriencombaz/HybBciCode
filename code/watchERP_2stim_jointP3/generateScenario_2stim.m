@@ -6,9 +6,9 @@ ssvepColor = [1 1 1]; % white
 % ssvepAlpha = .75; % 0: fully transparent, 1: fully opaque
 ssvepAlpha = .4; % 0: fully transparent, 1: fully opaque
 dimmedColor = 'white'; % 'white' 'grey' 'yellow'
-% flashStyle = 'newColor'; % 'combine' 'newColor'
-% flashImage = 'red-disk-medium'; % 'black-pixel' 'red-disk-medium', for 'overlap' case
-% flashColor = 'yellow'; % 'white' 'grey' 'yellow' for 'newColor' case
+flashStyle = 'newColor'; % 'combine' 'newColor'
+flashImage = 'red-disk-medium'; % 'black-pixel' 'red-disk-medium', for 'overlap' case
+flashColor = 'yellow'; % 'white' 'grey' 'yellow' for 'newColor' case
 
 alphaFactorDim = .5;
 alphaFactorFlash = 1;
@@ -25,24 +25,24 @@ scrPos          = Screen('Rect', desiredScreenID);
 % eltSizeV        = 175; % for 1920x1200
 % SSVEPMarginH    = 80; % for 1920x1200
 % SSVEPMarginV    = 80; % for 1920x1200
-eltSizeH        = 150; % for 1920x1200
-eltSizeV        = 150; % for 1920x1200
+eltSizeH        = 160; % for 1920x1200
+eltSizeV        = 160; % for 1920x1200
 SSVEPMarginH    = 70; % for 1920x1200
 SSVEPMarginV    = 70; % for 1920x1200
 eltGapH         = eltSizeH;
 eltGapV         = eltSizeV;
-SSVEPGapH       = 600;
+SSVEPGapH       = 300;
 SSVEPGapV       = 100; % not useful here as ssvepMatrix(1) = 1, but well, for later will be nice
 
 
 eltSizeH_flash  = round( sizeFactorFlash * eltSizeH );
 hPadd           = eltSizeH_flash - eltSizeH;
 hPaddL          = round(hPadd/2);
-% hPaddR          = hPadd - hPaddL;
+hPaddR          = hPadd - hPaddL;
 eltSizeV_flash  = round( sizeFactorFlash * eltSizeV );
 vPadd           = eltSizeV_flash - eltSizeV;
 vPaddT          = round(vPadd/2);
-% vPaddB          = vPadd - vPaddT;
+vPaddB          = vPadd - vPaddT;
 
 if hPaddL > SSVEPMarginH || vPaddT > SSVEPMarginV
     error('generateScenario_2stim:outOfFlickerArea', 'flashed object will be out the flickering area. Increase SSVEP margin or decrease sizeFactorFlash');
@@ -93,15 +93,12 @@ if ~exist(texturesDir, 'dir'), mkdir(texturesDir); end
 %%
 %==========================================================================
 % imStartV    = round( ( scrPos(4) - (ssvepMatrix(1)-1)*SSVEPGapV - ssvepMatrix(1)*SSVEPSizeV + vPaddT + vPaddB ) / 2 );
-% imStartH    = round( ( scrPos(3) - (ssvepMatrix(2)-1)*S SVEPGapH - ssvepMatrix(2)*SSVEPSizeH + hPaddL + hPaddR ) / 2 );
+% imStartH    = round( ( scrPos(3) - (ssvepMatrix(2)-1)*SSVEPGapH - ssvepMatrix(2)*SSVEPSizeH + hPaddL + hPaddR ) / 2 );
 % imEndV      = scrPos(4) - imStartV;
 % imEndH      = scrPos(3) - imStartH;
 
-% imSizeH = ssvepMatrix(2)*SSVEPSizeH + (ssvepMatrix(2)-1)*SSVEPGapH - 2*SSVEPMarginH + hPaddL + hPaddR;
-% imSizeV = ssvepMatrix(1)*SSVEPSizeV + (ssvepMatrix(1)-1)*SSVEPGapV - 2*SSVEPMarginV + vPaddT + vPaddB;
-imSizeH = SSVEPSizeH;
-imSizeV = SSVEPSizeV;
-
+imSizeH = ssvepMatrix(2)*SSVEPSizeH + (ssvepMatrix(2)-1)*SSVEPGapH - 2*SSVEPMarginH + hPaddL + hPaddR;
+imSizeV = ssvepMatrix(1)*SSVEPSizeV + (ssvepMatrix(1)-1)*SSVEPGapV - 2*SSVEPMarginV + vPaddT + vPaddB;
 generateStimuli();
 sc = generateScenarioAndStimuli();
 sc.texturesDir = fullfile(cd, texturesDir);
@@ -126,58 +123,120 @@ sc.texturesDir = fullfile(cd, texturesDir);
         
         %--------------------------------------------------------------------------
         % P3 stimuli
-        for iSsvep = 1:nSsvep % for each ssvep square
-        
-            for iStim = 1:nItems+1 % for each stimulus
-        
-                stimImage = zeros(imSizeV, imSizeH, 3, 'uint8');
-                stimAlpha = zeros(imSizeV, imSizeH, 'uint8');
-        
-                for iIcon = 1:nItems % for each icon composing the stimulus
-        
-                    indImToRead     = (iSsvep-1)*nItems + iIcon;
-                    [vPosInMatrix hPosInMatrix] = ind2sub(eltMatrix, iIcon);
+                
+        % for each stimuli
+        for iStim = 1:nItems
+            
+            stimImage = zeros(imSizeV, imSizeH, 3, 'uint8');
+            stimAlpha = zeros(imSizeV, imSizeH, 'uint8');
+            
+            % draw all icons
+            for iIcon = 1:nItems
+                
+                [vPosInMatrix hPosInMatrix] = ind2sub(eltMatrix, iIcon);
+                
+                distFromLeft    = (hPosInMatrix-1) * ( eltSizeH + eltGapH );
+                distFromTop     = (vPosInMatrix-1) * ( eltSizeV + eltGapV );
+                
+                for iSSVEP = 1:nSsvep
                     
-                    distFromLeft    = SSVEPMarginH + (hPosInMatrix-1) * ( eltSizeH + eltGapH );
-                    distFromTop     = SSVEPMarginV + (vPosInMatrix-1) * ( eltSizeV + eltGapV );
-        
-                    if iIcon == iStim % if target icon
-                        hRange          = distFromLeft - hPaddL + (1:eltSizeH_flash);
-                        vRange          = distFromTop - vPaddT + (1:eltSizeV_flash);
+                    [vIndSsvep hIndSsvep] = ind2sub(ssvepMatrix, iSSVEP);
+                    distFromLeft    = distFromLeft + (hIndSsvep-1)*(SSVEPSizeH+SSVEPGapH);
+                    distFromTop     = distFromTop + (vIndSsvep-1)*(SSVEPSizeV+SSVEPGapV);
+                    indImToRead     = (iSSVEP-1)*nItems + iIcon;
+                    % if target icon
+                    if iIcon == iStim
                         
-                        flashImageName = [imageName{indImToRead} '-yellow.png'];
+                        hRange          = distFromLeft + (1:eltSizeH_flash);
+                        vRange          = distFromTop + (1:eltSizeV_flash);
+                        switch flashStyle
+                            case 'combine'
+                                [A1, ~, alpha1]  = imread(dimmedImageName{indImToRead});
+                                A1               = imresize(A1, [eltSizeH_flash, eltSizeV_flash]);
+                                alpha1           = imresize(alpha1, [eltSizeH_flash, eltSizeV_flash]);
+                                
+                                [A2, ~, alpha2]  = imread( fullfile(texturesDir, [flashImage '.png']) );
+                                A2               = imresize(A2, [eltSizeH_flash, eltSizeV_flash]);
+                                alpha2           = imresize(alpha2, [eltSizeH_flash, eltSizeV_flash]);
+                                
+                                A = ( 1 - repmat(alpha2,[1 1 3]) / 255 ) .* A1 + ( repmat(alpha2,[1,1,3]) / 255 ) .* A2;
+                                %                             alpha   = max(alpha1, alpha2);
+                                
+                                stimImage(vRange, hRange, :) = A;
+                                stimAlpha(vRange, hRange)    = max(alphaFactorFlash*alpha1, alpha2);
+                                
+                                
+                            case 'newColor'
+                                
+                                switch flashColor
+                                    case 'white'
+                                        flashImageName = [imageName{indImToRead} '.png'];
+                                    case 'grey'
+                                        flashImageName = [imageName{indImToRead} '-grey.png'];
+                                    case 'yellow'
+                                        flashImageName = [imageName{indImToRead} '-yellow.png'];
+                                end
+                                
+                                [A, ~, alpha]   = imread(flashImageName);
+                                A               = imresize(A, [eltSizeH_flash, eltSizeV_flash]);
+                                alpha           = imresize(alpha, [eltSizeH_flash, eltSizeV_flash]);
+                                
+                                stimImage( vRange, hRange, :) = A;
+                                stimAlpha( vRange, hRange)    = alphaFactorFlash*alpha;
+                                
+                        end
                         
-                        [A, ~, alpha]   = imread(flashImageName);
-                        A               = imresize(A, [eltSizeH_flash, eltSizeV_flash]);
-                        alpha           = imresize(alpha, [eltSizeH_flash, eltSizeV_flash]);
-                        
-                        stimImage( vRange, hRange, : ) = A;
-                        stimAlpha( vRange, hRange )    = alphaFactorFlash*alpha;
-                        
-                        
-                    else % if non-target icon
-                        
-                        hRange          = distFromLeft + (1:eltSizeH);
-                        vRange          = distFromTop + (1:eltSizeV);
+                        % if non target icon
+                    else
+                        hRange          = distFromLeft + hPaddL + (1:eltSizeH);
+                        vRange          = distFromTop + vPaddT + (1:eltSizeV);
                         
                         [A, ~, alpha]   = imread(dimmedImageName{indImToRead});
                         A               = imresize(A, [eltSizeH, eltSizeV]);
                         alpha           = imresize(alpha, [eltSizeH, eltSizeV]);
                         
-                        stimImage( vRange, hRange, : ) = A;
-                        stimAlpha( vRange, hRange )    = alphaFactorDim*alpha;
+                        stimImage( vRange, hRange, :) = A;
+                        stimAlpha( vRange, hRange)    = alphaFactorDim*alpha;
                         
                     end
                     
-                end % OF iIcon LOOP
-                
-                if ~isequal(size(stimImage), [imSizeV, imSizeH, 3]), error('wrong image size'); end
-                indStim = (iSsvep-1)*(nItems+1) + iStim;
-                imwrite(stimImage, [texturesDir sprintf('stimulus-%.2d.png', indStim)], 'Alpha', stimAlpha);
-
-            end % OF iStim LOOP
+                end
+            end
+            
+            % save the stimulus
+            if ~isequal(size(stimImage), [imSizeV, imSizeH, 3]), error('wrong image size'); end
+            imwrite(stimImage, [texturesDir sprintf('stimulus-%.2d.png', iStim)], 'Alpha', stimAlpha);
+        end
         
-        end % OF iSsvep LOOP
+        % no flash stimulus
+        stimImage = zeros(imSizeV, imSizeH, 3, 'uint8');
+        stimAlpha = zeros(imSizeV, imSizeH, 'uint8');
+        for iIcon = 1:nItems
+            
+            [vPosInMatrix hPosInMatrix] = ind2sub(eltMatrix, iIcon);
+            
+            distFromLeft    = (hPosInMatrix-1) * ( eltSizeH + eltGapH );
+            distFromTop     = (vPosInMatrix-1) * ( eltSizeV + eltGapV );
+            
+            for iSSVEP = 1:nSsvep
+                
+                [vIndSsvep hIndSsvep] = ind2sub(ssvepMatrix, iSSVEP);
+                distFromLeft    = distFromLeft + (hIndSsvep-1)*(SSVEPSizeH+SSVEPGapH);
+                distFromTop     = distFromTop + (vIndSsvep-1)*(SSVEPSizeV+SSVEPGapV);
+                indImToRead     = (iSSVEP-1)*nItems + iIcon;
+                
+                hRange          = distFromLeft + hPaddL + (1:eltSizeH);
+                vRange          = distFromTop + vPaddT + (1:eltSizeV);
+                
+                [A, ~, alpha]   = imread(dimmedImageName{indImToRead});
+                A               = imresize(A, [eltSizeH, eltSizeV]);
+                alpha           = imresize(alpha, [eltSizeH, eltSizeV]);
+                
+                stimImage( vRange, hRange, :) = A;
+                stimAlpha( vRange, hRange)    = alpha/2;
+            end
+        end
+        imwrite(stimImage, [texturesDir sprintf('stimulus-%.2d.png', nItems+1)], 'Alpha', stimAlpha);
         
     end
 
@@ -190,21 +249,15 @@ sc.texturesDir = fullfile(cd, texturesDir);
         %==========================================================================
         
         %--------------------------------------------------------------------------
-        % P300 stimuli
-        P300StimPos = zeros(nSsvep, 4);
-        for iSsvep = 1:nSsvep
-            
-            [vIndSsvep hIndSsvep]   = ind2sub(ssvepMatrix, iSsvep);
-            distFromLeft            = ssvepStartH + (hIndSsvep-1)*(SSVEPSizeH+SSVEPGapH);
-            distFromTop             = ssvepStartV + (vIndSsvep-1)*(SSVEPSizeV+SSVEPGapV);
-            hEnd                    = distFromLeft + imSizeH;
-            vEnd                    = distFromTop + imSizeV;
-            P300StimPos(iSsvep, :)  = [ distFromLeft+1 distFromTop+1 hEnd vEnd ];
-            
-        end
-        %--------------------------------------------------------------------------
-        % Cue stimuli
+        % P300 and cue stimuli
+        hStart      = round( (scrPos(3) - imSizeH)/2 );
+        vStart      = round( (scrPos(4) - imSizeV)/2 );
+        hEnd        = hStart + imSizeH;
+        vEnd        = vStart + imSizeV;
+        P300StimPos = [ hStart+1 vStart+1 hEnd vEnd ];
+        
         CuePos      = zeros(nSsvep*nItems, 4); % for .xml scenario (and PTB)
+        
         for iSsvep = 1:nSsvep
             
             [vIndSsvep hIndSsvep] = ind2sub(ssvepMatrix, iSsvep);
@@ -255,12 +308,11 @@ sc.texturesDir = fullfile(cd, texturesDir);
         %--------------------------------------------------------------------------
         % textures
         sc.textures(1).filename = 'ssvep-pixel.png';                                % SSVEP texture
-        for iStim = 1:nSsvep*(nItems+1)
+        for iStim = 1:nItems+1
             sc.textures(iStim+1).filename = sprintf('stimulus-%.2d.png', iStim);    % P3 textures
         end
-%         sc.textures(nSsvep*(nItems+1)+2).filename = 'target-crosshair.png';                    % cue texture
-        sc.textures(nSsvep*(nItems+1)+2).filename = 'target-crosshair-yellow2.png';                             % cue texture
-        
+        sc.textures(nItems+3).filename = 'target-crosshair.png';                    % cue texture
+
         %--------------------------------------------------------------------------
         % Events
         sc.events(1).desc = 'start event';
@@ -312,50 +364,48 @@ sc.texturesDir = fullfile(cd, texturesDir);
         
         %--------------------------------------------------------------------------
         % P300 stimuli
-        for iSsvep = 1:nSsvep
+        sc.stimuli(nSsvep+1).description               = 'P300 stimulus';
+        sc.stimuli(nSsvep+1).stateSequence             = 1;
+        sc.stimuli(nSsvep+1).durationSequenceInSec     = Inf;
+        sc.stimuli(nSsvep+1).desired.position          = P300StimPos;
+        iState = 1;
+        sc.stimuli(nSsvep+1).eventMatrix = zeros(2*nItems+1);
+        for iS = 1:nItems
+            sc.stimuli(nSsvep+1).states(iState).views.iTexture  = iS+1;    % real
+            sc.stimuli(nSsvep+1).states(iState+1).views.iTexture  = iS+1;  % fake
             
-            sc.stimuli(nSsvep+iSsvep).description               = 'P300 stimulus';
-            sc.stimuli(nSsvep+iSsvep).stateSequence             = 1;
-            sc.stimuli(nSsvep+iSsvep).durationSequenceInSec     = Inf;
-            sc.stimuli(nSsvep+iSsvep).desired.position          = P300StimPos( iSsvep, : );
-            iState = 1;
-            sc.stimuli(nSsvep+iSsvep).eventMatrix = zeros(2*nItems+1);
-            for iS = 1:nItems
-                sc.stimuli(nSsvep+iSsvep).states(iState).views.iTexture     = (iSsvep-1)*(nItems+1)+iS+1;       % real
-                sc.stimuli(nSsvep+iSsvep).states(iState+1).views.iTexture   = (iSsvep-1)*(nItems+1)+iS+1;       % fake
-                
-                sc.stimuli(nSsvep+iSsvep).eventMatrix(iState, 2:2:2*nItems) = find( cellfun( @(x) strcmp(x, 'P300 stim off'), {sc.events(:).desc} ) ); % from real to fake (reset binary marker)
-                sc.stimuli(nSsvep+iSsvep).eventMatrix(iState+1, 1:2:2*nItems-1) = find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from fake to real (set binary marker)
-                
-                iState = iState+2;
-            end
+            sc.stimuli(nSsvep+1).eventMatrix(iState, 2:2:2*nItems) = find( cellfun( @(x) strcmp(x, 'P300 stim off'), {sc.events(:).desc} ) ); % from real to fake (reset binary marker)
+            sc.stimuli(nSsvep+1).eventMatrix(iState+1, 1:2:2*nItems-1) = find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from fake to real (set binary marker)
             
-            sc.stimuli(nSsvep+iSsvep).states(iState).views.iTexture  = iSsvep*(nItems+1)+1; 
-            sc.stimuli(nSsvep+iSsvep).eventMatrix(2*nItems+1, 1:2:2*nItems-1) = ...
-                find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from nothing to real (set binary marker)
-            sc.stimuli(nSsvep+iSsvep).eventMatrix(1:2:2*nItems-1, 2*nItems+1) = ...
-                find( cellfun( @(x) strcmp(x, 'P300 stim off'), {sc.events(:).desc} ) ); % from real to nothing (reset binary marker)
-            
+            iState = iState+2;
         end
+        
+        sc.stimuli(nSsvep+1).states(iState).views.iTexture  = nItems+2;
+        sc.stimuli(nSsvep+1).eventMatrix(2*nItems+1, 1:2:2*nItems-1) = ...
+            find( cellfun( @(x) strcmp(x, 'P300 stim on'), {sc.events(:).desc} ) ); % from nothing to real (set binary marker)
+        sc.stimuli(nSsvep+1).eventMatrix(1:2:2*nItems-1, 2*nItems+1) = ...
+            find( cellfun( @(x) strcmp(x, 'P300 stim off'), {sc.events(:).desc} ) ); % from real to nothing (reset binary marker)
+
+        
         
         %--------------------------------------------------------------------------
         % cue stimulus
-        sc.stimuli(2*nSsvep+1).description               = 'Look here stimulus';
-        sc.stimuli(2*nSsvep+1).stateSequence             = 1;
-        sc.stimuli(2*nSsvep+1).durationSequenceInSec     = Inf;
-        sc.stimuli(2*nSsvep+1).desired.position          = [0 0 0 0];
+        sc.stimuli(nSsvep+2).description               = 'Look here stimulus';
+        sc.stimuli(nSsvep+2).stateSequence             = 1;
+        sc.stimuli(nSsvep+2).durationSequenceInSec     = Inf;
+        sc.stimuli(nSsvep+2).desired.position          = [0 0 0 0];
         for iEl = 1:nSsvep*nItems
-            sc.stimuli(2*nSsvep+1).states(iEl).position         = CuePos(iEl, :);
-            sc.stimuli(2*nSsvep+1).states(iEl).views.iTexture   = nSsvep*(nItems+1)+2;
-            sc.stimuli(2*nSsvep+1).states(iEl).frequency      = 2;
+            sc.stimuli(nSsvep+2).states(iEl).position = CuePos(iEl, :);
+            sc.stimuli(nSsvep+2).states(iEl).views.iTexture = nItems+3;
         end
-        sc.stimuli(2*nSsvep+1).states(nSsvep*nItems+1).position = [0 0 0 0];
-        sc.stimuli(2*nSsvep+1).states(nSsvep*nItems+1).views.iTexture = 0;
-        sc.stimuli(2*nSsvep+1).eventMatrix = zeros(nSsvep*nItems+1);
-        sc.stimuli(2*nSsvep+1).eventMatrix(nSsvep*nItems+1, 1:nSsvep*nItems) = ...
+        sc.stimuli(nSsvep+2).states(nSsvep*nItems+1).position = [0 0 0 0];
+        sc.stimuli(nSsvep+2).states(nSsvep*nItems+1).views.iTexture = 0;
+        sc.stimuli(nSsvep+2).eventMatrix = zeros(nSsvep*nItems+1);
+        sc.stimuli(nSsvep+2).eventMatrix(nSsvep*nItems+1, 1:nSsvep*nItems) = ...
             find( cellfun( @(x) strcmp(x, 'Cue on'), {sc.events(:).desc} ) );
-        sc.stimuli(2*nSsvep+1).eventMatrix(1:nSsvep*nItems, nSsvep*nItems+1) = ...
+        sc.stimuli(nSsvep+2).eventMatrix(1:nSsvep*nItems, nSsvep*nItems+1) = ...
             find( cellfun( @(x) strcmp(x, 'Cue off'), {sc.events(:).desc} ) );
+        
         
     end
 

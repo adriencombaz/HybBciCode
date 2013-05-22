@@ -3,8 +3,10 @@ rm(list = ls())
 library(ggplot2)
 library(reshape2)
 library(ez)
+library(gridExtra) # for grid.arrange function
+library(plyr)
 
-source("d:/KULeuven/PhD/rLibrary/plot_set.R")
+source("cleanPlot.R")
 
 for (iS in 1:8)
 {
@@ -40,6 +42,11 @@ for (iS in 1:8)
 }
 accData$condition <- droplevels(accData)$condition
 
+accData$condition = relevel(accData$condition, "hybrid-15Hz")
+accData$condition = relevel(accData$condition, "hybrid-12Hz")
+accData$condition = relevel(accData$condition, "hybrid-10Hz")
+accData$condition = relevel(accData$condition, "hybrid-8-57Hz")
+
 # temp <- subset(accData, nAverages == 1)
 # temp2 <- subset(accData, nAverages == 5)
 # temp3 <- subset(accData, nAverages == 10)
@@ -47,8 +54,36 @@ accData$condition <- droplevels(accData)$condition
 # 
 # accData$nAverages <- droplevels(accData)$nAverages
 
+accData$frequency <- accData$condition
+accData$frequency <- revalue(accData$frequency
+        , c("hybrid-8-57Hz"="8.57"
+            , "hybrid-10Hz"="10"
+            , "hybrid-12Hz"="12"
+            , "hybrid-15Hz"="15"
+            )
+        )
+# accData$frequency <- as.numeric(accData$frequency)
+
+
 str(accData)
 summary(accData)
+
+
+
+
+# source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
+# factorList <- c("nAverages", "frequency", "classifier")
+# outcome <- "accuracy"
+# dataframe <- accData
+# plotFactorMeans_InteractionGraphs(dataframe, factorList, outcome)
+# 
+# 
+# 
+
+
+
+
+
 
 # graph
 fontsize <- 12;
@@ -78,6 +113,8 @@ barplot <- barplot + theme(
   , strip.background = element_blank()
   )
 barplot
+
+
 
 #------------------------------------------------------------------------------------------------------
 # SIMPLE RM ANOVA (using anova() from car)
@@ -152,6 +189,76 @@ pairwise.t.test( accData$accuracy
                  , paired=TRUE
                  , p.adjust.method="bonferroni"
 )
+
+
+
+
+
+factorList <- c("nAverages", "condition", "classifier")
+outcome <- "accuracy"
+# originalLevels <- c( levels(as.factor(accData$nAverages)), levels(as.factor(accData$condition)), levels(as.factor(accData$classifier)) )
+originalLevels <- levels( as.factor( accData[[factorList[1]]] ) )
+for (ii in 2:length(factorList)){
+  originalLevels <- c( originalLevels, levels( as.factor( accData[[factorList[ii]]] ) ) ) 
+}
+
+datasetPlot <- melt( subset(accData, select = c(factorList, outcome) ), id=outcome )
+datasetPlot$value <- as.factor(datasetPlot$value)
+datasetPlot$value <- factor(datasetPlot$value, levels = originalLevels)
+
+factorBar <- ggplot(datasetPlot, aes(value, accuracy))
+factorBar <- factorBar + stat_summary(fun.y = mean, geom = "bar", fill = "White", colour = "Black") 
+factorBar <- factorBar + stat_summary(fun.data = mean_cl_boot, geom = "pointrange") 
+factorBar <- factorBar + facet_wrap(~variable, scales="free_x")
+factorBar
+
+# pdf("test.pdf", width = 16, height = 10)
+fontsize = 9
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(3, 3)))
+
+factorList <- levels( datasetPlot$variable )
+for (ii in 1:length(factorList)) {
+  
+  xFactor <- factorList[ii]
+  colFactor <- factorList[-ii]
+  for (jj in 1:length(colFactor)) {
+    
+    intPlot <- ggplot( accData, aes_string( x = xFactor, y = "accuracy", colour = colFactor[jj] ) )
+    intPlot <- intPlot + stat_summary( fun.y = mean, geom = "point" )
+    intPlot <- intPlot + stat_summary(fun.y = mean, geom = "line", aes_string(group= colFactor[jj]) )
+    intPlot <- intPlot + stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = 0.2 )
+    intPlot <- intPlot + labs(x = xFactor, y = "accuracy", colour = colFactor[jj]) + theme(axis.text.x=element_text(angle=90, hjust=0))
+    intPlot <- intPlot + theme(
+      panel.background =  element_rect(fill='white')
+      ,panel.grid.major = element_line(colour = "black", size = 0.5, linetype = "dotted")
+      #   ,panel.grid.minor = element_line(colour = "black", size = 0.5, linetype = "dotted")
+      #   , panel.grid.major = element_blank() # switch off major gridlines
+      , panel.grid.minor = element_blank() # switch off minor gridlines
+      , axis.ticks = element_line(colour = 'black')
+      , axis.line = element_line(colour = 'black')
+      , panel.border = theme_border(c("left","bottom"), size=0.25)
+      , axis.title.y = element_text(face="plain", size = fontsize, angle=90, colour = 'black')
+      , axis.title.x = element_text(face="plain", size = fontsize, angle=0, colour = 'black')
+      , axis.text.x = element_text(face="plain", size = fontsize, colour = 'black')
+      , axis.text.y = element_text(face="plain", size = fontsize, colour = 'black')
+      , plot.title = element_text(face="plain", size = fontsize, colour = "black")
+      , legend.text = element_text(face="plain", size = fontsize)
+      , legend.title = element_text(face="plain", size = fontsize)
+      , strip.background = element_blank()
+    )
+    print(intPlot, vp = viewport(layout.pos.row = which( factorList == colFactor[jj] ), layout.pos.col = ii) )
+  }  
+}
+
+
+
+interactionBar <- ggplot(accData, aes(nAverages, accuracy, colour = condition))
+interactionBar <- interactionBar + stat_summary( fun.y = mean, geom = "point", position = position_dodge(.5) )
+interactionBar <- interactionBar + stat_summary(fun.y = mean, geom = "line", aes(group= condition), position = position_dodge(.5) )
+interactionBar <- interactionBar + stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = 0.2, position = position_dodge(.5) )
+interactionBar <- interactionBar + labs(x = "nAverages", y = "correctness", colour = "condition") 
+interactionBar
 
 
 

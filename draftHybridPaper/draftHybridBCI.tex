@@ -6,6 +6,8 @@
 \acrodef{BCI}{Brain-Computer Interface}
 \acrodef{ERP}{Event Related Potential}
 \acrodef{SVM}{Support Vector Machine}
+\acrodef{EEG}{electroencephalography}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,7 +22,6 @@
 \renewcommand\Authands{ and } % remove the comma before "and"
 
 \begin{document}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                           FRONTMATTER
@@ -50,10 +51,25 @@ Conclusion:
 \label{sec:1Intro}
 
 % General BCI
+\acp{BCI} aim at decoding the brain activity in order to provide a direct communication channel between the brain and an external device.
+In this study, the brain activity is recorded using \ac{EEG}, which offer the advantage over other method (\emph{e.g.} micro electrodes, fMRI \ldots) to be non-invasive and easy to set up.
 
 % P3 BCI, definition, plus and minus
+Some of the earliest \ac{EEG}-\ac{BCI} systems were based on the P3 component of the \ac{ERP} (\cite{Farwell1988, Donchin2000}).
+The P3 is a positive deflection in the EEG time-locked to salient stimuli presented in an oddball paradigm, typically evoked over the parietal cortex, and occurs between \SIlist[list-units = single]{200;500}{\ms} after stimulus onset \cite{Sutton1965}.
+Although those \acp{BCI} rely mostly on the P3 component, other components (\emph{e.g.}, occipital N1 and/or N200) may also be used for ERP detection \cite{Bianchi2010, Kaufmann2011}, for this reason we prefer here to use the term \emph{oddball-based \acp{BCI}}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% pluses and minuses %%%%%%%%%%%%%%%
 
 % SSVEP BCI, definition, plus and minus
+Other systems of interest are \acp{BCI} based on \acp{SSVEP}.
+They rely on the psychophysiological properties of the EEG brain responses recorded from the occipital cortex during the periodic presentation of identical visual stimuli (\emph{i.e.} flickering stimuli).
+When the periodic presentation is at a sufficiently high rate (\SI{>6}{\Hz}), stable and synchronized neural oscillations at the stimulus frequency and its harmonics are evoked over the visual cortex \cite{Regan1966, Herrmann2001, Luck2005}.
+Such \acp{BCI} are particularly attractive because \acp{SSVEP} have high signal-to-noise ratios and are less susceptible to eye movement and blink artifacts \cite{Perlstein2003} as well as electromyographic artifacts \cite{Gray2003}.
+Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy subjects (see \cite{Vialatte2010} for a review).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% pluses and minuses %%%%%%%%%%%%%%%
+
 
 % Hybrid BCI: definition
 
@@ -94,8 +110,8 @@ Conclusion:
         N subjects participated in the experiment (age, gender).
 
         % exp description
-        As shown in \autoref{fig:stimSeq}, a typical \emph{stimulation cycle}, started with a \SI{2000}{\ms} cue, indicating the participant his/her target item, followed by a \SI{1000}{\ms} pause during which the cue disappears and all icons remained gray.
-        The background rectangle then started to flicker and the oddball stimulation started \SI{500}{\ms} later.
+        As shown in \autoref{fig:stimSeq}, a typical \emph{stimulation cycle}, starts with a \SI{2000}{\ms} cue, indicating the participant his/her target item, followed by a \SI{1000}{\ms} pause during which the cue disappears and all icons remained gray.
+        The background rectangle starts then to flicker and the oddball stimulation begins \SI{500}{\ms} later.
         The oddball stimulation consisted of 10~\emph{flashing sequences} during which each of the 6~icons was flashed one after another in random order for a duration randomly set between \SIlist[list-units = single]{200;300}{\ms}.
         As usually done for oddball experiments, the participants were instructed to focus on their target symbol and count the number of time it flashes.
         A \SI{1000}{\ms} pause followed the oddball stimulation and preceded the next cue.
@@ -125,10 +141,10 @@ Conclusion:
         We are also interested in studying the effect of the flickering stimulus on the target \ac{ERP} detection accuracy.
         As the accuracy of an oddball \ac{BCI} is known to depend on the number of repetitions of flashing sequences used to average the \acp{ERP}; the classification accuracy was measured on \acp{ERP} averaged over the $n$~first repetitions of the flashing sequence with $n$~going from 1~to~10.
         This was done so as to mimic a real use of the system (where the stimulation sequence would stop after $n$~repetitions) and so that the accuracies are always measured on the same number of detection attempts.
-        
+
         For each experimental condition
-        
-        
+
+
         Data were filtered between \SIlist[list-units = single]{0.3;15}{\Hz} (zero-phase 3\rd order Butterworth filter), cut into \SI{800}{\ms} epochs starting from the stimuli onsets and downsampled to \SI{128}{\Hz}.
 
         For each trial (stimulus), we had 8~channels~$\times$~80~data~points~=~640~features to classify as a response to either a target stimulus or a non-target stimulus.

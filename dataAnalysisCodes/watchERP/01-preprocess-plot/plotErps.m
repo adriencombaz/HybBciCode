@@ -17,14 +17,14 @@ hostName = lower( strtok( getenv( envVarName ), '.') );
 switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        %             dataDir2 = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\oddball\';
+        dataDir     = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
+        resultsDir  = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciResults\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
-        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        %             dataDir2= 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\oddball\';
+        dataDir     = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
+        resultsDir  = 'd:\Adrien\Work\Hybrid-BCI\HybBciResults\watchERP\';
     otherwise,
         error('host not recognized');
 end
@@ -35,6 +35,11 @@ end
 % TableName   = 'watchErpDataset.xlsx';
 TableName   = 'watchErpDataset2.xlsx';
 fileList    = dataset('XLSFile', TableName);
+
+[~, folderName, ~]  = fileparts( fileparts(mfilename('fullpath')) );
+resultsDir          = fullfile( resultsDir, folderName );
+if ~exist(resultsDir, 'dir'), mkdir(resultsDir); end
+
 
 sub = unique( fileList.subjectTag );
 cond = {'oddball', 'hybrid-8-57Hz', 'hybrid-10Hz', 'hybrid-12Hz', 'hybrid-15Hz'};
@@ -149,7 +154,7 @@ meanErpDataset = dataset( ...
     fs ...
     );
 
-save('meanErpDataset2.mat', 'meanErpDataset');
+save(fullfile(resultsDir, 'meanErpDataset.mat'), 'meanErpDataset');
 
 
 %% ========================================================================================================
@@ -275,7 +280,7 @@ for iS = 1:nSubjects
     
     s.Format = 'tiff';
     s.Resolution = h.I_DPI;
-    hgexport(gcf,fullfile(cd, [sprintf('allChan_subject%s', sub{iS}) '.png']),s);
+    hgexport(gcf,fullfile(resultsDir, [sprintf('allChan_subject%s', sub{iS}) '.png']),s);
     
     close(gcf);
     
@@ -348,7 +353,7 @@ set(findobj(gcf,'Type','uicontrol'),'Visible','off');
 
 s.Format = 'tiff';
 s.Resolution = h.I_DPI;
-hgexport(gcf,fullfile(cd, 'allChan_grandMean.png'),s);
+hgexport(gcf,fullfile(resultsDir, 'allChan_grandMean.png'),s);
 
 close(gcf);
 
@@ -438,7 +443,7 @@ set(findobj(gcf,'Type','uicontrol'),'Visible','off');
 
 s.Format = 'tiff';
 s.Resolution = h.I_DPI;
-hgexport(gcf,fullfile(cd, 'targetERPs.png'),s);
+hgexport(gcf, fullfile(resultsDir, 'targetERPs.png'),s);
 
 close(gcf);
 
@@ -494,7 +499,7 @@ set(findobj(gcf,'Type','uicontrol'),'Visible','off');
 
 s.Format = 'tiff';
 s.Resolution = h.I_DPI;
-hgexport(gcf,fullfile(cd, 'targetERPs_grandMean.png'),s);
+hgexport(gcf, fullfile(resultsDir, 'targetERPs_grandMean.png'),s);
 
 close(gcf);
 
@@ -562,7 +567,7 @@ set(findobj(gcf,'Type','uicontrol'),'Visible','off');
 
 s.Format = 'tiff';
 s.Resolution = h.I_DPI;
-hgexport(gcf,fullfile(cd, 'nonTargetERPs.png'),s);
+hgexport(gcf, fullfile(resultsDir, 'nonTargetERPs.png'),s);
 
 close(gcf);
 
@@ -634,7 +639,7 @@ set(findobj(gcf,'Type','uicontrol'),'Visible','off');
 
 s.Format = 'tiff';
 s.Resolution = h.I_DPI;
-hgexport(gcf,fullfile(cd, 'TminusNTERPs.png'),s);
+hgexport(gcf, fullfile(resultsDir, 'TminusNTERPs.png'),s);
 
 close(gcf);
 

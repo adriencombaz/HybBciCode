@@ -1,7 +1,6 @@
 setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP/02-ter-p3Classification/")
 rm(list = ls())
 library(ggplot2)
-library(reshape2)
 library(nlme)
 library(ez)
 library(reshape2)
@@ -9,15 +8,15 @@ library(lme4)
 library(LMERConvenienceFunctions)
 library(languageR)
 library(Hmisc)
-library(car)
 
 source("d:/KULeuven/PhD/rLibrary/plot_set.R")
 
-for (iS in 1:7)
+for (iS in 1:8)
 {
   filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvm/subject_S%d/Results.txt", iS)
+#  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/Blda/subject_S%d/Results.txt", iS)
   accData1 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
-  accData1$nAverages = as.factor(accData1$nAverages)
+#   accData1$nAverages = as.factor(accData1$nAverages)
   accData1 <- subset( accData1, conditionTrain == conditionTest)
   accData1$condition = accData1$conditionTrain;
   accData1 <- subset(accData1, select = -c(conditionTrain, conditionTest))
@@ -27,14 +26,14 @@ for (iS in 1:7)
   
 }
 
-temp <- subset(accData, nAverages == 1)
-temp2 <- subset(accData, nAverages == 5)
-temp3 <- subset(accData, nAverages == 10)
-accData10Rep <- rbind(temp, temp2, temp3)
+accData10Rep <- accData
 
-accData10Rep$nAverages <- droplevels(accData10Rep)$nAverages
+accData10Rep$accOriginal <- accData10Rep$accuracy
+# accData10Rep$accuracy <- exp(accData10Rep$accuracy/100)
+# accData10Rep$accuracy <- asin(sqrt(accData10Rep$accuracy/100))
+# accData10Rep$accuracy <- 1 / (1 + exp(-accData10Rep$accuracy))
 
-# accData10Rep$accuracy <- exp( accData10Rep$accuracy/100 )
+# accData10Rep$nAverages <- log(accData10Rep$nAverages)
 
 str(accData10Rep)
 summary(accData10Rep)
@@ -65,7 +64,7 @@ pp <- pp + theme(
 pp
 
 fontsize <- 12;
-pp <- ggplot( accData10Rep, aes(condition, accuracy, colour=nAverages, shape=nAverages) )
+pp <- ggplot( accData10Rep, aes(condition, accuracy, colour=nAverages) )
 pp <- pp + geom_point( position = position_jitter(w = 0.2, h = 0)
                        , size = 3  )
 pp <- pp + facet_wrap( ~subject )
@@ -115,62 +114,41 @@ pp <- pp + theme(
 )
 pp
 
-# OddballVsHybrid     = c(1, 1, 1, 1, -4)     # oddball vs. hybrid
-# Hybrid857Vs10_12_15 = c(1, 1, 1, -3, 0)     # hybrid-8-57Hz vs. hybrid-10-12-15-Hz
-# Hybrid10Vs12_15     = c(-2, 1, 1, 0, 0)     # hybrid-10Hz vs. hybrid-12-15-Hz
-# Hybrid12Vs15        = c(0, -1, 1, 0, 0)     # hybrid-12Hz vs. hybrid-15-Hz
-# contrasts(accData10Rep$condition) <- cbind(
-#   OddballVsHybrid
-#   , Hybrid857Vs10_12_15
-#   , Hybrid10Vs12_15
-#   , Hybrid12Vs15
-# )
-# 
-# SingleTrialVsAverage = c(-2, 1, 1)
-# SmallVsLargeAverage = c(0, -1, 1)
-# contrasts(accData10Rep$nAverages) <- cbind(
-#   SingleTrialVsAverage
-#   , SmallVsLargeAverage
-# )
+OddballVsHybrid     = c(1, 1, 1, 1, -4)     # oddball vs. hybrid
+Hybrid857Vs10_12_15 = c(1, 1, 1, -3, 0)     # hybrid-8-57Hz vs. hybrid-10-12-15-Hz
+Hybrid10Vs12_15     = c(-2, 1, 1, 0, 0)     # hybrid-10Hz vs. hybrid-12-15-Hz
+Hybrid12Vs15        = c(0, -1, 1, 0, 0)     # hybrid-12Hz vs. hybrid-15-Hz
+contrasts(accData10Rep$condition) <- cbind(
+  OddballVsHybrid
+  , Hybrid857Vs10_12_15
+  , Hybrid10Vs12_15
+  , Hybrid12Vs15
+)
+
+SingleTrialVsAverage  = c(-9, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+TwoVsMore             = c(0, -8, 1, 1, 1, 1, 1, 1, 1, 1)
+ThreeVsMore           = c(0, 0, -7, 1, 1, 1, 1, 1, 1, 1)
+FourVsMore            = c(0, 0, 0, -6, 1, 1, 1, 1, 1, 1)
+FiveVsMore            = c(0, 0, 0, 0, -5, 1, 1, 1, 1, 1)
+SixVsMore             = c(0, 0, 0, 0, 0, -4, 1, 1, 1, 1)
+SevenVsMore           = c(0, 0, 0, 0, 0, 0, -3, 1, 1, 1)
+EightVsMore           = c(0, 0, 0, 0, 0, 0, 0, -2, 1, 1)
+NineVsTen             = c(0, 0, 0, 0, 0, 0, 0, 0, -1, 1)
+contrasts(accData10Rep$nAverages) <- cbind(
+  SingleTrialVsAverage
+  , TwoVsMore
+  , ThreeVsMore
+  , FourVsMore
+  , FiveVsMore
+  , SixVsMore
+  , SevenVsMore
+  , EightVsMore
+  , NineVsTen
+)
 
 #------------------------------------------------------------------------------------------------------
-# SIMPLE RM ANOVA (using anova() from car)
+# SIMPLE RM ANOVA
 #------------------------------------------------------------------------------------------------------
-# dataMatrix2 <- acast(accData10Rep, subject~condition+nAverages, value.var="accuracy")
-# condition <- acast(accData10Rep, subject~condition+nAverages, value.var="condition")
-# nAverages <- acast(accData10Rep, subject~condition+nAverages, value.var="nAverages")
-
-
-condLev = levels(accData10Rep$condition)
-nAveLev = levels(accData10Rep$nAverages)
-subLev  = levels(accData10Rep$subject)
-dataMatrix  = matrix(data=NA, nrow=length(subLev), ncol=length(condLev)*length(nAveLev))
-condition   = matrix(data=NA, nrow=length(condLev)*length(nAveLev), ncol=1)
-nAverages   = matrix(data=NA, nrow=length(condLev)*length(nAveLev), ncol=1)
-
-for (iC in 1:length(condLev)) {
-
-  temp = subset(accData10Rep, condition == condLev[iC])
-  for(iA in 1:length(nAveLev)) {
-    
-    temp2 = subset(temp, nAverages==nAveLev[iA])
-    dataMatrix[, (iC-1)*length(nAveLev)+iA] <- temp2$accuracy
-    condition[(iC-1)*length(nAveLev)+iA] <- condLev[iC]
-    nAverages[(iC-1)*length(nAveLev)+iA] <- nAveLev[iA]
-  }
-  
-}
-
-iDataMatrix = data.frame( condition=condition, nAverages=nAverages )
-
-accModel <- lm(dataMatrix ~ 1)
-analysis <- Anova(accModel, idata = iDataMatrix, idesign = ~condition * nAverages, multivariate=FALSE)
-summary(analysis)
-
-#------------------------------------------------------------------------------------------------------
-# SIMPLE RM ANOVA (using ezANOVA)
-#------------------------------------------------------------------------------------------------------
-
 anovaModelType2 <- ezANOVA( data=accData10Rep
                             , dv=.(accuracy)
                             , wid=.(subject)
@@ -259,11 +237,15 @@ summary(nAveModel2)
 # summary(condModel2)
 # summary(accModel2)
 
-anova(baseline, nAveModel2, condModel2, accModel2)
+anova(baseline, condModel2, nAveModel2, accModel2)
 
 #------------------------------------------------------------------------------------------------------
 # USING LMER
 #------------------------------------------------------------------------------------------------------
+# accData10Rep$accTrans <-sqrt(accData10Rep$accuracy)
+# accData10Rep$accTrans <-log2(accData10Rep$accuracy)
+# accData10Rep$accTrans <-exp(accData10Rep$accuracy)
+
 lmH1 <- lmer( accuracy ~ nAverages*condition + ( 1 | subject ), data = accData10Rep, REM=F )
 
 

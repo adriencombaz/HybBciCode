@@ -27,9 +27,9 @@ classdef eegDataset2 < handle
         function obj = eegDataset2( sessionDir, bdfFileName )
             
             %%
-            paramFileName   = [bdfFileName(1:19) '.mat'];
-            expParams       = load( fullfile(sessionDir, paramFileName) );
-            expParams.scenario = rmfield(expParams.scenario, 'textures');
+%             paramFileName   = [bdfFileName(1:19) '.mat'];
+%             expParams       = load( fullfile(sessionDir, paramFileName) );
+%             expParams.scenario = rmfield(expParams.scenario, 'textures');
 
             hdr             = sopen( fullfile(sessionDir, bdfFileName) );
             [obj.sig hdr]   = sread(hdr);
