@@ -37,7 +37,7 @@ end
 
 for iF = 1:numel(bdfFileName)
     paramFileName                   = [bdfFileName{iF}(1:19) '.mat'];
-    title                           = bdfFileName{iF}(20:end-4);
+    title                           = bdfFileName{iF}(1:end-4);
     
     showPlot(sessionDir, bdfFileName{iF}, paramFileName, title);
 end
