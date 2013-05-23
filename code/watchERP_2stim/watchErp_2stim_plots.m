@@ -16,10 +16,10 @@ hostName = lower( strtok( getenv( envVarName ), '.') );
 switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
+        dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP_2stim\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
-        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
+        dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP_2stim\';
     otherwise,
         error('host not recognized');
 end
@@ -37,7 +37,6 @@ end
 
 for iF = 1:numel(bdfFileName)
     paramFileName                   = [bdfFileName{iF}(1:19) '.mat'];
-    scenarioFileName                = [bdfFileName{iF}(1:19) '-unfolded-scenario.xml'];
     title                           = bdfFileName{iF}(20:end-4);
     
     showPlot(sessionDir, bdfFileName{iF}, paramFileName, title);

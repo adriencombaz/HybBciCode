@@ -41,8 +41,9 @@ classdef eegDataset3 < handle
             %% Check input parameters
             
             % default values
-            onsetEventValueList = [];
-            eventTypeLabels     = [];
+            onsetEventValue = [];
+            indiceLists     = [];
+            labelList       = [];
             
             % 
             if ~isempty(varargin)
@@ -50,21 +51,26 @@ classdef eegDataset3 < handle
                 if round(nParams) ~= nParams, error('eegDataset3:eegDataset3', 'parameters must go by pairs!'); end
                 paramNames = varargin(1:2:end);
                 if ~iscellstr( paramNames ), error('eegDataset3:eegDataset3', 'the name of the parameters must be specified as a string, before their value'); end
-                if ~sum(ismember(paramNames, 'onsetEventValueList')), error('eegDataset3:eegDataset3', '''onsetEventValueList'' numst be one of the paramters'); end
+                if ~sum(ismember(paramNames, 'onsetEventValue')), error('eegDataset3:eegDataset3', '''onsetEventValue'' numst be one of the paramters'); end
                 paramValues = varargin(2:2:end);
                 
                 %
-                iOEVL = find(ismember(paramNames, 'onsetEventValueList'));
-                onsetEventValueList = paramValues{iOEVL};
-                if ~isnumeric(onsetEventValueList), error('eegDataset3:eegDataset3', '''onsetEventValueList'' must be a numerical array'); end
+                iOEVL = find(ismember(paramNames, 'onsetEventValue'));
+                onsetEventValue = paramValues{iOEVL};
+                if ~isnumeric(onsetEventValueList) || numel(onsetEventValue)~=1, error('eegDataset3:eegDataset3', '''onsetEventValue'' must be a number'); end
                 
                 %
                 paramNames(iOEVL) = [];
                 paramValues(iOEVL) = [];
                 if nParams > 1
                     for iPar = 1:nParams-1
-                        if strcmp( paramNames{iPar}, 'EventTypeLabels')
-                            eventTypeLabels = paramValues{iPar};
+                        if strcmp( paramNames{iPar}, 'indiceLists')
+                            indiceLists = paramValues{iPar};
+                        else
+                            error('eegDataset3:eegDataset3', 'parameter %s not recognized', paramNames{iPar});
+                        end
+                        if strcmp( paramNames{iPar}, 'labelList')
+                            labelList = paramValues{iPar};
                         else
                             error('eegDataset3:eegDataset3', 'parameter %s not recognized', paramNames{iPar});
                         end
@@ -73,9 +79,9 @@ classdef eegDataset3 < handle
             end
             
             %
-            if ~isempty( onsetEventValueList )
-                if isempty( eventTypeLabels ) % if no labels were specified, just generate them from the event value
-                    eventTypeLabels = cellfun(@(x) sprintf('EVT_%d', x), num2cell(unique(onsetEventValueList)), 'UniformOutput', false);
+            if ~isempty( indiceLists )
+                if ~is
+                if isempty( labelList ) % if no labels were specified, just generate them from the event value
                 else
                 end
             end
