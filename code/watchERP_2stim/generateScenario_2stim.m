@@ -4,7 +4,7 @@ ssvepColor = [1 1 1]; % white
 % ssvepColor = [1 1 O]; % yellow
 % ssvepColor = [.5 .5 .5]; % grey
 % ssvepAlpha = .75; % 0: fully transparent, 1: fully opaque
-ssvepAlpha = .4; % 0: fully transparent, 1: fully opaque
+ssvepAlpha = .25; % .4; % 0: fully transparent, 1: fully opaque
 dimmedColor = 'white'; % 'white' 'grey' 'yellow'
 % flashStyle = 'newColor'; % 'combine' 'newColor'
 % flashImage = 'red-disk-medium'; % 'black-pixel' 'red-disk-medium', for 'overlap' case
@@ -27,8 +27,8 @@ scrPos          = Screen('Rect', desiredScreenID);
 % SSVEPMarginV    = 80; % for 1920x1200
 eltSizeH        = 150; % for 1920x1200
 eltSizeV        = 150; % for 1920x1200
-SSVEPMarginH    = 70; % for 1920x1200
-SSVEPMarginV    = 70; % for 1920x1200
+% SSVEPMarginH    = 70; % for 1920x1200
+% SSVEPMarginV    = 70; % for 1920x1200
 eltGapH         = eltSizeH;
 eltGapV         = eltSizeV;
 SSVEPGapH       = 600;
@@ -43,6 +43,8 @@ eltSizeV_flash  = round( sizeFactorFlash * eltSizeV );
 vPadd           = eltSizeV_flash - eltSizeV;
 vPaddT          = round(vPadd/2);
 % vPaddB          = vPadd - vPaddT;
+SSVEPMarginH    = 2*ceil(hPadd/2);
+SSVEPMarginV    = 2*ceil(vPadd/2);
 
 if hPaddL > SSVEPMarginH || vPaddT > SSVEPMarginV
     error('generateScenario_2stim:outOfFlickerArea', 'flashed object will be out the flickering area. Increase SSVEP margin or decrease sizeFactorFlash');
@@ -62,19 +64,19 @@ end
 %%
 %==========================================================================
 
-imageDir    = 'images\';
-imageName{1} = fullfile(imageDir, 'apple');
-imageName{2} = fullfile(imageDir, 'medicine');
-imageName{3} = fullfile(imageDir, 'lightBulb');
-imageName{4} = fullfile(imageDir, 'shirt');
-imageName{5} = fullfile(imageDir, 'toilet');
-imageName{6} = fullfile(imageDir, 'bathtub');
-imageName{7} = fullfile(imageDir, 'bed');
-imageName{8} = fullfile(imageDir, 'envelope');
-imageName{9} = fullfile(imageDir, 'glass');
-imageName{10} = fullfile(imageDir, 'phone');
-imageName{11} = fullfile(imageDir, 'television');
-imageName{12} = fullfile(imageDir, 'window');
+imageDir        = fullfile( fileparts(mfilename('fullpath')), 'images' );
+imageName{1}    = fullfile(imageDir, 'apple');
+imageName{2}    = fullfile(imageDir, 'medicine');
+imageName{3}    = fullfile(imageDir, 'lightBulb');
+imageName{4}    = fullfile(imageDir, 'shirt');
+imageName{5}    = fullfile(imageDir, 'toilet');
+imageName{6}    = fullfile(imageDir, 'bathtub');
+imageName{7}    = fullfile(imageDir, 'bed');
+imageName{8}    = fullfile(imageDir, 'envelope');
+imageName{9}    = fullfile(imageDir, 'glass');
+imageName{10}   = fullfile(imageDir, 'phone');
+imageName{11}   = fullfile(imageDir, 'television');
+imageName{12}   = fullfile(imageDir, 'window');
 
 switch dimmedColor
     case 'white'
@@ -85,7 +87,7 @@ switch dimmedColor
         dimmedImageName = cellfun( @(x) [x '-yellow.png'], imageName, 'UniformOutput', false );
 end
 
-texturesDir = 'textures\';
+texturesDir = fullfile( fileparts(mfilename('fullpath')), 'textures\' );
 if ~exist(texturesDir, 'dir'), mkdir(texturesDir); end
 
 %%
@@ -102,7 +104,7 @@ imSizeV = SSVEPSizeV;
 
 generateStimuli();
 sc = generateScenarioAndStimuli();
-sc.texturesDir = fullfile(cd, texturesDir);
+sc.texturesDir = texturesDir;
 
 
     %==========================================================================

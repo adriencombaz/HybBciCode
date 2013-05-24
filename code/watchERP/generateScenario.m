@@ -49,7 +49,7 @@ SSVEPSizeV = 2*SSVEPMarginV + eltMatrix(1)*eltSizeV + (eltMatrix(1)-1)*eltGapV;
 %%
 %==========================================================================
 
-imageDir    = fullfile( fileparts(mfilename('fullpath')), 'images' )
+imageDir    = fullfile( fileparts(mfilename('fullpath')), 'images' );
 imageName{1} = fullfile(imageDir, 'apple');
 imageName{2} = fullfile(imageDir, 'medicine');
 imageName{3} = fullfile(imageDir, 'lightBulb');
@@ -68,7 +68,7 @@ end
 
 
 
-texturesDir = fullfile( fileparts(mfilename('fullpath')), 'textures\' )
+texturesDir = fullfile( fileparts(mfilename('fullpath')), 'textures\' );
 if ~exist(texturesDir, 'dir'), mkdir(texturesDir); end
 
 %%

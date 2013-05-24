@@ -80,7 +80,6 @@ classdef eegDataset3 < handle
             
             %
             if ~isempty( indiceLists )
-                if ~is
                 if isempty( labelList ) % if no labels were specified, just generate them from the event value
                 else
                 end

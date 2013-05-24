@@ -1,10 +1,10 @@
 function watchERP_2stim
 
-addpath( '../deps' );
-addpath( '../deps/lptIO' );
+addpath( fullfile(fileparts(fileparts(mfilename('fullpath'))), 'deps') );
+addpath( fullfile(fileparts(fileparts(mfilename('fullpath'))), 'deps', 'lptIO') );
 
-desiredScreenID = 2;
-% desiredScreenID = 0;
+% desiredScreenID = 2;
+desiredScreenID = 0;
 
 %%                        SCANNER PARAMETERS
 %==========================================================================
