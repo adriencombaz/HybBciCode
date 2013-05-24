@@ -70,13 +70,13 @@ for iS = 1:nSubjects,
         %--------------------------------------------------------------------------
         sessionDir  = fullfile(dataDir, subset.sessionDirectory{iR});
         filename    = ls(fullfile(sessionDir, [subset.fileName{iR} '*.bdf']));
-        erpData     = eegDataset( sessionDir, filename );
-        erpData.tBeforeOnset = tBeforeOnset;
-        erpData.tAfterOnset = tAfterOnset;
-
         paramFile   = ls(fullfile(sessionDir, [subset.fileName{iR} '*.mat']));
         pars        = load( fullfile(sessionDir,paramFile), 'nCuesToShow', 'nRepetitions', 'lookHereStateSeq', 'realP3StateSeqOnsets' );
 
+        %--------------------------------------------------------------------------
+        erpData     = eegDataset( sessionDir, filename );
+        erpData.tBeforeOnset = tBeforeOnset;
+        erpData.tAfterOnset = tAfterOnset;
         
         %--------------------------------------------------------------------------
         if iR == 1

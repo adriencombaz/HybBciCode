@@ -57,7 +57,7 @@ classdef eegDataset3 < handle
                 %
                 iOEVL = find(ismember(paramNames, 'onsetEventValue'));
                 onsetEventValue = paramValues{iOEVL};
-                if ~isnumeric(onsetEventValueList) || numel(onsetEventValue)~=1, error('eegDataset3:eegDataset3', '''onsetEventValue'' must be a number'); end
+                if ~isnumeric(onsetEventValue) || numel(onsetEventValue)~=1, error('eegDataset3:eegDataset3', '''onsetEventValue'' must be a number'); end
                 
                 %
                 paramNames(iOEVL) = [];
@@ -80,7 +80,6 @@ classdef eegDataset3 < handle
             
             %
             if ~isempty( indiceLists )
-                if ~is
                 if isempty( labelList ) % if no labels were specified, just generate them from the event value
                 else
                 end
@@ -583,9 +582,9 @@ classdef eegDataset3 < handle
                             'Unknown parameter name %s.', decision );
                 end
                 
-            end
+            end % OF EVENTTYPE LOOP
             
-        end
+        end % OF MARKEPOCHSFORREJECTION FUNCTION
     end
     
 end
