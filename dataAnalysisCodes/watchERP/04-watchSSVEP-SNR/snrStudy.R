@@ -8,7 +8,7 @@ source("http://egret.psychol.cam.ac.uk/statistics/R/extensions/rnc_ggplot2_borde
 
 fontsize <- 12;
 
-snrDataOz <- read.csv("snrDatasetOz.csv", header = TRUE)
+snrDataOz <- read.csv("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/04-watchSSVEP-SNR/snrDatasetOz.csv", header = TRUE)
 
 snrDataOz$frequency = as.factor(snrDataOz$frequency)
 snrDataOz$oddball = as.factor(snrDataOz$oddball)
@@ -83,7 +83,7 @@ pp2 <- pp2 + geom_point(
   position = position_jitter(w = 0.2, h = 0)
   , size = 3  
 ) 
-pp2 <- pp2 + facet_wrap( ~oddball + subject )
+pp2 <- pp2 + facet_wrap( ~oddball + subject, ncol = 4 )
 pp2 <- pp2 + geom_smooth(method="lm", aes(fill=frequency), se = F)
 pp2 <- pp2 + theme(
   panel.background =  element_rect(fill='white')

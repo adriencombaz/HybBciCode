@@ -147,23 +147,23 @@ for iCTrain = 1:nCond
                     cuts = erpData.getCuts2(); % single( erpData.getCuts2() );
                     cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
                     
-
-                % select and average trials
-                %------------------------------------------------------------------------------
-                meanCuts = zeros( size(cuts, 1), size(cuts, 2), nIcons*nCues ); %, 'single' );
-                for iCue = 1:nCues
                     
-                    iStart      = (iCue-1)*nIcons*nReps;
-                    indEvents   = iStart + (1:nIcons*nReps);
-                    
-                    for iIcon = 1:nIcons
+                    % select and average trials
+                    %------------------------------------------------------------------------------
+                    meanCuts = zeros( size(cuts, 1), size(cuts, 2), nIcons*nCues ); %, 'single' );
+                    for iCue = 1:nCues
                         
-                        iIconFlashes = iStart + find( flashSequence(indEvents) == iIcon, iAve, 'first' );
-                        meanCuts( :, :, (iCue-1)*nIcons + iIcon ) = mean( cuts( :, :, iIconFlashes ), 3 );
+                        iStart      = (iCue-1)*nIcons*nReps;
+                        indEvents   = iStart + (1:nIcons*nReps);
                         
+                        for iIcon = 1:nIcons
+                            
+                            iIconFlashes = iStart + find( flashSequence(indEvents) == iIcon, iAve, 'first' );
+                            meanCuts( :, :, (iCue-1)*nIcons + iIcon ) = mean( cuts( :, :, iIconFlashes ), 3 );
+                            
+                        end
                     end
-                end
-                clear cuts
+                    clear cuts
                     
                     % spatial filtering
                     %------------------------------------------------------------------------------

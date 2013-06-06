@@ -18,24 +18,26 @@ switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\';
+        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-SNR\';
         codeDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\';
+        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-SNR\';
         codeDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case {'sunny', 'solaris', ''}
         addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );
         rmpath( genpath('~/PhD/hybridBCI-stuffs/deps/eeglab10_0_1_0b/external/SIFT_01_alpha') );
         dataDir = '~/PhD/hybridBCI-stuffs/data/';
-        resDir = '~/PhD/hybridBCI-stuffs/results/';
+        resDir = '~/PhD/hybridBCI-stuffs/results/04-watchSSVEP-SNR/';
         codeDir = '~/PhD/hybridBCI-stuffs/code/';
     otherwise,
         error('host not recognized');
 end
+
+if ~exist(resDir, 'dir'), mkdir(resDir); end
 
 % ========================================================================================================
 % ========================================================================================================
@@ -176,7 +178,7 @@ for iS = 1:nSub,
                     fprintf('treating subject %s (%d out %d), frequency %d (%d out of %d), oddball condition %d (%d out of %d), file %d/%d, epoch lenght of %g seconds (%d out of %d)\n', ...
                         sub{iS}, iS, nSub, ...
                         freq(iF), iF, nFreq, ...
-                        oddball(iOdd), iOdd, nOdd, ...
+                        oddb(iOdd), iOdd, nOdd, ...
                         iFile, size(subset, 1), ...
                         timesInSec(iTime), iTime, nTimes);                    
                     
@@ -230,7 +232,7 @@ snrDataset = dataset( ...
     );
 
 
-save('snrDataset', 'snrDataset');
+save(fullfile(resDir, 'snrDataset.mat'), 'snrDataset');
 
 
 
@@ -239,7 +241,7 @@ snrDatasetOz = snrDataset;
 snrDatasetOz.snr = cellfun(@(x, y) x( ismember( y, 'Oz' ) ), snrDataset.snr, snrDataset.chanList );
 snrDatasetOz.chanList = [];
 
-export( snrDatasetOz, 'file', 'snrDatasetOz.csv', 'delimiter', ',' );
+export( snrDatasetOz, 'file', fullfile(resDir, 'snrDatasetOz.csv'), 'delimiter', ',' );
 
  %%
  sub    = unique( snrDataset.subject );
