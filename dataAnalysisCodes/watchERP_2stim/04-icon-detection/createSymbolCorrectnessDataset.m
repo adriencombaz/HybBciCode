@@ -58,10 +58,11 @@ if ~exist( resDirOut, 'dir' ), mkdir( resDirOut ); end
 
 for ii = 1:numel( listRunsForTrain )
     
-    fprintf('Treating case %d out of %d (train on runs %d\n', ii, numel( listRunsForTrain ), listRunsForTrain{ii}(1));
+    fprintf('Treating case %d out of %d (train on runs %d', ii, numel( listRunsForTrain ), listRunsForTrain{ii}(1));
     for iRunTrain = 2:numel(listRunsForTrain{ii}), fprintf(', %d', listRunsForTrain{ii}(iRunTrain)); end
-    fprintf(' test on runs %d', listTestRun{ii}(1) );
+    fprintf(') test on runs %d', listTestRun{ii}(1) );
     for iRunTest = 2:numel(listTestRun{ii}), fprintf(', %d', listTestRun{ii}(iRunTest)); end
+    fprintf('\n');
     
     subP3Dataset = [];
     subSsvepDataset = [];

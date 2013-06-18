@@ -35,10 +35,14 @@ plotFactorMeans_InteractionGraphs <- function(file)
   
   accData <- rbind(temp, temp2, temp3)
   accData$targetFrequency <- as.factor(accData$targetFrequency)
+#   accData$nRep <- as.factor(accData$nRep)
   
   #################################################################################################################
+  figname = paste0("perFreqSubType_", file, ".png")
   pp <- ggplot( accData, aes(nRep, correctness, colour=targetFrequency ) )
-  pp <- pp + stat_summary(fun.y = mean, geom="point",  position = position_jitter(w = 0.2, h = 0), size = 3)
+#   pp <- pp + stat_summary(fun.y = mean, geom="point",  position = position_jitter(w = 0.2, h = 0), size = 3)
+  pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.2), shape = 20, size = 3)
+  pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.2))
   pp <- pp + facet_grid( correctnessType ~ subject  )
   pp <- pp + ylim(0, 1)
   pp <- cleanPlot(pp)
@@ -52,6 +56,26 @@ plotFactorMeans_InteractionGraphs <- function(file)
           , units = "cm"
           )
 
+  #################################################################################################################
+  figname = paste0("perSubType_", file, ".png")
+  pp <- ggplot( accData, aes(nRep, correctness, colour=correctnessType ) )
+#   pp <- pp + stat_summary(fun.y = mean, geom="point",  position = position_jitter(w = 0.2, h = 0), size = 3)  
+  pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.2), shape = 20, size = 3)
+  pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.2))
+  pp <- pp + facet_wrap( ~ subject  )
+  pp <- pp + ylim(0, 1)
+  pp <- cleanPlot(pp)
+  pp
+  
+  ggsave( figname 
+          , plot = pp
+          , path = figDir
+          , width = 30
+          , height = 20
+          , units = "cm"
+  )
+  
+  
 }
 
 #################################################################################################################

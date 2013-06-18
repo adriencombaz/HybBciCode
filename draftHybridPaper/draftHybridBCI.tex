@@ -98,12 +98,11 @@ Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy su
     All stimulation employed MATLAB\textsuperscript{\textregistered}, the stimuli were visually presented on a laptop's LCD screen (\SI{60}{\Hz} refresh rate) and their display and timing used the \emph{Psychophysics Toolbox Extensions} (\cite{Brainard1997,Pelli1997}).
 
 
+    \subsection{Experimental protocol}
+    \label{sec:2.2Protocol}
 
-    \subsection{Experiment 1: studying the oddball \acsp{ERP}}
-    \label{sec:2.2Oddball}
-
-        \subsubsection{Experimental protocol}
-        \label{sec:2.2.1Protocol}
+        \subsubsection{Experiment 1: studying the oddball \acsp{ERP}}
+        \label{sec:2.2.1ProtocolOddball}
 
         % Aim and subjects
         The aim of this first experiment was to study the effect of a flickering background on the typical \ac{ERP} response associated to an oddball paradigm.
@@ -127,18 +126,45 @@ Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy su
         % use
         The data collected were used to compare the shape of the oddball response (response to the flashing of the target icon) and the \ac{ERP} classification accuracy (response to target \emph{v.s.} response to non-target flasing) across conditions.
 
-        \subsubsection{Data Analysis: \acs{ERP} responses}
-        \label{sec:2.2.2AnalysisErpShape}
+        \subsubsection{Experiment 2: studying the \acs{SSVEP} responses}
+        \label{sec:2.2.2ProtocolSSVEP}
+
+        % Aim and subjects
+        The aim of this second experiment was to study the effect of an oddball paradigm on the \ac{SSVEP} responses.
+        N subjects participated in the experiment (age, gender).
+
+        % exp description
+        The experimental run was the same as described in \autoref{sec:2.2.1ProtocolOddball}.
+        Two experimental parameters were manipulated, the first one was the stimulation frequency; the same frequencies as for the first experiment were used (\SIlist[list-units = single]{8.57;10;12;15}{\Hz}).
+        The second experimental parameter was the presence or not of the oddball stimulation sequence.
+        When the oddball stimulation was displayed, the participants were instructed to count the number of flashes of the target icon, while when no oddball stimulation was displayed, their task was simply to focus on their target icon.
+
+        The experiment consisted thus of 8~runs of approximately 4~minutes each.
+        The order of the run was randomized for each subject and a 5~to~10~minutes pause was set up after the first 4~runs.
+
+        % use
+        This experimental design allows a comparison of the \ac{SSVEP} responses of the participants with and without an oddball stimulation superimposed on the \ac{SSVEP} stimulation for a different set of \ac{SSVEP} frequencies.
+
+        \subsubsection{Experiment 3: hybrid classification}
+        \label{sec:2.2.3ProtocolHybrid}
+
+        After studying individually oddball \acp{ERP} and \ac{SSVEP} responses, we aim here at studying the possibility to detect both responses
+
+    \subsection{Data Analysis}
+    \label{sec:2.3DataAnalysis}
+
+        \subsubsection{Experiment 1: ERPs classification}
+        \label{sec:2.3.1AnalysisExp1}
 
         % preprocessing: filtering
 
         % studying the shape of ERP: epoch rejection
 
-        \subsubsection{Data Analysis: \acs{ERP} classification}
-        \label{sec:2.2.3AnalysisErpClassification}
+%%%%%%%%        \subsubsection{Data Analysis: \acs{ERP} classification}
+%%%%%%%%        \label{sec:2.2.3AnalysisErpClassification}
 
         % studying classification accuracy: no epoch rejection
-        We are also interested in studying the effect of the flickering stimulus on the target \ac{ERP} detection accuracy.
+        We are interested in studying the effect of the flickering stimulus on the target \ac{ERP} detection accuracy.
         As the accuracy of an oddball \ac{BCI} is known to depend on the number of repetitions of flashing sequences used to average the \acp{ERP}; the classification accuracy was measured on \acp{ERP} averaged over the $n$~first repetitions of the flashing sequence with $n$~going from 1~to~10.
         This was done so as to mimic a real use of the system (where the stimulation sequence would stop after $n$~repetitions) and so that the accuracies are always measured on the same number of detection attempts.
 
@@ -154,31 +180,9 @@ Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy su
 
 
 
-    \subsection{Experiment 2: studying the \acs{SSVEP} responses}
-    \label{sec:2.3SSVEP}
 
-        \subsubsection{Experimental protocol}
-        \label{sec:2.3.1Protocol}
-
-        % Aim and subjects
-        The aim of this second experiment was to study the effect of an oddball paradigm on the \ac{SSVEP} responses.
-        N subjects participated in the experiment (age, gender).
-
-        % exp description
-        The experimental run was the same as described in \autoref{sec:2.2.1Protocol}.
-        Two experimental parameters were manipulated, the first one was the stimulation frequency; the same frequencies as for the first experiment were used (\SIlist[list-units = single]{8.57;10;12;15}{\Hz}).
-        The second experimental parameter was the presence or not of the oddball stimulation sequence.
-        When the oddball stimulation was displayed, the participants were instructed to count the number of flashes of the target icon, while when no oddball stimulation was displayed, their task was simply to focus on their target icon.
-
-        The experiment consisted thus of 8~runs of approximately 4~minutes each.
-        The order of the run was randomized for each subject and a 5~to~10~minutes pause was set up after the first 4~runs.
-
-        % use
-        This experimental design allows a comparison of the \ac{SSVEP} responses of the participants with and without an oddball stimulation superimposed on the \ac{SSVEP} stimulation for a different set of \ac{SSVEP} frequencies.
-
-
-        \subsubsection{Data Analysis}
-        \label{sec:2.3.2Analysis}
+        \subsubsection{Experiment 2: SSVEP response analysis}
+        \label{sec:2.3.2AnalysisExp2}
 
         % pre-processing
 
@@ -186,15 +190,8 @@ Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy su
 
         % statistics
 
-
-    \subsection{Experiment 3: hybrid classification}
-    \label{sec:2.4Hybrid}
-
-        \subsubsection{Experimental protocol}
-        \label{sec:2.4.1Protocol}
-
-        \subsubsection{Data Analysis}
-        \label{sec:2.4.2Analysis}
+        \subsubsection{Experiment 3}
+        \label{sec:2.3.3AnalysisExp3}
 
 %===================================================================================================================
 %                                             3 RESULTS

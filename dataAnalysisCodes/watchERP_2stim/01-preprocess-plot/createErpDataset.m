@@ -1,4 +1,4 @@
-clear;clc
+function createErpDataset
 
 %% ========================================================================================================
 % =========================================================================================================
@@ -39,8 +39,26 @@ fileList    = dataset('XLSFile', TableName);
 resultsDir          = fullfile( resultsDir, folderName );
 if ~exist(resultsDir, 'dir'), mkdir(resultsDir); end
 
+datasetFilename = fullfile(resultsDir, 'meanErpDataset.mat');
 
-sub         = unique( fileList.subjectTag );
+% ========================================================================================================
+% ========================================================================================================
+updateDataset   = true;
+sub             = unique( fileList.subjectTag );
+
+if updateDataset && exist(datasetFilename, 'file')
+    temp = load( datasetFilename );
+    treatedSub = unique( temp.meanErpDataset.subject );
+    sub(ismember(sub, treatedSub)) = [];
+end
+
+if isempty(sub),
+    fprintf('no need for update, all subject are already there!\n');
+    return
+end
+
+% ========================================================================================================
+% ========================================================================================================
 nSubjects   = numel(sub);
 nFreqs      = 2; % left and rigth square
 nErpType    = 2; % target and non-target ERPs
@@ -73,7 +91,7 @@ for iS = 1:nSubjects,
         filename    = ls(fullfile(sessionDir, [subset.fileName{iR} '*.bdf']));
         paramFile   = ls(fullfile(sessionDir, [subset.fileName{iR}(1:19) '*.mat']));
         pars        = load( fullfile(sessionDir,paramFile), 'nCuesToShow', 'nRepetitions', 'lookHereStateSeq', 'realP3StateSeqOnsets', 'ssvepFreq', 'scenario' );
-
+        
         pars.scenario = rmfield(pars.scenario, 'textures');
         
         onsetEventInd   = cellfun( @(x) strcmp(x, 'P300 stim on'), {pars.scenario.events(:).desc} );
@@ -84,10 +102,10 @@ for iS = 1:nSubjects,
         erpData     = eegDataset3( sessionDir, filename, 'onsetEventValue', onsetEventValue );
         erpData.tBeforeOnset = tBeforeOnset;
         erpData.tAfterOnset = tAfterOnset;
-
+        
         %--------------------------------------------------------------------------
         
-
+        
         %--------------------------------------------------------------------------
         if iR == 1
             samplingRate    = erpData.fs;
@@ -106,12 +124,12 @@ for iS = 1:nSubjects,
             end
             
         end
-
+        
         for iFreq = 1:numel(ssvepFreq)
             if numel( pars.realP3StateSeqOnsets{iFreq} ) ~= numel( erpData.eventPos ),
                 error('number of events read from the parameter file and from the bdf file do not match');
             end
-        end        
+        end
         %--------------------------------------------------------------------------
         erpData.butterFilter(1, 30, 3);
         
@@ -125,7 +143,7 @@ for iS = 1:nSubjects,
             
             indListTarget = find( stimId(:) == targetId(:) );
             indListNonTarget = find( stimId(:) ~= targetId(:) & ismember(targetId, (iFreq-1)*nItems+1:iFreq*nItems) );
-                
+            
             %--------------------------------------------------------------------------------------------
             erpData.markEpochsForRejection('minMax', 'proportion', .15, 'epochInds', indListTarget);
             [sumCut nCuts] = erpData.getSumCut('epochInds', indListTarget);
@@ -186,4 +204,10 @@ meanErpDataset = dataset( ...
     fs ...
     );
 
-save(fullfile(resultsDir, 'meanErpDataset.mat'), 'meanErpDataset');
+if updateDataset
+    meanErpDataset = vertcat( temp.meanErpDataset, meanErpDataset );
+end
+
+save(datasetFilename, 'meanErpDataset');
+
+end

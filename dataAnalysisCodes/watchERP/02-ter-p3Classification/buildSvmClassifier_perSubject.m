@@ -1,5 +1,7 @@
 function buildSvmClassifier_perSubject( iS, doEpochRejection )
 
+useLibSvm = 1;
+
 % init host name
 %--------------------------------------------------------------------------
 if isunix,
@@ -140,8 +142,11 @@ for iC = 1:nCond
         for iAve = 1:nAveMax
             
             fprintf('Subject %s, condition %s, %d averages, fold %d\n', sub{iS}, cond{iC}, iAve, iRunTrain);
-            classifierFilename  = fullfile( resDir, sprintf('%s-%.2dAverages.mat', name, iAve) );
-            
+            if useLibSvm
+                classifierFilename  = fullfile( resDir, sprintf('%s-LibSvm-%.2dAverages.mat', name, iAve) );
+            else
+                classifierFilename  = fullfile( resDir, sprintf('%s-%.2dAverages.mat', name, iAve) );
+            end
             % select/balance/average trials w.r.t. the desired number of repetitions
             %------------------------------------------------------------------------------
             nT_train    = 1000;

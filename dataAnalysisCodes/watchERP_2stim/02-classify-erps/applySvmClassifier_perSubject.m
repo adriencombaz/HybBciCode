@@ -43,9 +43,9 @@ end
 %% ========================================================================================================
 
 %--------------------------------------------------------------------------
-sub     = unique( fileList.subjectTag );
-fileList( ismember( fileList.subjectTag, sub{iS} ), : );
-resDir = fullfile( resDir, sprintf('linSvm_%dRunsForTrain', nRunsForTraining), sprintf('subject_%s', sub{iS}) );
+sub         = unique( fileList.subjectTag );
+fileList    = fileList( ismember( fileList.subjectTag, sub{iS} ), : );
+resDir      = fullfile( resDir, sprintf('linSvm_%dRunsForTrain', nRunsForTraining), sprintf('subject_%s', sub{iS}) );
 if ~exist( resDir, 'dir' ), mkdir(resDir); end
 
 %--------------------------------------------------------------------------

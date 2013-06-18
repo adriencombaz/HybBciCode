@@ -1,4 +1,4 @@
-clear;clc
+function createFftDataset
 
 %% ====================================================================================================
 
@@ -37,8 +37,26 @@ fileList    = dataset('XLSFile', TableName);
 resultsDir          = fullfile( resultsDir, folderName );
 if ~exist(resultsDir, 'dir'), mkdir(resultsDir); end
 
+%% ====================================================================================================
 
-sub         = unique( fileList.subjectTag );
+updateDataset   = true;
+sub             = unique( fileList.subjectTag );
+nSubs           = numel(sub);
+indsToRemove    = [];
+for iS = 1:nSubs
+    if updateDataset && exist( fullfile( resultsDir, sprintf('fftDataset_sub%.2d.mat', iS) ), 'file' )
+        indsToRemove = [indsToRemove iS];
+    end
+end
+sub(indsToRemove) = [];
+
+if isempty(sub),
+    fprintf('no need for update, all subject are already there!\n');
+    return
+end
+
+%% ====================================================================================================
+
 nSubs       = numel(sub);
 nFreqs      = 2; % left and rigth square
 nRunMax     = max( fileList.run );
@@ -207,9 +225,7 @@ for iS = 1:nSubs
     
 end % OF SUBJECT LOOP
 
-
-
-
+end
 
 
 

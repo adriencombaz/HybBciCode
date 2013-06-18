@@ -42,6 +42,19 @@ for (iS in 1:8)
   }
   accData1$foldTrain <- droplevels(accData1)$foldTrain    
 
+  
+#   # Consider only results from classifier built on second run and tested on the third ones
+#   accData1 <- subset( accData1, foldTrain == 2 )
+#   accData1 <- subset( accData1, foldTest == 3 )
+#   accData1$foldTrain <- droplevels(accData1)$foldTrain    
+  
+#   # Consider only results from classifier built on second run and tested on the third ones and vice-versa
+#   temp2a <- subset( accData1, foldTrain == 2 )
+#   temp2a <- subset( temp2a, foldTest == 3 )
+#   temp2b <- subset( accData1, foldTrain == 3 )
+#   temp2b <- subset( temp2b, foldTest == 2 )
+#   accData1 <- rbind(temp2a, temp2b)
+
   # Remove unnecessary columns
   accData1 <- subset(accData1, select = -c(conditionTrain, conditionTest, foldTrain))
   
@@ -121,3 +134,13 @@ accData$frequency <- revalue(accData$frequency
 
 accData$nRep <- accData$nAverages
 accData <- subset(accData, select = -c(nAverages))
+
+#--------------------------------------------------------------------------------------------------------------
+# add coding variable for nRep nested within subject
+accData$nRepWithinSub <- accData$nRep
+allSubs   <- levels(accData$subject)
+nSubs   <- length(allSubs)
+for (iS in 1:nSubs){
+  accData[accData$subject==allSubs[iS], ]$nRepWithinSub <- iS*1000 + accData[accData$subject==allSubs[iS], ]$nRepWithinSub
+}
+accData$nRepWithinSub <- as.factor(accData$nRepWithinSub)
