@@ -2,13 +2,16 @@ setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP/02-
 rm(list = ls())
 
 library(ggplot2)
+# library(plyr)
+library(car)
 # library(reshape2)
 # library(lme4)
 # library(LMERConvenienceFunctions)
 # library(languageR)
 # library(Hmisc)
 
-source("createDataFrame.R")
+# source("createDataFrame.R")
+source("createDataFrame_2RunsForTrain.R")
 source("cleanPlot.R")
 
 str(accData)
@@ -47,6 +50,7 @@ pp <- cleanPlot(pp)
 #pp + theme(legend.direction = "horizontal", legend.position = "bottom")
 # pp <- pp + theme(legend.justification=c(1,0), legend.position=c(1,0))
 pp <- pp + theme(legend.position=c(0.8334,0.1667))
+print(pp)
 # pp
 
 # ggsave( filename = "CompareConditions.png"
@@ -58,6 +62,28 @@ pp <- pp + theme(legend.position=c(0.8334,0.1667))
 #         , dpi =  600
 #         )
 
+#################################################################################################################
+#################################################################################################################
+# logit of correctness per subject and grand average
+#################################################################################################################
+#################################################################################################################
+varList <- c("subject", "condition", "nRep", "correctness")
+dataToPlot <- accData[ accData$classifier=="normal", (names(accData) %in% varList)]
+dataToPlot$nRep = as.factor( dataToPlot$nRep )
+varList <- c("subject", "condition", "nRep")
+dataToPlot <- ddply( dataToPlot, varList, summarise, logitP = logit(mean(correctness)) )
+
+pp <- ggplot( dataToPlot, aes(nRep, logitP, colour=condition, shape=condition) )
+pp <- pp + stat_summary(fun.data = mean_cl_normal, geom = "pointrange", width = 0.2, position = position_dodge(.5))
+pp <- cleanPlot(pp)
+print(pp)
+
+pp <- ggplot( dataToPlot, aes(nRep, logitP, colour=condition, shape=condition) )
+pp <- pp + geom_point( width = 0.2, position = position_dodge(.5) )
+pp <- cleanPlot(pp)
+pp <- pp + facet_wrap( ~subject )
+pp <- pp + theme(legend.position=c(0.8334,0.1667))
+print(pp)
 
 #################################################################################################################
 #################################################################################################################
@@ -110,7 +136,7 @@ pp <- pp + theme(legend.position=c(0.8334,0.1667))
 
 #################################################################################################################
 #################################################################################################################
-
+dataToPlot <- subset(accData, classifier=="normal")
 factorList <- c("nRep", "frequency")
 outcome <- "correctness"
 dataframe <- dataToPlot

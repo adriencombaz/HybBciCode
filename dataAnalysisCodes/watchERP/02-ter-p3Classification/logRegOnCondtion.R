@@ -6,13 +6,16 @@ library(lme4)
 library(LMERConvenienceFunctions)
 library(languageR)
 
-source("createDataFrame.R")
+# source("createDataFrame.R")
+source("createDataFrame_2RunsForTrain.R")
 source("cleanPlot.R")
 
 #################################################################################################################
 
-accData1 <- subset(accData, classifier=="normal")
-accData1 <- subset(accData1, select = -c(classifier, foldTest))
+# accData1 <- subset(accData, classifier=="normal")
+# accData1 <- subset(accData1, select = -c(classifier, foldTest))
+varList <- c("subject", "condition", "roundNb", "correctness", "frequency", "nRep", "nRepWithinSub")
+accData1 <- accData[ accData$classifier=="normal", names(accData1) %in% varList ]
 accData1$nRepFac <- as.factor(accData1$nRep)
 
 str(accData1)

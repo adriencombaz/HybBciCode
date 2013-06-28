@@ -52,6 +52,7 @@ if ~exist( resDir, 'dir' ), mkdir(resDir); end
 run = unique( fileList.run );
 if ~isequal(run(:), (1:max(run))'), error('wrong run numbering'); end
 listTrainRuns = combntns(run, nRunsForTraining);
+listTrainRuns = [1 2];
 nCv = size(listTrainRuns, 1);
 nTestPerCv = numel(run)-nRunsForTraining;
 listTestRuns = zeros( nCv, nTestPerCv );
@@ -106,7 +107,8 @@ fprintf(fid, 'testingRun, roundNb, nAverages, targetFrequency, correctness\n');
 % end
 
 %% ========================================================================================================
-for iRunTest = 1:max(run)
+% for iRunTest = 1:max(run)
+for iRunTest = 3:max(run)
    
     fprintf('subject %s, test run %d out of %d\n', ...
         sub{iS}, iRunTest, max(run));

@@ -178,6 +178,8 @@ for iS = 1:nSubjects,
     
 end % OF SUBJECT LOOP
 
+if (iData-1 ~= nData), error('wrong estimation of dataset size!!'); end
+
 tBeforeOnset    = repmat( tBeforeOnset, iData-1, 1 );
 tAfterOnset     = repmat( tAfterOnset, iData-1, 1 );
 meanERP(iData:end)      = [];

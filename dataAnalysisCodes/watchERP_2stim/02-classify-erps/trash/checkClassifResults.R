@@ -25,7 +25,7 @@ plotResults <- function(dataframe, figureTag)
 #################################################################################################################
 nRunsForTrain <- 1
 
-for (iS in 1:2){
+for (iS in 1:5){
   filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP_2stim/02-classify-erps/linSvm_%dRunsForTrain/subject_S%d/Results_forLogisiticRegression.txt", nRunsForTrain, iS)
   accData1 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
   
@@ -51,7 +51,7 @@ plotResults(accDataAllSub, "train1_Test2-8")
 
 nRunsForTrain <- 2
 #################################################################################################################
-for (iS in 1:1){
+for (iS in 1:5){
   filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP_2stim/02-classify-erps/linSvm_%dRunsForTrain/subject_S%d/Results_forLogisiticRegression.txt", nRunsForTrain, iS)
   accData1 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
   

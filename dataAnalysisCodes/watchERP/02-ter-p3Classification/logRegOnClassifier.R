@@ -7,6 +7,7 @@ library(LMERConvenienceFunctions)
 library(languageR)
 
 source("createDataFrame.R")
+# source("createDataFrame_2RunsForTrain.R")
 source("cleanPlot.R")
 
 #################################################################################################################
@@ -24,8 +25,8 @@ summary(accData1)
 
 
 pp <- ggplot( accData1, aes(nRep, correctness, colour=classifier, shape=condition) )
-pp <- pp + stat_summary(fun.y = mean, geom="point",  position = position_jitter(w = 0.2, h = 0), size = 3)
-# pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(.5))
+# pp <- pp + stat_summary(fun.y = mean, geom="point",  position = position_jitter(w = 0.2, h = 0), size = 3)
+pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(.5), size = 3)
 # pp <- pp + stat_summary(fun.data = mean_cl_normal, geom = "pointrange", width = 0.2, position = position_dodge(.5), size = 1)
 pp <- pp + facet_wrap( ~subject ) 
 pp <- cleanPlot(pp)
@@ -33,12 +34,18 @@ pp <- pp + theme(legend.position=c(0.8334,0.1667))
 pp
 
 #################################################################################################################
+source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
+dataframe <- accData1
 factorList <- c("classifier", "nRep", "frequency")
 outcome <- "correctness"
-source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
-
-dataframe <- accData1
 plotFactorMeans_InteractionGraphs(dataframe, factorList, outcome)
+
+source("d:/KULeuven/PhD/rLibrary/plotInteractionGraphs_level2.R")
+dataframe <- accData1
+outcome <- "correctness"
+xFactor <- "nRep"
+factorList <- c("classifier", "frequency")
+plotInteractionGraphs_level2(dataframe, xFactor, outcome, factorList)
 
 #################################################################################################################
 
