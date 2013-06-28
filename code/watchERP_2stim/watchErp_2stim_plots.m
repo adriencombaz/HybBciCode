@@ -108,8 +108,8 @@ for iSq = 1:numel(expParams.ssvepFreq)
     
     %% reject epochs
     
-    minThreshold = -1000;
-    maxThreshold = 1000;
+    minThreshold = -50;
+    maxThreshold = 50;
     targetErps = zeros(range, nChan);
     targetInds = find(stimType == 1);
     nEpochs = 0;

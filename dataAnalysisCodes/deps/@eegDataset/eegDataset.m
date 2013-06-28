@@ -78,12 +78,19 @@ classdef eegDataset < handle
             obj.eventPos    = find( diff( eventChan ) == 1 ) + 1;
             
             stimId          = expParams.realP3StateSeqOnsets;
-            nItems          = numel( unique( expParams.realP3StateSeqOnsets ) );
+            if iscell(expParams.realP3StateSeqOnsets)
+                nItems          = numel( unique( expParams.realP3StateSeqOnsets{1} ) );
+            else
+                nItems          = numel( unique( expParams.realP3StateSeqOnsets ) );
+            end
             targetStateSeq  = expParams.lookHereStateSeq( expParams.lookHereStateSeq~=max(expParams.lookHereStateSeq) );
             tempp           = repmat( targetStateSeq, nItems*expParams.nRepetitions, 1);
             targetId        = tempp(:);
-            obj.eventId     = double( stimId(:) == targetId(:) ) + 1;
-            
+            if iscell(stimId)
+                obj.eventId     = double( stimId{1}(:) == targetId(:) ) + 1;
+            else
+                obj.eventId     = double( stimId(:) == targetId(:) ) + 1;
+            end
             obj.eventLabel  = {'nonTarget', 'target'};
             
             obj.keepReject = ones( size( obj.eventPos ) );
