@@ -1,6 +1,13 @@
-This is BibTeX, Version 0.99dThe top-level auxiliary file: draftHybridBCI.aux
-The style file: biblatex.bst
-A level-1 auxiliary file: tablesAndFigures.aux
-Database file #1: draftHybridBCI-blx.bib
-Database file #2: d:/KULeuven/PhD/MendeleyBiblio.bib
-Biblatex version: 1.7
+[1] Config.pm:387> INFO - This is Biber 1.6
+[1] Config.pm:390> INFO - Logfile is 'draftHybridBCI.blg'
+[347] biber-MSWIN:215> INFO - === Thu Jun , 2013, 17:31:51
+[422] Biber.pm:325> INFO - Reading 'draftHybridBCI.bcf'
+[561] Biber.pm:623> INFO - Found 14 citekeys in bib section 0
+[656] Biber.pm:2995> INFO - Processing section 0
+[875] Biber.pm:3129> INFO - Looking for bibtex format file 'd:/KULeuven/PhD/MendeleyBiblio.bib' for section 0
+[936] bibtex.pm:775> INFO - Found BibTeX data source 'd:/KULeuven/PhD/MendeleyBiblio.bib'
+[1625] Biber.pm:2881> INFO - Overriding locale 'English_United States.1252' default tailoring 'variable = shifted' with 'variable = non-ignorable'
+[1625] Biber.pm:2887> INFO - Sorting 'entry' list 'nyt' keys
+[1625] Biber.pm:2891> INFO - No sort tailoring available for locale 'English_United States.1252'
+[1893] bbl.pm:472> INFO - Writing 'draftHybridBCI.bbl' with encoding 'ascii'
+[1901] bbl.pm:545> INFO - Output to draftHybridBCI.bbl

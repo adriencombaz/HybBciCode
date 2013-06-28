@@ -44,13 +44,13 @@
   <internal package="biblatex" priority="9" active="0">
     <generic>latex</generic>
     <provides type="dynamic">
-      <file>draftHybridBCI.aux</file>
-      <file>draftHybridBCI-blx.bib</file>
+      <file>draftHybridBCI.bcf</file>
     </provides>
     <requires type="dynamic">
       <file>draftHybridBCI.bbl</file>
     </requires>
     <requires type="static">
+      <file>blx-dm.def</file>
       <file>blx-compat.def</file>
       <file>biblatex.def</file>
       <file>authoryear-comp.bbx</file>
@@ -62,14 +62,13 @@
     </requires>
   </internal>
   <external package="biblatex" priority="5" active="0">
-    <generic>bibtex</generic>
+    <generic>biber</generic>
     <cmdline>
-      <binary>bibtex</binary>
-      <option>-min-crossrefs 2</option>
+      <binary>biber</binary>
       <infile>draftHybridBCI</infile>
     </cmdline>
     <input>
-      <file>draftHybridBCI.aux</file>
+      <file>draftHybridBCI.bcf</file>
     </input>
     <output>
       <file>draftHybridBCI.bbl</file>
@@ -78,14 +77,10 @@
       <file>draftHybridBCI.bbl</file>
     </provides>
     <requires type="dynamic">
-      <file>draftHybridBCI.aux</file>
-      <file>draftHybridBCI-blx.bib</file>
+      <file>draftHybridBCI.bcf</file>
     </requires>
     <requires type="editable">
       <file>d:/KULeuven/PhD/MendeleyBiblio.bib</file>
-    </requires>
-    <requires type="static">
-      <file>biblatex.bst</file>
     </requires>
   </external>
 </requests>

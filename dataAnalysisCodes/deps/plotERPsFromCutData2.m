@@ -45,7 +45,8 @@ end
 colorList = [ ...    
     0 0 1 ; ... % blue
     1 0 0 ; ... % red
-    0 1 0 ...   % green
+    0 1 0 ; ... % green
+    0 0 0 ...   % black
     ];
 
 allowedParameterList = {'samplingRate', 'chanLabels', 'timeBeforeOnset', 'title', 'nMaxChanPerAx', 'axisOfEvent', 'axisTitles', 'legendStr', 'EventColors', 'scale'};

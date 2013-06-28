@@ -1,4 +1,4 @@
-function applySvmClassifier_perSubject_forLogisticRegression( iS, doEpochRejection )
+function applySvmClassifier_perSubject_forLogisticRegression( iS, nRunsForTraining )
 
 %================================================================================================================================
 %================================================================================================================================
@@ -37,6 +37,7 @@ end
 %================================================================================================================================
 %================================================================================================================================
 
+%--------------------------------------------------------------------------
 if isunix,
     TableName   = fullfile( codeDir, '01-preprocess-plot', filesep, 'watchErpDataset2.csv');
     fileList    = dataset('File', TableName, 'Delimiter', ',');
@@ -45,153 +46,143 @@ else
     fileList    = dataset('XLSFile', TableName);
 end
 
-
+%--------------------------------------------------------------------------
 sub     = unique( fileList.subjectTag );
 cond    = unique( fileList.condition );
-nSub    = numel(sub);
 nCond   = numel(cond);
 nAveMax = 10;
+fileList= fileList( ismember( fileList.subjectTag, sub{iS} ), : );
 
-[dum1 folderName dum2] = fileparts(cd);
-resDir = fullfile( resDir, folderName, 'LinSvm', sprintf('subject_%s', sub{iS}) );
-if doEpochRejection,
-    resDir = [resDir '_EpochRejection'];
+%--------------------------------------------------------------------------
+[~, folderName, ~] = fileparts(cd);
+resDir = fullfile( resDir, folderName, sprintf('LinSvm_%dRunsForTrain', nRunsForTraining), sprintf('subject_%s', sub{iS}) );
+
+%--------------------------------------------------------------------------
+run = unique( fileList.run );
+if ~isequal(run(:), (1:max(run))'), error('wrong run numbering'); end
+listTrainRuns = combntns(run, nRunsForTraining);
+nCv = size(listTrainRuns, 1);
+listTestRuns = zeros( nCv, numel(run)-size(listTrainRuns, 2) );
+for iCv = 1:nCv
+    listTestRuns(iCv, :) = run( ~ismember(run, listTrainRuns(iCv,:)) );
 end
+
+%--------------------------------------------------------------------------
+tBeforeOnset = 0;
+tAfterOnset = .6;
+butterFilt.lowMargin = .5;
+butterFilt.highMargin = 20;
+butterFilt.order = 3;
+targetFS = 128;
+
+
+%--------------------------------------------------------------------------
 fid = fopen( fullfile( resDir, 'Results_forLogisiticRegression.txt' ),'wt' );
-fprintf(fid, 'subject, conditionTrain, conditionTest, nAverages, foldTrain, foldTest, correctness\n');
-fprintf('subject, conditionTrain, conditionTest, nAverages, foldTrain, foldTest, correctness\n');
+fprintf(fid, 'subject, condition, foldInd, ');
+for i = 1:nRunsForTraining
+    fprintf(fid, 'trainingRun_%d, ', i);
+end
+fprintf(fid, 'testingRun, roundNb, nAverages, correctness\n');
 
 
 %================================================================================================================================
 %================================================================================================================================
+for iC = 1:nCond
+    for iRunTest = 1:max(run)
+        
+        fprintf('Subject %s, condition %s (%d out of %d), run %d out of %d\n', sub{iS}, cond{iC}, iC, nCond, iRunTest, max(run));
+        
+        subFileList = fileList( ismember( fileList.condition, cond{iC} ) & ismember( fileList.run, iRunTest ), : );
+        if size(subFileList)~=1, error('size should be 1!!'); end
+        
+        
+        %% LOAD AND PROCESS THE EEG DATA
+        %==============================================================================
+        %==============================================================================
+        
+        %
+        %--------------------------------------------------------------------------
+        sessionDir      = fullfile(dataDir, subFileList.sessionDirectory{1});
+        [~, name, ext]  = fileparts( ls(fullfile(sessionDir, [subFileList.fileName{1} '*.bdf'])) );
+        filename        = strtrim( [name ext] );
+        [~, name, ext]  = fileparts( ls(fullfile(sessionDir, [subFileList.fileName{1}(1:19) '*.mat'])) );
+        paramFile       = strtrim( [name ext] );
+        pars            = load( fullfile(sessionDir,paramFile), 'nCuesToShow', 'nRepetitions', 'lookHereStateSeq', 'realP3StateSeqOnsets', 'ssvepFreq', 'scenario' );
+        
+        pars.scenario = rmfield(pars.scenario, 'textures');
+        
+        onsetEventInd   = cellfun( @(x) strcmp(x, 'P300 stim on'), {pars.scenario.events(:).desc} );
+        onsetEventValue = pars.scenario.events( onsetEventInd ).id;
+        
+        
+        %
+        %--------------------------------------------------------------------------
+        erpData                 = eegDataset3( sessionDir, filename, 'onsetEventValue', onsetEventValue );
+        erpData.tBeforeOnset    = tBeforeOnset;
+        erpData.tAfterOnset     = tAfterOnset;
+        nChans                  = numel( erpData.eegChanInd );
 
-for iCTrain = 1:nCond
-    for iCTest = 1:nCond
-        for iAve = 1:nAveMax
-            
-            subsetTrain = fileList( ismember( fileList.subjectTag, sub{iS} ) & ismember( fileList.condition, cond{iCTrain} ), : );
-            subsetTest  = fileList( ismember( fileList.subjectTag, sub{iS} ) & ismember( fileList.condition, cond{iCTest} ), : );
-            
-            runIdTr = unique( subsetTrain.run );
-            runIdTest = unique( subsetTest.run );
-            if ~isequal( runIdTr, runIdTest ), 
-                error('unequal number of runs for train and test condition');
+        % filter the eeg data
+        %------------------------------------------------------------------------------
+        erpData.butterFilter( butterFilt.lowMargin, butterFilt.highMargin, butterFilt.order );
+        
+        % get cuts
+        %------------------------------------------------------------------------------
+        cuts = erpData.getCuts(); % single( erpData.getCuts2() );
+        cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
+
+        % downsample cuts
+        %------------------------------------------------------------------------------
+        DSF = erpData.fs / targetFS;
+        if DSF ~= floor(DSF), error('something wrong with the sampling rate'); end
+        if DSF == 1
+            cuts_proc = cuts;
+        else
+            nbins = floor( size(cuts, 1) / DSF );
+            cuts_proc = zeros( nbins, size(cuts, 2), size(cuts, 3) ); % , 'single' );
+            for i = 1:nbins
+                cuts_proc(i,:,:) = mean( cuts( (i-1)*DSF+1:i*DSF, :, : ), 1 );
             end
-            nRuns = numel( runIdTr );
-
-            %==============================================================================
-            %==============================================================================
+        end
+        
+%         % get labels
+%         %------------------------------------------------------------------------------
+        targetStateSeq  = pars.lookHereStateSeq( pars.lookHereStateSeq~=max(pars.lookHereStateSeq) );
+        nP3item         = max( targetStateSeq );
+    
+        
+        %%
+        %==============================================================================
+        %==============================================================================
+        [concernedFolds, ~, ~] = find(listTestRuns == iRunTest);        
+        for iF = concernedFolds'
+            for iAve = 1:nAveMax
             
-            %%  CROSS-VALIDATION
-
-            %==============================================================================
-            %==============================================================================
-%             nCorrect    = 0;
-%             nCued       = 0;
-            for iCrossVal = 1:nRuns
+%                 fprintf('subject %s, test run %d out of %d, fold %d out of %d, %d ave out of %d\n', ...
+%                     sub{iS}, iRunTest, max(run), find(concernedFolds==iF), numel(concernedFolds), iAve, nAveMax);
                                 
-                % load corresponding classifier
-                %==============================================================================
-                %==============================================================================
-
-                subsetTrainIcv      = subsetTrain( ismember( subsetTrain.run, runIdTr(iCrossVal) ), : );
-                sessionDir          = fullfile(dataDir, subsetTrainIcv.sessionDirectory{1});
-%                 filename    = ls(fullfile(sessionDir, [subsetTrain.fileName{1} '*.bdf']));
-                [dum, name, ext]    = fileparts( ls( fullfile(sessionDir, [subsetTrainIcv.fileName{1} '*.bdf']) ) );
-                filename            = sprintf('%s-%.2dAverages.mat', name, iAve);
-                classifierFilename  = fullfile( resDir, filename );
+                % load the classifier
+                %------------------------------------------------------------------------------
+                classifierFilename  = fullfile( resDir, sprintf('svm-%s-%.2dAverages-fold%.2d.mat',  cond{iC}, iAve, iF) );
                 classifier          = load(classifierFilename);
                 
-                % test the classifier on remaning runs
-                %==============================================================================
-                %==============================================================================
-                subsetTestIcv = subsetTest( ~ismember( subsetTest.run, runIdTest(iCrossVal) ), : );
-                
-                for iRunTest = 1:size( subsetTestIcv, 1 )
-                    
-                    
-                    % read data
-                    %------------------------------------------------------------------------------
-                    subsetTesti = subsetTestIcv( iRunTest, : );
-                    sessionDir  = fullfile(dataDir, subsetTesti.sessionDirectory{1});
-                    %                 filename    = ls(fullfile(sessionDir, [subsetTesti.fileName{1} '*.bdf']));
-                    [dum, name, ext] = fileparts( ls( fullfile(sessionDir, [subsetTesti.fileName{1} '*.bdf']) ) );
-                    filename = strtrim( [name ext] );
-                    erpData     = eegDataset( sessionDir, filename );
-                    
-                    erpData.tBeforeOnset    = classifier.tBeforeOnset;
-                    erpData.tAfterOnset     = classifier.tAfterOnset;
-                    
-                    
-                    % read experiment parameters
-                    %------------------------------------------------------------------------------
-                    %                 paramFile   = ls(fullfile(sessionDir, [subsetTesti.fileName{1} '*.mat']));
-                    [dum, name, ext] = fileparts( ls( fullfile(sessionDir, [subsetTesti.fileName{1} '*.mat']) ) );
-                    paramFile = strtrim( [name ext] );
-                    pars        = load( fullfile(sessionDir,paramFile), 'nCuesToShow', 'nRepetitions', 'lookHereStateSeq', 'realP3StateSeqOnsets' );
-                    
-                    nCues   = pars.nCuesToShow;
-                    nReps   = pars.nRepetitions;
-                    if nReps < iAve, error('number of repetitions used during the experiment is lower than the desired number of averages'); end
-                    nIcons  = 6;
-                    targetIcon = pars.lookHereStateSeq( pars.lookHereStateSeq <= nIcons );
-                    flashSequence = pars.realP3StateSeqOnsets;
-                    
-                
-                    % filter the eeg data
-                    %------------------------------------------------------------------------------
-                    erpData.butterFilter( classifier.butterFilt.lowMargin, classifier.butterFilt.highMargin, classifier.butterFilt.order );
-                    
-                    % get cuts
-                    %------------------------------------------------------------------------------
-                    cuts = erpData.getCuts2(); % single( erpData.getCuts2() );
-                    cuts(:, ~ismember(1:erpData.nChan, erpData.eegChanInd), :) = [];
-                    
-
-                % select and average trials
+                % 
                 %------------------------------------------------------------------------------
-                meanCuts = zeros( size(cuts, 1), size(cuts, 2), nIcons*nCues ); %, 'single' );
-                for iCue = 1:nCues
-                    
-                    iStart      = (iCue-1)*nIcons*nReps;
-                    indEvents   = iStart + (1:nIcons*nReps);
-                    
-                    for iIcon = 1:nIcons
+                for iCue = 1:pars.nCuesToShow
+                
+                    meanCuts        = zeros(nbins, nChans, nP3item);
+                    indStart        = (iCue-1)*pars.nRepetitions*nP3item;
+                    indEvents       = indStart + (1:pars.nRepetitions*nP3item);
+                    for iIcon = 1:nP3item
                         
-                        iIconFlashes = iStart + find( flashSequence(indEvents) == iIcon, iAve, 'first' );
-                        meanCuts( :, :, (iCue-1)*nIcons + iIcon ) = mean( cuts( :, :, iIconFlashes ), 3 );
+                        iIconFlashes = indStart + find( pars.realP3StateSeqOnsets(indEvents) == iIcon, iAve, 'first' );
+                        meanCuts( :, :, iIcon ) = mean( cuts_proc( :, :, iIconFlashes ), 3 );
                         
                     end
-                end
-                clear cuts
-                    
-                    % spatial filtering
-                    %------------------------------------------------------------------------------
-                    newCuts = zeros( size(meanCuts, 1), classifier.nSPcomp, size(meanCuts, 3) ); % , 'single' );
-                    for iTr = 1:size(meanCuts, 3)
-                        newCuts( :, :, iTr ) = meanCuts( :, :, iTr ) * classifier.W;
-                    end
-                    clear cuts
-                    
-                    % downsample
-                    %------------------------------------------------------------------------------
-                    DSF = erpData.fs / classifier.targetFS;
-                    if DSF ~= floor(DSF), error('something wrong with the sampling rate'); end
-                    if DSF == 1
-                        cuts_DS = newCuts;
-                    else
-                        nbins = floor( size(newCuts, 1) / DSF );
-                        cuts_DS = zeros( nbins, size(newCuts, 2), size(newCuts, 3) ); % , 'single' );
-                        for i = 1:nbins
-                            cuts_DS(i,:,:) = mean( newCuts( (i-1)*DSF+1:i*DSF, :, : ), 1 );
-                        end
-                    end
-                    clear newCuts
                     
                     % reshape
                     %------------------------------------------------------------------------------
-                    featTest     = reshape(cuts_DS, size(cuts_DS,1)*size(cuts_DS,2), size(cuts_DS,3))';
-                    clear cuts_DS
+                    featTest     = reshape(meanCuts, size(meanCuts,1)*size(meanCuts,2), size(meanCuts,3))';
                     
                     % normalization
                     %------------------------------------------------------------------------------
@@ -201,33 +192,27 @@ for iCTrain = 1:nCond
                     
                     % Apply classifier
                     %------------------------------------------------------------------------------
-                    Xtest       = [Xtest ones(size(Xtest, 1),1)];
+                    Xtest       = [Xtest ones(size(Xtest, 1),1)]; %#ok<AGROW>
                     YlatTest    = Xtest*classifier.B;
                     clear Xtest
                     
+                    [ ~, winner ]   = max( YlatTest );
+                    targetIcon      = targetStateSeq( iCue );
                     
-                    % compare winner icon with target icon and update results
+                    % Write in the output file
                     %------------------------------------------------------------------------------
-                    for iCue = 1:nCues
-                        [ dum winner ]          = max( YlatTest( (iCue-1)*nIcons+1 : iCue*nIcons ) );
-%                         nCorrect = nCorrect + ( winner == targetIcon(iCue) );
-
-                        fprintf( fid, ...
-                            '%s, %s, %s, %d, %d, %d, %d\n', ...
-                            sub{iS}, cond{iCTrain}, cond{iCTest}, iAve, subsetTrainIcv.run, subsetTesti.run, winner == targetIcon(iCue) );
-                        fprintf( ...
-                            '%s, %s, %s, %d, %d, %d, %d\n', ...
-                            sub{iS}, cond{iCTrain}, cond{iCTest}, iAve, subsetTrainIcv.run, subsetTesti.run, winner == targetIcon(iCue) );
-                        
-                        
+                    fprintf(fid, '%s, %s, %d, ', sub{iS}, cond{iC}, iF);
+                    for i = 1:nRunsForTraining
+                        fprintf(fid, '%d, ', listTrainRuns(iF, i));
                     end
-%                     nCued = nCued + nCues;
-
-                end
-            end            
-        end
-    end
-end
+                    fprintf(fid, '%d, %d, %d, %d\n', iRunTest, iCue, iAve, winner == targetIcon);
+                    
+                end % OF iCUE LOOP                
+            end % OF iAVE LOOP
+        end % CONCERNED CVFOLDS LOOP
+    end % OF RUNTEST LOOP
+end % OF iCOND LOOP
 
 fclose(fid);
-end
+
+end % OF FUNCTION

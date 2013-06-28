@@ -15,6 +15,7 @@
 \usepackage[printonlyused,withpage]{acronym}
 %\usepackage[printonlyused,withpage,nohyperlinks]{acronym}
 
+
 \ifpdf
     \usepackage[subrefformat=parens]{subcaption}                % for subfigures (replaces the subfig package:
                                                                 % more up-to-date and works well with hyperref)
@@ -23,26 +24,27 @@
 \fi
 
 \usepackage[
-            style         = authoryear-comp,%numeric-comp, authoryear-comp
-            sorting       = nyt,           % name, title, year
-            maxbibnames   = 10,            % maximum number of authors to mention in the bibliography, if reached,
-            minbibnames   = 1,             % the number of authors to cite is set to minbibnames (et al.)
-            maxcitenames  = 2,             % same for within the text (makes sense with only specific cite styles)
-            mincitenames  = 1,
-            backref       = false,         % indicate or not the page on which the bibliography item is cited
-            backrefstyle  = three,
-            abbreviate    = true,          % default (Volume -> Vol., pages -> pp., ...)
-            doi           = false,
-            isbn          = false,
-            url           = false,
-            eprint        = false,
-            firstinits    = true,           % all first and middle names as initials
-            uniquename    = init,           % Disambiguate names using initials only (to be compatible with firstinits = true)
+            backend         = biber
+            , style         = authoryear-comp   %numeric-comp, authoryear-comp
+            , sorting       = nyt               % name, title, year
+            , maxbibnames   = 10                % maximum number of authors to mention in the bibliography, if reached,
+            , minbibnames   = 1                 % the number of authors to cite is set to minbibnames (et al.)
+            , maxcitenames  = 2                 % same for within the text (makes sense with only specific cite styles)
+            , mincitenames  = 1
+            , backref       = false             % indicate or not the page on which the bibliography item is cited
+            , backrefstyle  = three
+            , abbreviate    = true              % default (Volume -> Vol., pages -> pp., ...)
+            , doi           = false
+            , isbn          = false
+            , url           = false
+            , eprint        = false
+            , firstinits    = true              % all first and middle names as initials
+            , uniquename    = init              % Disambiguate names using initials only (to be compatible with firstinits = true)
             ]{biblatex}
 
-\addbibresource{d:/KULeuven/PhD/MendeleyBiblioAbbr.bib}
-\addbibresource{d:/KULeuven/PhD/Publish/JournalPublications/Neuroimage/draft/AdditionalBiblioAbbr.bib}
-%\addbibresource{d:/KULeuven/PhD/MendeleyBiblio.bib}
+%\addbibresource{d:/KULeuven/PhD/MendeleyBiblioAbbr.bib}
+%\addbibresource{d:/KULeuven/PhD/Publish/JournalPublications/Neuroimage/draft/AdditionalBiblioAbbr.bib}
+\addbibresource{d:/KULeuven/PhD/MendeleyBiblio.bib}
 %\addbibresource{d:/KULeuven/PhD/Publish/JournalPublications/Neuroimage/draft/AdditionalBiblio.bib}
 
 % TO LOAD LAST FOR COMMANDS NOT TO BE OVERWRITTEN
@@ -223,7 +225,7 @@
 \newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
 \newcommand{\nth}[0]{\superscript{th} }
 \newcommand{\rd}[0]{\superscript{rd} }
-%\newcommand{\st}[0]{\superscript{st}}
+\newcommand{\st}[0]{\superscript{st}}
 
 %--------------------------------------------------
 % autoref names for hyperref package

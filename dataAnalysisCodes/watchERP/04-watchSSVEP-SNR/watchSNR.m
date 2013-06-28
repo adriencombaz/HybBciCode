@@ -18,24 +18,26 @@ switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\';
+        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-SNR\';
         codeDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\';
+        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-SNR\';
         codeDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case {'sunny', 'solaris', ''}
         addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );
         rmpath( genpath('~/PhD/hybridBCI-stuffs/deps/eeglab10_0_1_0b/external/SIFT_01_alpha') );
         dataDir = '~/PhD/hybridBCI-stuffs/data/';
-        resDir = '~/PhD/hybridBCI-stuffs/results/';
+        resDir = '~/PhD/hybridBCI-stuffs/results/04-watchSSVEP-SNR/';
         codeDir = '~/PhD/hybridBCI-stuffs/code/';
     otherwise,
         error('host not recognized');
 end
+
+if ~exist(resDir, 'dir'), mkdir(resDir); end
 
 % ========================================================================================================
 % ========================================================================================================
@@ -47,11 +49,13 @@ sub     = unique( fileList.subjectTag );
 freq    = unique( fileList.frequency );
 oddb    = unique( fileList.oddball );
 cond    = unique( fileList.condition );
+harm	= [1 2];
 
 nSub    = numel( sub );
 nFreq   = numel( freq );
 nOdd    = numel( oddb );
 nCond   = numel( cond );
+nHarm   = numel( harm );
 if nCond ~= nFreq*nOdd, error('conditions are not entirely determined by frequency and oddball'); end
 if ~isequal( oddb, [0 ; 1] ), error('not the expected oddball condition'); end
 
@@ -86,7 +90,7 @@ nMaxTrials  = 36;
 timesInSec  = 1:14;
 nTimes      = numel( timesInSec );
 indTrial    = zeros(nSub, nFreq, nOdd);
-nData       = nTimes*nMaxTrials*nOdd*nFreq*nSub;
+nData       = nTimes*nMaxTrials*nOdd*nFreq*nSub*nHarm;
 
 subject     = cell( nData, 1);
 frequency   = zeros( nData, 1); 
@@ -96,6 +100,7 @@ fileNb      = zeros( nData, 1);
 stimDuration= zeros( nData, 1);
 snr         = cell( nData, 1); 
 chanList    = cell( nData, 1);
+harmonics   = cell( nData, 1);
 iData     = 1;
 
 for iS = 1:nSub,
@@ -176,17 +181,18 @@ for iS = 1:nSub,
                     fprintf('treating subject %s (%d out %d), frequency %d (%d out of %d), oddball condition %d (%d out of %d), file %d/%d, epoch lenght of %g seconds (%d out of %d)\n', ...
                         sub{iS}, iS, nSub, ...
                         freq(iF), iF, nFreq, ...
-                        oddball(iOdd), iOdd, nOdd, ...
+                        oddb(iOdd), iOdd, nOdd, ...
                         iFile, size(subset, 1), ...
                         timesInSec(iTime), iTime, nTimes);                    
                     
                     
                     epochLenght = timesInSec(iTime)*targetFS;
-                    mcdObj      = myMCD( freq(iF), targetFS, 1, epochLenght );
+                    mcdObj      = myMCD( freq(iF), targetFS, harm, epochLenght );
                     
                     for iTrial = 1:nTrials
                         epoch       = sig( stimOnsets(iTrial):stimOnsets(iTrial)+epochLenght-1, : );
                         [SNRs Ns]   = mcdObj.getSNRs( epoch' );
+                        SNRs        = reshape(SNRs, nHarm, nChan)';
                         
                         
                         subject{iData}      = sub{iS};
@@ -197,6 +203,7 @@ for iS = 1:nSub,
                         stimDuration(iData) = timesInSec(iTime);
                         snr{iData}          = SNRs;
                         chanList{iData}     = channels;
+                        harmonics{iData}    = harm;
                         iData               = iData + 1;
                         
                     end
@@ -217,6 +224,7 @@ trial(iData:end)        = [];
 stimDuration(iData:end) = [];
 snr(iData:end)          = [];
 chanList(iData:end)     = [];
+harmonics(iData:end)    = [];
 
 snrDataset = dataset( ...
     subject ...
@@ -227,22 +235,81 @@ snrDataset = dataset( ...
     , stimDuration ...
     , snr ...
     , chanList ...
+    , harmonics ...
     );
 
 
-save('snrDataset', 'snrDataset');
+save(fullfile(resDir, 'snrDataset.mat'), 'snrDataset');
 
 
 
-%%
-snrDatasetOz = snrDataset;
-snrDatasetOz.snr = cellfun(@(x, y) x( ismember( y, 'Oz' ) ), snrDataset.snr, snrDataset.chanList );
-snrDatasetOz.chanList = [];
+%% ========================================================================================================
+% =========================================================================================================
 
-export( snrDatasetOz, 'file', 'snrDatasetOz.csv', 'delimiter', ',' );
+snrDatasetOz            = snrDataset;
+snrDatasetOz.snr        = cellfun(@(x, y) x( ismember( y, 'Oz' ), 1 ), snrDataset.snr, snrDataset.chanList );
+snrDatasetOz.chanList   = [];
+snrDatasetOz.harmonics  = [];
+export( snrDatasetOz, 'file', fullfile(resDir, 'snrDataset_Oz_1Ha.csv'), 'delimiter', ',' );
 
- %%
- sub    = unique( snrDataset.subject );
+%----------------------------------------------------------------------------------------------------------
+
+snrDatasetOz            = snrDataset;
+snrDatasetOz.snr        = cellfun(@(x, y) mean( x( ismember( y, 'Oz' ), : ), 2 ), snrDataset.snr, snrDataset.chanList );
+snrDatasetOz.chanList   = [];
+snrDatasetOz.harmonics  = [];
+export( snrDatasetOz, 'file', fullfile(resDir, 'snrDataset_Oz_2Ha.csv'), 'delimiter', ',' );
+
+%----------------------------------------------------------------------------------------------------------
+
+
+subsetChannels  = {'O1', 'Oz', 'O2'};
+
+snrDatasetOcciptial            = snrDataset;
+snrDatasetOcciptial.snr        = cellfun(@(x, y) mean( x( ismember( y, subsetChannels ), 1 ), 1), snrDataset.snr, snrDataset.chanList, 'UniformOutput', false );
+snrDatasetOcciptial.chanList   = [];
+snrDatasetOcciptial.harmonics  = [];
+export( snrDatasetOcciptial, 'file', fullfile(resDir, 'snrDataset_O1OzO2_1Ha.csv'), 'delimiter', ',' );
+
+%----------------------------------------------------------------------------------------------------------
+
+snrDatasetOcciptial            = snrDataset;
+snrDatasetOcciptial.snr        = cellfun(@(x, y) mean( mean( x( ismember( y, subsetChannels ), : ), 2 ), 1), snrDataset.snr, snrDataset.chanList, 'UniformOutput', false );
+snrDatasetOcciptial.chanList   = [];
+snrDatasetOcciptial.harmonics  = [];
+export( snrDatasetOcciptial, 'file', fullfile(resDir, 'snrDataset_O1OzO2_2Ha.csv'), 'delimiter', ',' );
+
+
+%----------------------------------------------------------------------------------------------------------
+
+subsetChannels  = {...
+        'CP5',   'CP1',   'CP2',   'CP6', ...
+...
+      'P7',   'P3',   'Pz',   'P4',   'P8', ...
+...     
+               'PO3',       'PO4', ...
+                'O1', 'Oz', 'O2' ...
+};
+
+snrDatasetSelChan            = snrDataset;
+snrDatasetSelChan.snr        = cellfun(@(x, y) mean( x( ismember( y, subsetChannels ), 1 ), 1), snrDataset.snr, snrDataset.chanList, 'UniformOutput', false );
+snrDatasetSelChan.chanList   = [];
+snrDatasetSelChan.harmonics  = [];
+export( snrDatasetSelChan, 'file', fullfile(resDir, 'snrDataset_SelChan_1Ha.csv'), 'delimiter', ',' );
+
+%----------------------------------------------------------------------------------------------------------
+
+snrDatasetSelChan            = snrDataset;
+snrDatasetSelChan.snr        = cellfun(@(x, y) mean( mean( x( ismember( y, subsetChannels ), : ), 2 ), 1), snrDataset.snr, snrDataset.chanList, 'UniformOutput', false );
+snrDatasetSelChan.chanList   = [];
+snrDatasetSelChan.harmonics  = [];
+export( snrDatasetSelChan, 'file', fullfile(resDir, 'snrDataset_SelChan_2Ha.csv'), 'delimiter', ',' );
+
+
+%% ========================================================================================================
+% =========================================================================================================
+
+sub    = unique( snrDataset.subject );
 freq    = unique( snrDataset.frequency );
 oddb    = unique( snrDataset.oddball );
 trial   = unique( snrDataset.trial );
@@ -294,7 +361,8 @@ for iSub = 1:nSub
                         & ismember( snrDataset.stimDuration, stimDur(iSD) ) ...
                         , :);
                     
-                    toPlot(iSD) = mean( cellfun( @(x, y) x( ismember( y, channels{iCh} ) ), subDataset.snr, subDataset.chanList ) );
+%                     toPlot(iSD) = mean( cellfun( @(x, y) x( ismember( y, channels{iCh} ) ), subDataset.snr, subDataset.chanList ) );
+                    toPlot(iSD) = mean( cellfun( @(x, y) sum( x( ismember( y, channels{iCh} ), : ), 2 ), subDataset.snr, subDataset.chanList ) );
                     
                 end
                 
