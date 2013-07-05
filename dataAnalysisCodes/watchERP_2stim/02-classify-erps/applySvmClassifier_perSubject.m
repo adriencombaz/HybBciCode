@@ -1,4 +1,4 @@
-function applySvmClassifier_perSubject( iS, nRunsForTraining )
+function applySvmClassifier_perSubject( iS, nRunsForTraining, targetFS, nFoldsSvm )
 
 % init host name
 %--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ end
 %--------------------------------------------------------------------------
 sub         = unique( fileList.subjectTag );
 fileList    = fileList( ismember( fileList.subjectTag, sub{iS} ), : );
-resDir      = fullfile( resDir, sprintf('linSvm_%dRunsForTrain', nRunsForTraining), sprintf('subject_%s', sub{iS}) );
+resDir      = fullfile( resDir, sprintf('LinSvm_%dRunsForTrain_%dHz_%.2dcvSvm', nRunsForTraining, targetFS, nFoldsSvm), sprintf('subject_%s', sub{iS}) );
 if ~exist( resDir, 'dir' ), mkdir(resDir); end
 
 %--------------------------------------------------------------------------
@@ -58,7 +58,7 @@ listTestRuns = zeros( nCv, nTestPerCv );
 for iCv = 1:nCv
     listTestRuns(iCv, :) = run( ~ismember(run, listTrainRuns(iCv,:)) );
 end
-
+listTestRuns = listTestRuns(1, :);
 %--------------------------------------------------------------------------
 nAveMax = 10;
 tBeforeOnset = 0;
@@ -67,7 +67,6 @@ butterFilt.lowMargin = .5;
 % butterFilt.highMargin = 30;
 butterFilt.highMargin = 20;
 butterFilt.order = 3;
-targetFS = 128;
 % nSquares = 2;
 % nItemsPerSquare = 6;
 
@@ -180,79 +179,80 @@ for iRunTest = 1:max(run)
         %==============================================================================
         [concernedFolds, ~, ~] = find(listTestRuns == iRunTest);
         
-        for iF = concernedFolds'
-            for iAve = 1:nAveMax
-            
-%                 fprintf('subject %s, test run %d out of %d, fold %d out of %d, %d ave out of %d\n', ...
-%                     sub{iS}, iRunTest, max(run), find(concernedFolds==iF), numel(concernedFolds), iAve, nAveMax);
-                
-                
-                % load the classifier
-                %------------------------------------------------------------------------------
-                classifierFilename  = fullfile( resDir, sprintf('svm-%.2dAverages-fold%.2d.mat', iAve, iF) );
-                classifier          = load(classifierFilename);
-                
-                % 
-                %------------------------------------------------------------------------------
-%                 temp_correctness        = nan( pars.nCuesToShow, 1 );
-%                 temp_targetFrequency    = nan( pars.nCuesToShow, 1 );
-                for iCue = 1:pars.nCuesToShow
-                
-                    targetSymbol    = targetStateSeq( iCue );
-                    targetSquare    = ceil( targetSymbol / pars.nP3item );
+        if ~isempty( concernedFolds )
+            for iF = concernedFolds'
+                for iAve = 1:nAveMax
                     
-                    meanCuts        = zeros(nbins, nChans, pars.nP3item);
-                    indStart        = (iCue-1)*pars.nRepetitions*pars.nP3item;
-                    indEvents       = indStart + (1:pars.nRepetitions*pars.nP3item);
-                    for iIcon = 1:pars.nP3item
+                    %                 fprintf('subject %s, test run %d out of %d, fold %d out of %d, %d ave out of %d\n', ...
+                    %                     sub{iS}, iRunTest, max(run), find(concernedFolds==iF), numel(concernedFolds), iAve, nAveMax);
+                    
+                    
+                    % load the classifier
+                    %------------------------------------------------------------------------------
+                    classifierFilename  = fullfile( resDir, sprintf('svm-%.2dAverages-fold%.2d.mat', iAve, iF) );
+                    classifier          = load(classifierFilename);
+                    
+                    %
+                    %------------------------------------------------------------------------------
+                    %                 temp_correctness        = nan( pars.nCuesToShow, 1 );
+                    %                 temp_targetFrequency    = nan( pars.nCuesToShow, 1 );
+                    for iCue = 1:pars.nCuesToShow
                         
-                        iIconFlashes = indStart + find( pars.realP3StateSeqOnsets{targetSquare}(indEvents) == iIcon, iAve, 'first' );
-                        meanCuts( :, :, iIcon ) = mean( cuts_proc( :, :, iIconFlashes ), 3 );
+                        targetSymbol    = targetStateSeq( iCue );
+                        targetSquare    = ceil( targetSymbol / pars.nP3item );
                         
-                    end
+                        meanCuts        = zeros(nbins, nChans, pars.nP3item);
+                        indStart        = (iCue-1)*pars.nRepetitions*pars.nP3item;
+                        indEvents       = indStart + (1:pars.nRepetitions*pars.nP3item);
+                        for iIcon = 1:pars.nP3item
+                            
+                            iIconFlashes = indStart + find( pars.realP3StateSeqOnsets{targetSquare}(indEvents) == iIcon, iAve, 'first' );
+                            meanCuts( :, :, iIcon ) = mean( cuts_proc( :, :, iIconFlashes ), 3 );
+                            
+                        end
+                        
+                        % reshape
+                        %------------------------------------------------------------------------------
+                        featTest     = reshape(meanCuts, size(meanCuts,1)*size(meanCuts,2), size(meanCuts,3))';
+                        
+                        % normalization
+                        %------------------------------------------------------------------------------
+                        Xtest       = bsxfun(@minus, featTest, classifier.minx);
+                        Xtest       = bsxfun(@rdivide, Xtest, classifier.maxx-classifier.minx);
+                        clear featTest
+                        
+                        % Apply classifier
+                        %------------------------------------------------------------------------------
+                        Xtest       = [Xtest ones(size(Xtest, 1),1)]; %#ok<AGROW>
+                        YlatTest    = Xtest*classifier.B;
+                        clear Xtest
+                        
+                        [ ~, winner ] = max( YlatTest );
+                        targetIcon = targetSymbol - (targetSquare-1)*pars.nP3item;
+                        
+                        
+                        %                     fprintf( fid, ...
+                        %                         '%s, %d, %d, %d, %d, %d, %.2g, %d\n', ...
+                        %                         sub{iS}, iF, listTrainRuns(iF, :), iRunTest, iCue, iAve, pars.ssvepFreq( targetSquare ), winner == targetIcon );
+                        fprintf(fid, '%s, %d, ', sub{iS}, iF);
+                        for i = 1:nRunsForTraining
+                            fprintf(fid, '%d, ', listTrainRuns(iF, i));
+                        end
+                        fprintf(fid, '%d, %d, %d, %.2g, %d\n', iRunTest, iCue, iAve, pars.ssvepFreq( targetSquare ), winner == targetIcon);
+                        
+                        %                     temp_targetFrequency( iCue ) = pars.ssvepFreq( targetSquare );
+                        %                     temp_correctness( iCue ) = winner == targetIcon;
+                        
+                    end % OF iCUE LOOP
                     
-                    % reshape
-                    %------------------------------------------------------------------------------
-                    featTest     = reshape(meanCuts, size(meanCuts,1)*size(meanCuts,2), size(meanCuts,3))';
-                    
-                    % normalization
-                    %------------------------------------------------------------------------------
-                    Xtest       = bsxfun(@minus, featTest, classifier.minx);
-                    Xtest       = bsxfun(@rdivide, Xtest, classifier.maxx-classifier.minx);
-                    clear featTest
-                    
-                    % Apply classifier
-                    %------------------------------------------------------------------------------
-                    Xtest       = [Xtest ones(size(Xtest, 1),1)]; %#ok<AGROW>
-                    YlatTest    = Xtest*classifier.B;
-                    clear Xtest
-                    
-                    [ ~, winner ] = max( YlatTest );
-                    targetIcon = targetSymbol - (targetSquare-1)*pars.nP3item;
+                    %                 inds = ( testingRun == iRunTest ) & ( iFold == iF ) & ( nAverages == iAve ) ;
+                    %                 targetFrequency( inds ) = temp_targetFrequency;
+                    %                 correctness( inds )     = temp_correctness;
                     
                     
-%                     fprintf( fid, ...
-%                         '%s, %d, %d, %d, %d, %d, %.2g, %d\n', ...
-%                         sub{iS}, iF, listTrainRuns(iF, :), iRunTest, iCue, iAve, pars.ssvepFreq( targetSquare ), winner == targetIcon );                    
-                    fprintf(fid, '%s, %d, ', sub{iS}, iF);
-                    for i = 1:nRunsForTraining
-                        fprintf(fid, '%d, ', listTrainRuns(iF, i));
-                    end
-                    fprintf(fid, '%d, %d, %d, %.2g, %d\n', iRunTest, iCue, iAve, pars.ssvepFreq( targetSquare ), winner == targetIcon);
-                    
-%                     temp_targetFrequency( iCue ) = pars.ssvepFreq( targetSquare );
-%                     temp_correctness( iCue ) = winner == targetIcon;
-                                        
-                end % OF iCUE LOOP
-
-%                 inds = ( testingRun == iRunTest ) & ( iFold == iF ) & ( nAverages == iAve ) ;
-%                 targetFrequency( inds ) = temp_targetFrequency;
-%                 correctness( inds )     = temp_correctness;
-                
-                
-            end % OF iAVE LOOP
-        end % CONCERNED CVFOLDS LOOP
-        
+                end % OF iAVE LOOP
+            end % CONCERNED CVFOLDS LOOP
+        end
     
 end % OF RUNTEST LOOP
 

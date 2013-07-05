@@ -1,6 +1,6 @@
 function buildSvmClassifier_perSubject_BAK( iS, doEpochRejection )
 
-useLibSvm = 1;
+useLibSvm = 0;
 
 % init host name
 %--------------------------------------------------------------------------

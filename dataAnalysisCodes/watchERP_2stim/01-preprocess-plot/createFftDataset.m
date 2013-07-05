@@ -44,7 +44,7 @@ sub             = unique( fileList.subjectTag );
 nSubs           = numel(sub);
 indsToRemove    = [];
 for iS = 1:nSubs
-    if updateDataset && exist( fullfile( resultsDir, sprintf('fftDataset_sub%.2d.mat', iS) ), 'file' )
+    if updateDataset && exist( fullfile( resultsDir, sprintf('fftDataset_sub%s.mat', sub{iS}) ), 'file' )
         indsToRemove = [indsToRemove iS];
     end
 end
@@ -221,7 +221,7 @@ for iS = 1:nSubs
         fs ...
         );
     
-    save( fullfile( resultsDir, sprintf('fftDataset_sub%.2d.mat', iS) ), 'fftDataset' );    
+    save( fullfile( resultsDir, sprintf('fftDataset_sub%s.mat', sub{iS}) ), 'fftDataset' );    
     
 end % OF SUBJECT LOOP
 

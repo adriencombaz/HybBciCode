@@ -1,4 +1,4 @@
-function buildSvmClassifier_perSubject( iS, nRunsForTraining )
+function buildSvmClassifier_perSubject( iS, nRunsForTraining, targetFS, nFoldsSvm )
 
 %% ========================================================================================================
 
@@ -49,7 +49,7 @@ end
 %--------------------------------------------------------------------------
 sub     = unique( fileList.subjectTag );
 fileList = fileList( ismember( fileList.subjectTag, sub{iS} ), : );
-resDir = fullfile( resDir, sprintf('linSvm_%dRunsForTrain', nRunsForTraining), sprintf('subject_%s', sub{iS}) );
+resDir = fullfile( resDir, sprintf('LinSvm_%dRunsForTrain_%dHz_%.2dcvSvm', nRunsForTraining, targetFS, nFoldsSvm), sprintf('subject_%s', sub{iS}) );
 if ~exist( resDir, 'dir' ), mkdir(resDir); end
 
 %--------------------------------------------------------------------------
@@ -71,7 +71,6 @@ butterFilt.lowMargin = .5;
 % butterFilt.highMargin = 30;
 butterFilt.highMargin = 20;
 butterFilt.order = 3;
-targetFS = 128;
 
 %--------------------------------------------------------------------------
 
@@ -214,7 +213,7 @@ for iCv = 1:nCv
             
             % train the SVM
             %------------------------------------------------------------------------------
-            nfolds      = 10;	% Number of subsets for the cross-validation
+            nfolds      = nFoldsSvm;	% Number of subsets for the cross-validation
             igam        = 1;    % Central value of the regularization paramter for the first line search
             if ~exist('B_init', 'var'), B_init = []; end
             error_type  = 1;    % 1: calculate mean square error on misclassified data

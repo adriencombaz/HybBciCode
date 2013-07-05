@@ -49,18 +49,18 @@ pp <- pp + facet_wrap( ~subject )
 pp <- cleanPlot(pp)
 #pp + theme(legend.direction = "horizontal", legend.position = "bottom")
 # pp <- pp + theme(legend.justification=c(1,0), legend.position=c(1,0))
-pp <- pp + theme(legend.position=c(0.8334,0.1667))
+# pp <- pp + theme(legend.position=c(0.8334,0.1667))
 print(pp)
 # pp
 
-# ggsave( filename = "CompareConditions.png"
-#         , plot = pp
-#         , path = outputPath
-#         , width = 30
-#         , height = 20
-#         , units = "cm"
-#         , dpi =  600
-#         )
+ggsave( filename = "CompareConditions.png"
+        , plot = pp
+        , path = outputPath
+        , width = 30
+        , height = 20
+        , units = "cm"
+        , dpi =  600
+        )
 
 #################################################################################################################
 #################################################################################################################

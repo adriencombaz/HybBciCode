@@ -14,8 +14,8 @@ nSub <- length(sub)
 
 run = unique( filelist$run )
 if ( !identical(run, 1:max(run)) ){ stop("wrong run numbering") }
-listRunsForTrain <- list( 1, 2, 3, c(1, 2), c(2, 3), c(3, 4) )
-# listRunsForTrain <- list( c(1, 2), c(2, 3), c(3, 4) )
+# listRunsForTrain <- list( 1, 2, 3, c(1, 2), c(2, 3), c(3, 4) )
+listRunsForTrain <- list( c(1, 2) )
 listTestRun <- lapply( listRunsForTrain, function(x, param) y <- param[param>max(x)], 1:8 )
 
 ########################################################################################################################################
@@ -29,7 +29,7 @@ for (iCond in 1:length(listRunsForTrain)){
   condition <- sprintf("%s_test", condition)
   for (iTs in 1:length( listTestRun[[iCond]] )){condition <- sprintf("%s%d", condition, listTestRun[[iCond]][iTs])}  
   
-  for (iS in 1:5){
+  for (iS in 1:6){
     
     # Load data
     p3file <- file.path( resDir

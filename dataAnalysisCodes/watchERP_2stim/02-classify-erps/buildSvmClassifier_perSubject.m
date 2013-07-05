@@ -66,7 +66,7 @@ end
 nAveMax = 10;
 tBeforeOnset = 0;
 tAfterOnset = .6;
-% nSPcomp = 4;
+nSPcomp = 4;
 butterFilt.lowMargin = .5;
 % butterFilt.highMargin = 30;
 butterFilt.highMargin = 20;
@@ -92,11 +92,10 @@ for iCv = 1:nCv
         %
         %--------------------------------------------------------------------------
         runId           = listTrainRuns(iCv, iR);
-        runIndex        = ismember( fileList.run, runId );
-        sessionDir      = fullfile(dataDir, fileList.sessionDirectory{runIndex});
-        [~, name ext]  = fileparts( ls(fullfile(sessionDir, [fileList.fileName{runIndex} '*.bdf'])) );
+        sessionDir      = fullfile(dataDir, fileList.sessionDirectory{runId});
+        [dum name ext]  = fileparts( ls(fullfile(sessionDir, [fileList.fileName{runId} '*.bdf'])) );
         filename        = strtrim( [name ext] );
-        [~, name ext]  = fileparts( ls(fullfile(sessionDir, [fileList.fileName{runIndex}(1:19) '*.mat'])) );
+        [dum name ext]  = fileparts( ls(fullfile(sessionDir, [fileList.fileName{runId}(1:19) '*.mat'])) );
         paramFile       = strtrim( [name ext] );
         pars            = load( fullfile(sessionDir,paramFile), 'nP3item', 'nCuesToShow', 'nRepetitions', 'lookHereStateSeq', 'realP3StateSeqOnsets', 'ssvepFreq', 'scenario' );
 
@@ -234,8 +233,8 @@ for iCv = 1:nCv
         [B iter_final]  = Lin_SVM_Keerthi(Xtrain,Ytrain,B_init,best_gamma);
         clear Xtrain
         
-        trainingFileNames = fileList.fileName( ismember( fileList_iC.run, listTrainRuns( iCv, : ) ) );
-        testingFileNames = fileList.fileName( ismember( fileList_iC.run, listTestRuns( iCv, : ) ) );
+        trainingFileNames = fileList.fileName( listTrainRuns( iCv, : ) );
+        testingFileNames = fileList.fileName( listTestRuns( iCv, : ) );
         save( classifierFilename ...
             , 'butterFilt' ...
             , 'targetFS'...

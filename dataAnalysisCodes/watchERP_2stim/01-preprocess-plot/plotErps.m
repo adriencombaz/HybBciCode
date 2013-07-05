@@ -73,8 +73,7 @@ fHeight = 31;
 %%                                        PER SUBJECT PLOTS
 %========================================================================================================
 %========================================================================================================
-
-for iS = 1:nSubjects
+for iS = 6%1:nSubjects
     
     meanErpDataset_iS = meanErpDataset( ismember(meanErpDataset.subject, sub{iS}), : );    
     
@@ -87,6 +86,7 @@ for iS = 1:nSubjects
     for iF = 1:nFreq
         
         subDataset = meanErpDataset_iS( ismember(meanErpDataset_iS.frequency, freq(iF)), : );
+        
         
         for iT = 1:nErpType
             

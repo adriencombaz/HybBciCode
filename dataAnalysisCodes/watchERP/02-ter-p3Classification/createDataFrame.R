@@ -26,20 +26,21 @@ for (iS in 1:8)
   accData1$condition = accData1$conditionTrain;
   
   # Consider only results from classifier built on first run and tested on the 2 next ones
-  if (iS == 8){
-    temp1 <- subset( accData1, foldTrain == 1 )
-    temp1 <- subset(temp1, condition != "hybrid-12Hz")
-    temp2 <- subset(accData1, condition == "hybrid-12Hz")
-    temp2a <- subset( temp2, foldTrain == 2 )
-    temp2a <- subset( temp2a, foldTest == 3 )
-    temp2b <- subset( temp2, foldTrain == 3 )
-    temp2b <- subset( temp2b, foldTest == 2 )
-    accData1 <- rbind(temp1, temp2a, temp2b)
-    rm(temp1, temp2, temp2a, temp2b) 
-  }
-  else{
-    accData1 <- subset( accData1, foldTrain == 1 )
-  }
+#   if (iS == 8){
+#     temp1 <- subset( accData1, foldTrain == 1 )
+#     temp1 <- subset(temp1, condition != "hybrid-12Hz")
+#     temp2 <- subset(accData1, condition == "hybrid-12Hz")
+#     temp2a <- subset( temp2, foldTrain == 2 )
+#     temp2a <- subset( temp2a, foldTest == 3 )
+#     temp2b <- subset( temp2, foldTrain == 3 )
+#     temp2b <- subset( temp2b, foldTest == 2 )
+#     accData1 <- rbind(temp1, temp2a, temp2b)
+#     rm(temp1, temp2, temp2a, temp2b) 
+#   }
+#   else{
+#     accData1 <- subset( accData1, foldTrain == 1 )
+#   }
+  accData1 <- subset( accData1, foldTrain == 1 )
   accData1$foldTrain <- droplevels(accData1)$foldTrain    
 
   

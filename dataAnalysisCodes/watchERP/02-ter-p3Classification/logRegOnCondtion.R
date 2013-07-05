@@ -6,18 +6,19 @@ library(lme4)
 library(LMERConvenienceFunctions)
 library(languageR)
 
-# source("createDataFrame.R")
-source("createDataFrame_2RunsForTrain.R")
+source("createDataFrame.R")
+# source("createDataFrame_2RunsForTrain.R")
 source("cleanPlot.R")
 
 #################################################################################################################
 
 # accData1 <- subset(accData, classifier=="normal")
 # accData1 <- subset(accData1, select = -c(classifier, foldTest))
-varList <- c("subject", "condition", "roundNb", "correctness", "frequency", "nRep", "nRepWithinSub")
-accData1 <- accData[ accData$classifier=="normal", names(accData1) %in% varList ]
+varList <- c("subject", "condition", "roundNb", "correctness", "frequency", "nRep", "nRepWithinSub", "correctness")
+accData1 <- accData[ accData$classifier=="normal", names(accData) %in% varList ]
 accData1$nRepFac <- as.factor(accData1$nRep)
-
+accData1 <- accData1[ accData1$subject!="S9", ]
+accData1$subject <- droplevels(accData1$subject)
 str(accData1)
 summary(accData1)
 
@@ -39,16 +40,16 @@ plotFactorMeans_InteractionGraphs(accData1, c("nRep", "frequency"), "correctness
 
 #################################################################################################################
 
-# f0Vs857_10_12_15    = c(-4, 1, 1, 1, 1)     # oddball vs. hybrid
-# f857Vs10_12_15      = c(0, -3, 1, 1, 1)     # hybrid-8-57Hz vs. hybrid-10-12-15-Hz
-# f10Vs12_15          = c(0, 0, -2, 1, 1)     # hybrid-10Hz vs. hybrid-12-15-Hz
-# f12Vs15             = c(0, 0, 0, -1, 1)     # hybrid-12Hz vs. hybrid-15-Hz
-# contrasts(accData1$frequency) <- cbind(
-#   f0Vs857_10_12_15
-#   , f857Vs10_12_15
-#   , f10Vs12_15
-#   , f12Vs15
-# )
+f0Vs857_10_12_15    = c(-4, 1, 1, 1, 1)     # oddball vs. hybrid
+f857Vs10_12_15      = c(0, -3, 1, 1, 1)     # hybrid-8-57Hz vs. hybrid-10-12-15-Hz
+f10Vs12_15          = c(0, 0, -2, 1, 1)     # hybrid-10Hz vs. hybrid-12-15-Hz
+f12Vs15             = c(0, 0, 0, -1, 1)     # hybrid-12Hz vs. hybrid-15-Hz
+contrasts(accData1$frequency) <- cbind(
+  f0Vs857_10_12_15
+  , f857Vs10_12_15
+  , f10Vs12_15
+  , f12Vs15
+)
 
 Rep1VsRep2 = c(-1, 1, 0, 0, 0, 0, 0, 0, 0, 0)
 Rep2VsRep3 = c(0, -1, 1, 0, 0, 0, 0, 0, 0, 0)

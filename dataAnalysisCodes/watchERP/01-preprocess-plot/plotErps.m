@@ -225,7 +225,7 @@ if numel(allFs) ~= 1
 end
 
 
-nMaxSubjecPerAx = 4;
+nMaxSubjecPerAx = 3;
 nFigs = 1;
 subjectList{1} = 1:nSubjects;
 if nSubjects > nMaxSubjecPerAx
@@ -287,7 +287,7 @@ end
 %========================================================================================================
 %========================================================================================================
 
-for iPlot = 3%1:numel( chanListMini )
+for iPlot = 1:numel( chanListMini )
     
     nChanMini   = numel(chanListMini{iPlot});
     avg         = cell(1, nCond*nChanMini);

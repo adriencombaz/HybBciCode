@@ -1,4 +1,4 @@
-function applySvmClassifier_perSubject( iS, nRunsForTraining )
+function applySvmClassifier_perSubject( iS, nRunsForTraining, targetFS, nFoldsSvm )
 
 % init host name
 %--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ end
 %--------------------------------------------------------------------------
 sub         = unique( fileList.subjectTag );
 fileList    = fileList( ismember( fileList.subjectTag, sub{iS} ), : );
-resDir      = fullfile( resDir, sprintf('linSvm_%dRunsForTrain', nRunsForTraining), sprintf('subject_%s', sub{iS}) );
+resDir      = fullfile( resDir, sprintf('LinSvm_%dRunsForTrain_%dHz_%.2dcvSvm', nRunsForTraining, targetFS, nFoldsSvm), sprintf('subject_%s', sub{iS}) );
 if ~exist( resDir, 'dir' ), mkdir(resDir); end
 
 %--------------------------------------------------------------------------
@@ -68,7 +68,6 @@ butterFilt.lowMargin = .5;
 % butterFilt.highMargin = 30;
 butterFilt.highMargin = 20;
 butterFilt.order = 3;
-targetFS = 128;
 % nSquares = 2;
 % nItemsPerSquare = 6;
 

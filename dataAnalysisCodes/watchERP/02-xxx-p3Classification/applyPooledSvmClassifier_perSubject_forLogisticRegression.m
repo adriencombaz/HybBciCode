@@ -1,4 +1,4 @@
-function applyPooledSvmClassifier_perSubject_forLogisticRegression( iS, nRunsForTraining  )
+function applyPooledSvmClassifier_perSubject_forLogisticRegression( iS, nRunsForTraining, targetFS, nFoldsSvm )
 
 %================================================================================================================================
 %================================================================================================================================
@@ -53,7 +53,7 @@ fileList= fileList( ismember( fileList.subjectTag, sub{iS} ), : );
 
 %--------------------------------------------------------------------------
 [~, folderName, ~] = fileparts(cd);
-resDir = fullfile( resDir, folderName, sprintf('LinSvmPooled_%dRunsForTrain', nRunsForTraining), sprintf('subject_%s', sub{iS}) );
+resDir = fullfile( resDir, folderName, sprintf('LinSvmPooled_%dRunsForTrain_%dHz_%.2dcvSvm', nRunsForTraining, targetFS, nFoldsSvm), sprintf('subject_%s', sub{iS}) );
 
 %--------------------------------------------------------------------------
 run = unique( fileList.run );
@@ -71,7 +71,6 @@ tAfterOnset = .6;
 butterFilt.lowMargin = .5;
 butterFilt.highMargin = 20;
 butterFilt.order = 3;
-targetFS = 128;
 
 %--------------------------------------------------------------------------
 fid = fopen( fullfile( resDir, 'Results_forLogisiticRegression.txt' ),'wt' );

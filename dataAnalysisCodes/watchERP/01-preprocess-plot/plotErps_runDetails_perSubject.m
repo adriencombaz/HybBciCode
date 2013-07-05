@@ -44,12 +44,12 @@ nErpType = 2; % target and non-target ERPs
 chanListToPlot = {'F3', 'Fz', 'F4', 'C3', 'Cz', 'C4', 'P3', 'Pz', 'P4', 'O1', 'Oz', 'O2'};
 
 [~, folderName, ~]  = fileparts( fileparts(mfilename('fullpath')) );
-outputPath = fullfile( resultsDir, folderName, 'detailsPerRun' );
+outputPath = fullfile( resultsDir, folderName, 'detailsPerRun', sprintf('subject%s', sub{iS}) );
 if ~exist(outputPath, 'dir'), mkdir(outputPath); end
 tBeforeOnset    = 0.2; % lower time range in secs
 tAfterOnset     = 0.8; % upper time range in secs
 LW = 2;
-MS = 6;
+% MS = 6;
 FS = 9;
 fWidth = 50;
 fHeight = 31;
@@ -163,7 +163,7 @@ for iC = 1:nCond,
     s.Format = 'tiff';
     s.Resolution = h.I_DPI;
 %     hgexport(gcf,fullfile(outputPath, sprintf('%s_%s.png', sub{iS}, cond{iC})),s);
-    hgexport(gcf,fullfile(outputPath, sprintf('%s_noRejection_%s.png', sub{iS}, cond{iC})),s);
+    hgexport(gcf,fullfile(outputPath, sprintf('erps_%s.png', sub{iS}, cond{iC})),s);
     
     close(gcf);
     

@@ -1,11 +1,11 @@
-setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2stim/02-classify-erps/")
+setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2stim/02--classify-erps-one-classifier-per-stimFreq/")
 rm(list = ls())
 
 library(ggplot2)
 source("createP3CorrectnessDataset.R")
 source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanPlot.R")
 
-figDir = "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP_2stim/02-classify-erps/"
+figDir = "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP_2stim/02--classify-erps-one-classifier-per-stimFreq/"
 
 #################################################################################################################
 #################################################################################################################
@@ -18,7 +18,7 @@ png( filename = figfilename
      , width=1920, height=1200, units="px"
 )
 
-pp <- ggplot( p3Dataset, aes(nRep, correctness, colour=condition ) )
+pp <- ggplot( p3Dataset, aes(nRep, correctness, colour=targetFrequency ) )
 pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.4), shape = 20, size = 3)
 pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4))
 pp <- pp + ylim(0, 1)
@@ -43,7 +43,7 @@ figfilename <- file.path(figDir, "p3accuracy.png")
 png( filename = figfilename
      , width=1920, height=1200, units="px"
 )
-pp <- ggplot( p3Dataset, aes(nRep, correctness, colour=condition ) )
+pp <- ggplot( p3Dataset, aes(nRep, correctness, colour=targetFrequency ) )
 pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.4), shape = 20, size = 3)
 pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4))
 pp <- pp + facet_wrap( ~subject )

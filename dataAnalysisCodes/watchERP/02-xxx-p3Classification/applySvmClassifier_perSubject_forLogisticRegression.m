@@ -1,4 +1,4 @@
-function applyPooledSvmClassifier_perSubject_forLogisticRegression( iS, nRunsForTraining  )
+function applySvmClassifier_perSubject_forLogisticRegression( iS, nRunsForTraining, targetFS, nFoldsSvm)
 
 %================================================================================================================================
 %================================================================================================================================
@@ -33,6 +33,11 @@ switch hostName,
         error('host not recognized');
 end
 
+
+%================================================================================================================================
+%================================================================================================================================
+
+%--------------------------------------------------------------------------
 if isunix,
     TableName   = fullfile( codeDir, '01-preprocess-plot', filesep, 'watchErpDataset2.csv');
     fileList    = dataset('File', TableName, 'Delimiter', ',');
@@ -40,9 +45,6 @@ else
     TableName   = fullfile( codeDir, '01-preprocess-plot', filesep, 'watchErpDataset2.xlsx');
     fileList    = dataset('XLSFile', TableName);
 end
-
-%================================================================================================================================
-%================================================================================================================================
 
 %--------------------------------------------------------------------------
 sub     = unique( fileList.subjectTag );
@@ -53,7 +55,7 @@ fileList= fileList( ismember( fileList.subjectTag, sub{iS} ), : );
 
 %--------------------------------------------------------------------------
 [~, folderName, ~] = fileparts(cd);
-resDir = fullfile( resDir, folderName, sprintf('LinSvmPooled_%dRunsForTrain', nRunsForTraining), sprintf('subject_%s', sub{iS}) );
+resDir = fullfile( resDir, folderName, sprintf('LinSvm_%dRunsForTrain_%dHz_%.2dcvSvm', nRunsForTraining, targetFS, nFoldsSvm), sprintf('subject_%s', sub{iS}) );
 
 %--------------------------------------------------------------------------
 run = unique( fileList.run );
@@ -71,7 +73,6 @@ tAfterOnset = .6;
 butterFilt.lowMargin = .5;
 butterFilt.highMargin = 20;
 butterFilt.order = 3;
-targetFS = 128;
 
 %--------------------------------------------------------------------------
 fid = fopen( fullfile( resDir, 'Results_forLogisiticRegression.txt' ),'wt' );
@@ -82,17 +83,13 @@ end
 fprintf(fid, 'testingRun, roundNb, nAverages, correctness\n');
 
 
-% fid = fopen( fullfile( resDir, 'Results_forLogisiticRegression.txt' ),'wt' );
-% fprintf(fid, 'subject, conditionTest, nAverages, foldTrain, foldTest, correctness\n');
-% fprintf('subject, conditionTest, nAverages, foldTrain, foldTest, correctness\n');
-
-
 %================================================================================================================================
 %================================================================================================================================
 for iC = 1:nCond
-    for iRT = 1:numel(run)
-
-        iRunTest = run(iRT);        
+    for iRunTest = 1:max(run)
+        
+        fprintf('Subject %s, condition %s (%d out of %d), run %d out of %d\n', sub{iS}, cond{iC}, iC, nCond, iRunTest, max(run));
+        
         subFileList = fileList( ismember( fileList.condition, cond{iC} ) & ismember( fileList.run, iRunTest ), : );
         if size(subFileList)~=1, error('size should be 1!!'); end
         
@@ -150,7 +147,8 @@ for iC = 1:nCond
 %         %------------------------------------------------------------------------------
         targetStateSeq  = pars.lookHereStateSeq( pars.lookHereStateSeq~=max(pars.lookHereStateSeq) );
         nP3item         = max( targetStateSeq );
-            
+    
+        
         %%
         %==============================================================================
         %==============================================================================
@@ -163,7 +161,7 @@ for iC = 1:nCond
                                 
                 % load the classifier
                 %------------------------------------------------------------------------------
-                classifierFilename  = fullfile( resDir, sprintf('svm-%.2dAverages-fold%.2d.mat', iAve, iF) );
+                classifierFilename  = fullfile( resDir, sprintf('svm-%s-%.2dAverages-fold%.2d.mat',  cond{iC}, iAve, iF) );
                 classifier          = load(classifierFilename);
                 
                 % 
@@ -210,8 +208,9 @@ for iC = 1:nCond
                 end % OF iCUE LOOP                
             end % OF iAVE LOOP
         end % CONCERNED CVFOLDS LOOP
-    end % OF iRUNTEST LOOP
+    end % OF RUNTEST LOOP
 end % OF iCOND LOOP
 
 fclose(fid);
-end
+
+end % OF FUNCTION

@@ -166,7 +166,7 @@ Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy su
         Within each of those rectangles 6~items were presented so that 2~independent and simultaneous oddball paradigm could occur as shown in \autoref{fig:stim2oddball}.
         The \emph{stimulation cycle} was the same as described in \autoref{sec:2.2.1ProtocolOddball}, icons from the left and right rectangles were always flashed simultaneously, however the order in which the icons would be flashed was set independently (and randomly) for each rectangle.
         An \emph{experimental run} lasted approximately 4~minutes and consisted of 12 consecutive stimulation cycles, so that each of the 12~icons was cued once (in random order).
-        Each subject participated in 8~consecutive runs with 5~to 10~minutes pause after the the 4\nth run.
+        Each subject participated in 8~consecutive runs with a 5~to 10~minutes pause after the the 4\nth run.
 
 
     \subsection{Data Analysis}
@@ -191,38 +191,23 @@ Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy su
         We thus obtain for each subject and experimental condition 36~correctness values (0: wrongly detected and 1: correctly detected).
         The correctness values were computed for a number of repetitions $N_r$ of the flashing sequence varying from 1~to 10.
         In order to mimic the behavior of a \ac{BCI}, for each stimulation cycle and each icon, epochs were average over the \emph{$N_r$ first repetitions}.
-        
+
         % statistical model
         The correctness data were analysed using R (\hl{CITE}) and the R package \emph{lme4} (\hl{CITE + languageR?}).
         We used logistic linear mixed effect models (\hl{CITE}) with the number of repetitions nested within subjects as random factors.
         As fixed factors, we considered the experimental condition, the number of repetitions and the interaction between those 2~factors.
-        The significance of the fixed factors as predictors for the correctness was established 
-
-
-%%%%%%        % preprocessing: filtering
-%%%%%%
-%%%%%%        % studying the shape of ERP: epoch rejection
-%%%%%%
-%%%%%%        % studying classification accuracy: no epoch rejection
-%%%%%%        We are interested in studying the effect of the flickering stimulus on the target \ac{ERP} detection accuracy.
-%%%%%%        As the accuracy of an oddball \ac{BCI} is known to depend on the number of repetitions of flashing sequences used to average the \acp{ERP}; the classification accuracy was measured on \acp{ERP} averaged over the $n$~first repetitions of the flashing sequence with $n$~going from 1~to~10.
-%%%%%%        This was done so as to mimic a real use of the system (where the stimulation sequence would stop after $n$~repetitions) and so that the accuracies are always measured on the same number of detection attempts.
-%%%%%%
-%%%%%%        For each experimental condition
-%%%%%%
-%%%%%%
-%%%%%%        Data were filtered between \SIlist[list-units = single]{0.3;15}{\Hz} (zero-phase 3\rd order Butterworth filter), cut into \SI{800}{\ms} epochs starting from the stimuli onsets and downsampled to \SI{128}{\Hz}.
-%%%%%%
-%%%%%%        For each trial (stimulus), we had 8~channels~$\times$~80~data~points~=~640~features to classify as a response to either a target stimulus or a non-target stimulus.
-%%%%%%        A linear \emph{Support Vector Machine} (SVM; \cite{Cristianini2000,Suykens2002}) with a 10-fold cross-validation and a linesearch for the optimization of the regularization parameter was built from the normalized training features.
-%%%%%%        Training the linear SVM with the modified finite Newton method proposed by \textcite{Keerthi2006} took around one minute.
-
-
-
+        We used
+        Non significant fixed effects
+        The significance of the fixed factors as predictors for the correctness was established by means of likelihood ratio test (\hl{CITE}).
 
 
         \subsubsection{Experiment 2: SSVEP response analysis}
         \label{sec:2.3.2AnalysisExp2}
+
+%        % watch FFT
+%        We first observed the average \ac{SSVEP} response for each subject.
+%        The \ac{EEG} signals were filtered between \SIlist[list-units = single]{0.2;40}{\Hz} (zero-phase 4\rd order Butterworth filter) and epochs were cut from every \ac{SSVEP} onset until \SI{14}{\s} after.
+%        For each epoch, we calculated the power spectrum of the EEG signals and for each experimental condition we averaged those power spectrum over all trials.
 
         % pre-processing
 

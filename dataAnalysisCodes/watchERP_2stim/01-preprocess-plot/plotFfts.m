@@ -1,6 +1,7 @@
-cl;
+function plotFfts()
 
-%% ========================================================================================================
+%% ==================================================================================================
+%====================================================================================================
 
 % init host name
 %--------------------------------------------------------------------------
@@ -28,7 +29,8 @@ switch hostName,
         error('host not recognized');
 end
 
-%% ====================================================================================================
+%% ==================================================================================================
+%====================================================================================================
 
 TableName   = 'watchErpDataset.xlsx';
 fileList    = dataset('XLSFile', TableName);
@@ -67,11 +69,10 @@ FS = 9;
 fWidth = 50;
 fHeight = 31;
 
-%% ====================================================================================================
 
-for iS = 1:nSubs
+for iS = 6%1:nSubs
 
-    load( fullfile( resultsDir, sprintf('fftDataset_sub%.2d.mat', iS) ) )
+    load( fullfile( resultsDir, sprintf('fftDataset_sub%s.mat', sub{iS}) ) )
     
     time = max( fftDataset.timeInSec );
     frequencies = unique(fftDataset.frequency);
@@ -79,6 +80,13 @@ for iS = 1:nSubs
     for iF = 1:numel(frequencies)
     
         subDataset = fftDataset( ismember(fftDataset.timeInSec, time) & ismember(fftDataset.frequency, frequencies(iF)), : );
+        
+        %====================================================================================================
+        %====================================================================================================
+        %%                                 MEAN PER SUBJECT
+        %====================================================================================================
+        %====================================================================================================
+        
         
         %--------------------------------------------------------------------------
         ff = subDataset.ff{1};
@@ -100,6 +108,47 @@ for iS = 1:nSubs
         meanFft = meanFft/size(subDataset, 1);
         
         %--------------------------------------------------------------------------
+        figfilename = fullfile(resultsDir, [sprintf('ffts_frequency%dHz_subject%s', frequencies(iF), sub{iS}) '.png']);
+        plotAndSaveMeanFft;
+
+        
+        %====================================================================================================
+        %====================================================================================================
+        %%                          DETAIL RUN FOR EACH SUBJECT
+        %====================================================================================================
+        %====================================================================================================
+        detailDir = fullfile( resultsDir, sprintf('details_subject%s', sub{iS}) );
+        if ~exist( detailDir, 'dir' ), mkdir( detailDir ); end
+        allRuns = unique( subDataset.run );
+        for iR = 1:numel(allRuns)
+            
+            runDataset = subDataset( ismember( subDataset.run, allRuns(iR) ), : );
+            
+            %--------------------------------------------------------------------------
+            meanFft = runDataset.fftVals{1};
+            for i=2:size(runDataset, 1),
+                meanFft = meanFft + runDataset.fftVals{i};
+            end
+            meanFft = meanFft/size(runDataset, 1);
+            
+            %--------------------------------------------------------------------------
+            figfilename = fullfile(detailDir, [sprintf('ffts_frequency%dHz_run%d', frequencies(iF), allRuns(iR)) '.png']);
+            plotAndSaveMeanFft;
+            
+        end
+        
+    end
+    
+end
+
+
+    %==============================================================================================================================
+    %==============================================================================================================================
+    %%                                          NESTED FUNCTION
+    %==============================================================================================================================
+    %==============================================================================================================================
+    function plotAndSaveMeanFft
+        
         plotFfts2( ...
             ff, ...
             meanFft, ...
@@ -126,12 +175,12 @@ for iS = 1:nSubs
         
         s.Format = 'tiff';
         s.Resolution = h.I_DPI;
-        hgexport(gcf,fullfile(resultsDir, [sprintf('ffts_frequency%dHz_subject%s', frequencies(iF), sub{iS}) '.png']),s);
+        hgexport(gcf, figfilename, s);
         
         close(gcf);
         
-        
     end
+
 end
 
 

@@ -16,7 +16,7 @@ source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanP
 #################################################################################################################
 generateSnrCorrPlots <- function(subsetCh, harmonics, figDir, tag)
 {
-  for (iS in 1:5){
+  for (iS in 1:6){
     filename  <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP_2stim/03-classify-ssveps/snrs_subjectS%d.txt", iS)
     snrDataiS   <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)  
     

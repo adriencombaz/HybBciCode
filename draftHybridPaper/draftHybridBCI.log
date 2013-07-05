@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.26)  27 JUN 2013 17:31
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.26)  4 JUL 2013 09:29
 entering extended mode
 **D:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/draftHybridBCI.te
 x
@@ -1074,15 +1074,15 @@ Package pdftex.def Info: pix/img0000380.png used on input line 26.
 [5 <D:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/pix/stimulation
 Sequence2.pdf> <D:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/pix
 /img0000380.png (PNG copy)>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 282.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 282.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 284.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 284.
 
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\draftHybridBCI.aux
 
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\tablesAndFigures.a
 ux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 282.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 282.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 284.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 284.
 Package rerunfilecheck Info: File `draftHybridBCI.out' has not changed.
 (rerunfilecheck)             Checksum: A75905377E48F8BC22823E1717A71337;1246.
 Package logreq Info: Writing requests to 'draftHybridBCI.run.xml'.
@@ -1108,7 +1108,7 @@ ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/
 MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/cm/cmti10.pfb>
-Output written on draftHybridBCI.pdf (5 pages, 372041 bytes).
+Output written on draftHybridBCI.pdf (5 pages, 372168 bytes).
 PDF statistics:
  221 PDF objects out of 1000 (max. 8388607)
  47 named destinations out of 1000 (max. 500000)
