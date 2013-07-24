@@ -225,7 +225,7 @@ if numel(allFs) ~= 1
 end
 
 
-nMaxSubjecPerAx = 3;
+nMaxSubjecPerAx = 5;
 nFigs = 1;
 subjectList{1} = 1:nSubjects;
 if nSubjects > nMaxSubjecPerAx

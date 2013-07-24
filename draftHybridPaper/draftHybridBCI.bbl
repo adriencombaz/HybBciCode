@@ -19,6 +19,49 @@
 
 \refsection{0}
   \sortlist{entry}{nyt}
+    \entry{Allison2008}{article}{}
+      \name{labelname}{6}{}{%
+        {{uniquename=0,hash=e33c512e6457c7649c3c9c81a9929f29}{Allison}{A\bibinitperiod}{Brendan\bibnamedelima Z}{B\bibinitperiod\bibinitdelim Z\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e1c297590136a08c61b82cc1b4281ffb}{McFarland}{M\bibinitperiod}{Dennis\bibnamedelima J}{D\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=9ee3ec540c105c166307101f3fa07cf7}{Schalk}{S\bibinitperiod}{Gerwin}{G\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=7aaec28f86fa2ae7e421419113948a3a}{Zheng}{Z\bibinitperiod}{Shi\bibnamedelima Dong}{S\bibinitperiod\bibinitdelim D\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=363ca248f61a89e3768857f2a4b569a4}{Jackson}{J\bibinitperiod}{Melody\bibnamedelima Moore}{M\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=17e10ac150eeb5af1b2e54b8cd758269}{Wolpaw}{W\bibinitperiod}{Jonathan\bibnamedelima R}{J\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{6}{}{%
+        {{uniquename=0,hash=e33c512e6457c7649c3c9c81a9929f29}{Allison}{A\bibinitperiod}{Brendan\bibnamedelima Z}{B\bibinitperiod\bibinitdelim Z\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e1c297590136a08c61b82cc1b4281ffb}{McFarland}{M\bibinitperiod}{Dennis\bibnamedelima J}{D\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=9ee3ec540c105c166307101f3fa07cf7}{Schalk}{S\bibinitperiod}{Gerwin}{G\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=7aaec28f86fa2ae7e421419113948a3a}{Zheng}{Z\bibinitperiod}{Shi\bibnamedelima Dong}{S\bibinitperiod\bibinitdelim D\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=363ca248f61a89e3768857f2a4b569a4}{Jackson}{J\bibinitperiod}{Melody\bibnamedelima Moore}{M\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=17e10ac150eeb5af1b2e54b8cd758269}{Wolpaw}{W\bibinitperiod}{Jonathan\bibnamedelima R}{J\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{06dea08df8e3a27b5796e59b4c525552}
+      \strng{fullhash}{89e6921b59b4c59233a276acf13805de}
+      \field{sortinit}{A}
+      \field{labelyear}{2008}
+      \field{labelmonth}{02}
+      \field{labeltitle}{{Towards an independent brain-computer interface using steady state visual evoked potentials}}
+      \field{abstract}{Brain-computer interface (BCI) systems using steady state visual evoked potentials (SSVEPs) have allowed healthy subjects to communicate. However, these systems may not work in severely disabled users because they may depend on gaze shifting. This study evaluates the hypothesis that overlapping stimuli can evoke changes in SSVEP activity sufficient to control a BCI. This would provide evidence that SSVEP BCIs could be used without shifting gaze.}
+      \field{issn}{1388-2457}
+      \field{journaltitle}{Clinical neurophysiology}
+      \field{month}{02}
+      \field{number}{2}
+      \field{title}{{Towards an independent brain-computer interface using steady state visual evoked potentials}}
+      \field{volume}{119}
+      \field{year}{2008}
+      \field{pages}{399\bibrangedash 408}
+      \verb{doi}
+      \verb 10.1016/j.clinph.2007.09.121
+      \endverb
+      \verb{file}
+      \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Allison et al. (2008) Towards an independent BCI using steady state visual evoked potentials.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2274834%5C&tool=pmcentrez%5C&rendertype=abstract
+      \endverb
+      \keyw{Adolescent,Adult,Attention,Attention: physiology,Brain,Brain Mapping,Brain: physiology,Dose-Response Relationship,Electroencephalography,Electroencephalography: methods,Evoked Potentials,Female,Humans,Male,Pattern Recognition,Photic Stimulation,Radiation,Spectrum Analysis,User-Computer Interface,Visual,Visual: physiology}
+    \endentry
     \entry{Bianchi2010}{article}{}
       \name{labelname}{6}{}{%
         {{uniquename=0,hash=f074fba1043254c068c9db5e681dc89e}{Bianchi}{B\bibinitperiod}{Luigi}{L\bibinitperiod}{}{}{}{}}%
@@ -92,6 +135,45 @@
       \endverb
       \keyw{CiteNeuroImageArticle,Computer Terminals,Data Display,Humans,Microcomputers,Psychophysics,Research,Software,User-Computer Interface}
     \endentry
+    \entry{Brunner2011}{article}{}
+      \name{labelname}{4}{}{%
+        {{uniquename=0,hash=0ccec42499932e5a324213d9000a9cb4}{Brunner}{B\bibinitperiod}{Clemens}{C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e33c512e6457c7649c3c9c81a9929f29}{Allison}{A\bibinitperiod}{Brendan\bibnamedelima Z}{B\bibinitperiod\bibinitdelim Z\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=6a81892c653abac8d78e9d436a68a058}{Altst\"{a}tter}{A\bibinitperiod}{C}{C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=7313c31a4b81eafc90631f836ed48471}{Neuper}{N\bibinitperiod}{Christa}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{uniquename=0,hash=0ccec42499932e5a324213d9000a9cb4}{Brunner}{B\bibinitperiod}{Clemens}{C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e33c512e6457c7649c3c9c81a9929f29}{Allison}{A\bibinitperiod}{Brendan\bibnamedelima Z}{B\bibinitperiod\bibinitdelim Z\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=6a81892c653abac8d78e9d436a68a058}{Altst\"{a}tter}{A\bibinitperiod}{C}{C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=7313c31a4b81eafc90631f836ed48471}{Neuper}{N\bibinitperiod}{Christa}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{c37f6b8644e7735567990dd43ac6ac4e}
+      \strng{fullhash}{8507c62a8cdb7282dadffc39ddc2a367}
+      \field{sortinit}{B}
+      \field{labelyear}{2011}
+      \field{labelmonth}{04}
+      \field{labeltitle}{{A comparison of three brain-computer interfaces based on event-related desynchronization, steady state visual evoked potentials, or a hybrid approach using both signals}}
+      \field{abstract}{Brain-computer interface (BCI) systems rely on the direct measurement of brain signals, such as event-related desynchronization (ERD), steady state visual evoked potentials (SSVEPs), P300s, or slow cortical potentials. Unfortunately, none of these BCI approaches work for all users. This study compares two conventional BCI approaches (ERD and SSVEP) within subjects, and also evaluates a novel hybrid BCI based on a combination of these signals. We recorded EEG data from 12 subjects across three conditions. In the first condition, subjects imagined moving both hands or both feet (ERD). In the second condition, subjects focused on one of the two oscillating visual stimuli (SSVEP). In the third condition, subjects simultaneously performed both tasks. We used logarithmic band power features at sites and frequencies consistent with ERD and SSVEP activity, and subjects received real-time feedback based on their performance. Subjects also completed brief questionnaires. All subjects could simultaneously perform the movement and visual task in the hybrid condition even though most subjects had little or no training. All subjects showed both SSVEP and ERD activity during the hybrid task, consistent with the activity in both single tasks. Subjects generally considered the hybrid condition moderately more difficult, but all of them were able to complete the hybrid task. Results support the hypothesis that subjects who do not have strong ERD activity might be more effective with an SSVEP BCI, and suggest that SSVEP BCIs work for more subjects. A simultaneous hybrid BCI is feasible, although the current hybrid approach, which involves combining ERD and SSVEP in a two-choice task to improve accuracy, is not significantly better than a comparable SSVEP BCI. Switching to an SSVEP BCI could increase reliability in subjects who have trouble producing the EEG activity necessary to use an ERD BCI. Subjects who are proficient in both BCI approaches might be able to combine these approaches in different ways and for different goals.}
+      \field{issn}{1741-2552}
+      \field{journaltitle}{Journal of neural engineering}
+      \field{month}{04}
+      \field{number}{2}
+      \field{title}{{A comparison of three brain-computer interfaces based on event-related desynchronization, steady state visual evoked potentials, or a hybrid approach using both signals}}
+      \field{volume}{8}
+      \field{year}{2011}
+      \field{pages}{025010}
+      \verb{doi}
+      \verb 10.1088/1741-2560/8/2/025010
+      \endverb
+      \verb{file}
+      \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Brunner et al. (2011) A comparison of three brain-computer interfaces based on ERD SSVEPs or a hybrid approach using both signals.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb http://www.ncbi.nlm.nih.gov/pubmed/21436538
+      \endverb
+      \keyw{Adult,Algorithms,Brain Mapping,Brain Mapping: methods,Comparison P300 SSVEP ERD ...,Electroencephalography Phase Synchronization,Electroencephalography Phase Synchronization: phys,Evoked Potentials,Female,Humans,Male,Man-Machine Systems,User-Computer Interface,Visual,Visual Cortex,Visual Cortex: physiology,Visual: physiology,Young Adult}
+    \endentry
     \entry{Donchin2000}{article}{}
       \name{labelname}{3}{}{%
         {{uniquename=0,hash=e53a73eebc0daa6ce8901031dd4c2c22}{Donchin}{D\bibinitperiod}{Emanuel}{E\bibinitperiod}{}{}{}{}}%
@@ -161,6 +243,43 @@
       \verb http://www.sciencedirect.com/science/article/pii/0013469488901496
       \endverb
       \keyw{CiteNeuroImageArticle}
+    \endentry
+    \entry{Friman.2007}{article}{}
+      \name{labelname}{3}{}{%
+        {{uniquename=0,hash=e07b7c0acb39dd3611aea80200abf5a9}{Friman}{F\bibinitperiod}{Ola}{O\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=f4d6057a9d9a9f172632a16a355b60e9}{Volosyak}{V\bibinitperiod}{Ivan}{I\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=cefd23cd3b7fff1561667a33a8153173}{Gr\"{a}ser}{G\bibinitperiod}{Axel}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{uniquename=0,hash=e07b7c0acb39dd3611aea80200abf5a9}{Friman}{F\bibinitperiod}{Ola}{O\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=f4d6057a9d9a9f172632a16a355b60e9}{Volosyak}{V\bibinitperiod}{Ivan}{I\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=cefd23cd3b7fff1561667a33a8153173}{Gr\"{a}ser}{G\bibinitperiod}{Axel}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{4e6821c3c873cc153fd9c4e81b564dcf}
+      \strng{fullhash}{5190baeda649c91e5839d95d3669fc5e}
+      \field{sortinit}{F}
+      \field{labelyear}{2007}
+      \field{labelmonth}{04}
+      \field{labeltitle}{{Multiple channel detection of steady-state visual evoked potentials for brain-computer interfaces}}
+      \field{abstract}{In this paper, novel methods for detecting steady-state visual evoked potentials using multiple electroencephalogram (EEG) signals are presented. The methods are tailored for brain-computer interfacing, where fast and accurate detection is of vital importance for achieving high information transfer rates. High detection accuracy using short time segments is obtained by finding combinations of electrode signals that cancel strong interference signals in the EEG data. Data from a test group consisting of 10 subjects are used to evaluate the new methods and to compare them to standard techniques. Using 1-s signal segments, six different visual stimulation frequencies could be discriminated with an average classification accuracy of 84\%. An additional advantage of the presented methodology is that it is fully online, i.e., no calibration data for noise estimation, feature extraction, or electrode selection is needed.}
+      \field{issn}{0018-9294}
+      \field{journaltitle}{IEEE transactions on biomedical engineering}
+      \field{month}{04}
+      \field{number}{4}
+      \field{title}{{Multiple channel detection of steady-state visual evoked potentials for brain-computer interfaces}}
+      \field{volume}{54}
+      \field{year}{2007}
+      \field{pages}{742\bibrangedash 750}
+      \verb{doi}
+      \verb 10.1109/TBME.2006.889160
+      \endverb
+      \verb{file}
+      \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Friman et al. (2007) Multiple Channel Detection of Steady-State Visual Evoked Potentials for Brain-Computer Interfaces.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb http://www.ncbi.nlm.nih.gov/pubmed/17405382
+      \endverb
+      \keyw{Adult,Artificial Intelligence,Automated,Automated: methods,Brain Mapping,Brain Mapping: methods,CiteNeuroImageArticle,Electrocardiography,Electrocardiography: methods,Evoked Potentials,Female,Humans,Male,Pattern Recognition,Reproducibility of Results,Sensitivity and Specificity,User-Computer Interface,Visual,Visual Cortex,Visual Cortex: physiology,Visual: physiology}
     \endentry
     \entry{Gray2003}{article}{}
       \name{labelname}{4}{}{%
@@ -292,6 +411,47 @@
       \endverb
       \keyw{CiteNeuroImageArticle,classification,conjugate gradient,linear svms}
     \endentry
+    \entry{Krusienski2008}{article}{}
+      \name{labelname}{5}{}{%
+        {{uniquename=0,hash=f52d9101f9f014281a7ee1a49e9fc51d}{Krusienski}{K\bibinitperiod}{Dean\bibnamedelima J}{D\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=b78d2f5276750a6e4e468005e84f7eda}{Sellers}{S\bibinitperiod}{Eric\bibnamedelima W}{E\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e1c297590136a08c61b82cc1b4281ffb}{McFarland}{M\bibinitperiod}{Dennis\bibnamedelima J}{D\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=14b0040e322ec8675fc5d2a2f48f5840}{Vaughan}{V\bibinitperiod}{Theresa\bibnamedelima M}{T\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=17e10ac150eeb5af1b2e54b8cd758269}{Wolpaw}{W\bibinitperiod}{Jonathan\bibnamedelima R}{J\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{5}{}{%
+        {{uniquename=0,hash=f52d9101f9f014281a7ee1a49e9fc51d}{Krusienski}{K\bibinitperiod}{Dean\bibnamedelima J}{D\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=b78d2f5276750a6e4e468005e84f7eda}{Sellers}{S\bibinitperiod}{Eric\bibnamedelima W}{E\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e1c297590136a08c61b82cc1b4281ffb}{McFarland}{M\bibinitperiod}{Dennis\bibnamedelima J}{D\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=14b0040e322ec8675fc5d2a2f48f5840}{Vaughan}{V\bibinitperiod}{Theresa\bibnamedelima M}{T\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=17e10ac150eeb5af1b2e54b8cd758269}{Wolpaw}{W\bibinitperiod}{Jonathan\bibnamedelima R}{J\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{d212bb1336077507d4762e5a28cee5ef}
+      \strng{fullhash}{4d8d95f7f9660353cff53d227f5b0b3d}
+      \field{sortinit}{K}
+      \field{labelyear}{2008}
+      \field{labelmonth}{01}
+      \field{labeltitle}{{Toward enhanced P300 speller performance}}
+      \field{abstract}{This study examines the effects of expanding the classical P300 feature space on the classification performance of data collected from a P300 speller paradigm [Farwell LA, Donchin E. Talking off the top of your head: toward a mental prosthesis utilizing event-related brain potentials. Electroenceph Clin Neurophysiol 1988;70:510-23]. Using stepwise linear discriminant analysis (SWLDA) to construct a classifier, the effects of spatial channel selection, channel referencing, data decimation, and maximum number of model features are compared with the intent of establishing a baseline not only for the SWLDA classifier, but for related P300 speller classification methods in general. By supplementing the classical P300 recording locations with posterior locations, online classification performance of P300 speller responses can be significantly improved using SWLDA and the favorable parameters derived from the offline comparative analysis.}
+      \field{issn}{0165-0270}
+      \field{journaltitle}{Journal of neuroscience methods}
+      \field{month}{01}
+      \field{number}{1}
+      \field{title}{{Toward enhanced P300 speller performance}}
+      \field{volume}{167}
+      \field{year}{2008}
+      \field{pages}{15\bibrangedash 21}
+      \verb{doi}
+      \verb 10.1016/j.jneumeth.2007.07.017
+      \endverb
+      \verb{file}
+      \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Krusieski et al. (2008) Toward enhanced P300 speller performance.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2349091%5C&tool=pmcentrez%5C&rendertype=abstract
+      \endverb
+      \keyw{Adult,Algorithms,Brain,Brain Mapping,Brain: physiology,CiteNeuroImageArticle,Discriminant Analysis,Electrodes,Electroencephalography,Electroencephalography: methods,Event-Related Potentials,Female,Humans,Male,Middle Aged,P300,P300: physiology,Pattern Recognition,Photic Stimulation,User-Computer Interface,Visual,Visual: physiology}
+    \endentry
     \entry{Luck2005}{book}{}
       \name{labelname}{1}{}{%
         {{uniquename=0,hash=85a48a73403761d55c76a13f36327ef1}{Luck}{L\bibinitperiod}{Steven\bibnamedelima J}{S\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
@@ -316,6 +476,44 @@
       \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Luck (2005) An Introduction to the Event-Related Potential Technique.PDF:PDF
       \endverb
       \keyw{CiteNeuroImageArticle}
+    \endentry
+    \entry{Parini2009}{article}{}
+      \name{labelname}{4}{}{%
+        {{uniquename=0,hash=5b20f11063a9b4a6baba3a9cf9543992}{Parini}{P\bibinitperiod}{Sergio}{S\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=1915576287fadc8ebe2e73a1a9001c0d}{Maggi}{M\bibinitperiod}{Luca}{L\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=03985e290673957abe929b8d60eba79e}{Turconi}{T\bibinitperiod}{Anna\bibnamedelima C}{A\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=243d24a3fb7569356a9869017e407d9f}{Andreoni}{A\bibinitperiod}{Giuseppe}{G\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{uniquename=0,hash=5b20f11063a9b4a6baba3a9cf9543992}{Parini}{P\bibinitperiod}{Sergio}{S\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=1915576287fadc8ebe2e73a1a9001c0d}{Maggi}{M\bibinitperiod}{Luca}{L\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=03985e290673957abe929b8d60eba79e}{Turconi}{T\bibinitperiod}{Anna\bibnamedelima C}{A\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=243d24a3fb7569356a9869017e407d9f}{Andreoni}{A\bibinitperiod}{Giuseppe}{G\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{c0c06545e360759b8ad85d9fd973ec1d}
+      \strng{fullhash}{50bda2f37801a9e62475550a0f7a5eb7}
+      \field{sortinit}{P}
+      \field{labelyear}{2009}
+      \field{labelmonth}{01}
+      \field{labeltitle}{{A robust and self-paced BCI system based on a four class SSVEP paradigm: algorithms and protocols for a high-transfer-rate direct brain communication}}
+      \field{abstract}{In this paper, we present, with particular focus on the adopted processing and identification chain and protocol-related solutions, a whole self-paced brain-computer interface system based on a 4-class steady-state visual evoked potentials (SSVEPs) paradigm. The proposed system incorporates an automated spatial filtering technique centred on the common spatial patterns (CSPs) method, an autoscaled and effective signal features extraction which is used for providing an unsupervised biofeedback, and a robust self-paced classifier based on the discriminant analysis theory. The adopted operating protocol is structured in a screening, training, and testing phase aimed at collecting user-specific information regarding best stimulation frequencies, optimal sources identification, and overall system processing chain calibration in only a few minutes. The system, validated on 11 healthy/pathologic subjects, has proven to be reliable in terms of achievable communication speed (up to 70 bit/min) and very robust to false positive identifications.}
+      \field{issn}{1687-5273}
+      \field{journaltitle}{Computational Intelligence and Neuroscience}
+      \field{month}{01}
+      \field{title}{{A robust and self-paced BCI system based on a four class SSVEP paradigm: algorithms and protocols for a high-transfer-rate direct brain communication}}
+      \field{volume}{2009}
+      \field{year}{2009}
+      \field{pages}{864564}
+      \verb{doi}
+      \verb 10.1155/2009/864564
+      \endverb
+      \verb{file}
+      \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Parini et al. (2009) A robust and self paced BCI system based on a four class SSVEP paradigm algorithms and protocols for a high transfer rate direct brain communication.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2676320%5C&tool=pmcentrez%5C&rendertype=abstract
+      \endverb
+      \keyw{CiteNeuroImageArticle,Patient BCI}
     \endentry
     \entry{Pelli1997}{article}{}
       \name{labelname}{1}{}{%
@@ -389,6 +587,55 @@
       \endverb
       \keyw{1,CiteNeuroImageArticle,behavior,cognitive processes that,extensive,involve maintaining and manipulating,is a set of,low resolution electromagnetic tomography,prefrontal cortex,steady-state visual evoked potentials,symbolic represen-,tations to guide task-appropriate,wm,working memory}
     \endentry
+    \entry{Pfurtscheller2010}{article}{}
+      \name{labelname}{10}{}{%
+        {{uniquename=0,hash=5cfe6eb263dcddec4516c1d2fdae6bf0}{Pfurtscheller}{P\bibinitperiod}{Gert}{G\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e33c512e6457c7649c3c9c81a9929f29}{Allison}{A\bibinitperiod}{Brendan\bibnamedelima Z}{B\bibinitperiod\bibinitdelim Z\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=0ccec42499932e5a324213d9000a9cb4}{Brunner}{B\bibinitperiod}{Clemens}{C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=3015d7da5bc91716edb7b4f12791633f}{Bauernfeind}{B\bibinitperiod}{Gunther}{G\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=da41419ed44fbaf5c7fbecf136564716}{Solis-Escalante}{S\bibinithyphendelim E\bibinitperiod}{Teodoro}{T\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=d9ff13496377733e53dc85826373c37a}{Scherer}{S\bibinitperiod}{Reinhold}{R\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e325ef3a522182223487d379d92b402a}{Zander}{Z\bibinitperiod}{Thorsten\bibnamedelima O}{T\bibinitperiod\bibinitdelim O\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=58ffbfb33f79b3712f85a329d53135d4}{Mueller-Putz}{M\bibinithyphendelim P\bibinitperiod}{Gernot}{G\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=7313c31a4b81eafc90631f836ed48471}{Neuper}{N\bibinitperiod}{Christa}{C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=f5d8fb4510b7b0ef32161321c949a7ec}{Birbaumer}{B\bibinitperiod}{Niels}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{10}{}{%
+        {{uniquename=0,hash=5cfe6eb263dcddec4516c1d2fdae6bf0}{Pfurtscheller}{P\bibinitperiod}{Gert}{G\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e33c512e6457c7649c3c9c81a9929f29}{Allison}{A\bibinitperiod}{Brendan\bibnamedelima Z}{B\bibinitperiod\bibinitdelim Z\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=0ccec42499932e5a324213d9000a9cb4}{Brunner}{B\bibinitperiod}{Clemens}{C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=3015d7da5bc91716edb7b4f12791633f}{Bauernfeind}{B\bibinitperiod}{Gunther}{G\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=da41419ed44fbaf5c7fbecf136564716}{Solis-Escalante}{S\bibinithyphendelim E\bibinitperiod}{Teodoro}{T\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=d9ff13496377733e53dc85826373c37a}{Scherer}{S\bibinitperiod}{Reinhold}{R\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=e325ef3a522182223487d379d92b402a}{Zander}{Z\bibinitperiod}{Thorsten\bibnamedelima O}{T\bibinitperiod\bibinitdelim O\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=58ffbfb33f79b3712f85a329d53135d4}{Mueller-Putz}{M\bibinithyphendelim P\bibinitperiod}{Gernot}{G\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=7313c31a4b81eafc90631f836ed48471}{Neuper}{N\bibinitperiod}{Christa}{C\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=f5d8fb4510b7b0ef32161321c949a7ec}{Birbaumer}{B\bibinitperiod}{Niels}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{819fa60e7095522ad8655f26480da48f}
+      \strng{fullhash}{fb84f10bb2f571c6d0fd09c832db345e}
+      \field{sortinit}{P}
+      \field{labelyear}{2010}
+      \field{labeltitle}{{The hybrid BCI}}
+      \field{abstract}{Nowadays, everybody knows what a hybrid car is. A hybrid car normally has two engines to enhance energy efficiency and reduce CO2 output. Similarly, a hybrid brain-computer interface (BCI) is composed of two BCIs, or at least one BCI and another system. A hybrid BCI, like any BCI, must fulfill the following four criteria: (i) the device must rely on signals recorded directly from the brain; (ii) there must be at least one recordable brain signal that the user can intentionally modulate to effect goal-directed behaviour; (iii) real time processing; and (iv) the user must obtain feedback. This paper introduces hybrid BCIs that have already been published or are in development. We also introduce concepts for future work. We describe BCIs that classify two EEG patterns: one is the event-related (de)synchronisation (ERD, ERS) of sensorimotor rhythms, and the other is the steady-state visual evoked potential (SSVEP). Hybrid BCIs can either process their inputs simultaneously, or operate two systems sequentially, where the first system can act as a "brain switch". For example, we describe a hybrid BCI that simultaneously combines ERD and SSVEP BCIs. We also describe a sequential hybrid BCI, in which subjects could use a brain switch to control an SSVEP-based hand orthosis. Subjects who used this hybrid BCI exhibited about half the false positives encountered while using the SSVEP BCI alone. A brain switch can also rely on hemodynamic changes measured through near-infrared spectroscopy (NIRS). Hybrid BCIs can also use one brain signal and a different type of input. This additional input can be an electrophysiological signal such as the heart rate, or a signal from an external device such as an eye tracking system.}
+      \field{issn}{1662-453X}
+      \field{journaltitle}{Frontiers in neuroscience}
+      \field{number}{April}
+      \field{title}{{The hybrid BCI}}
+      \field{volume}{4}
+      \field{year}{2010}
+      \field{pages}{30}
+      \verb{doi}
+      \verb 10.3389/fnpro.2010.00003
+      \endverb
+      \verb{file}
+      \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Pfurtscheller et al. (2010) the hybrid BCI.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2891647%5C&tool=pmcentrez%5C&rendertype=abstract
+      \endverb
+      \keyw{brain,computer interface,event-related desynchronization,hybrid bci,motor imagery,ssvep}
+    \endentry
     \entry{Regan1966}{article}{}
       \name{labelname}{1}{}{%
         {{uniquename=0,hash=8231128477a0496dff9ece4c0a4dbcc9}{Regan}{R\bibinitperiod}{D}{D\bibinitperiod}{}{}{}{}}%
@@ -417,6 +664,43 @@
       \verb http://www.sciencedirect.com/science/article/pii/0013469466900885%20http://www.ncbi.nlm.nih.gov/pubmed/4160391
       \endverb
       \keyw{Adult,CiteNeuroImageArticle,Color,Electroencephalography,Female,Humans,Light,Male,Occipital Lobe,Occipital Lobe: physiology,Ocular,Potentiometry,Reaction Time,Retina,Retina: physiology,Vision}
+    \endentry
+    \entry{Sellers2010}{article}{}
+      \name{labelname}{3}{}{%
+        {{uniquename=0,hash=b78d2f5276750a6e4e468005e84f7eda}{Sellers}{S\bibinitperiod}{Eric\bibnamedelima W}{E\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=14b0040e322ec8675fc5d2a2f48f5840}{Vaughan}{V\bibinitperiod}{Theresa\bibnamedelima M}{T\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=17e10ac150eeb5af1b2e54b8cd758269}{Wolpaw}{W\bibinitperiod}{Jonathan\bibnamedelima R}{J\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{uniquename=0,hash=b78d2f5276750a6e4e468005e84f7eda}{Sellers}{S\bibinitperiod}{Eric\bibnamedelima W}{E\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=14b0040e322ec8675fc5d2a2f48f5840}{Vaughan}{V\bibinitperiod}{Theresa\bibnamedelima M}{T\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=17e10ac150eeb5af1b2e54b8cd758269}{Wolpaw}{W\bibinitperiod}{Jonathan\bibnamedelima R}{J\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{fdb3583bde0247046748e27add65a03c}
+      \strng{fullhash}{d66d55c54a8c1b3dca8d9d0899f51980}
+      \field{sortinit}{S}
+      \field{labelyear}{2010}
+      \field{labelmonth}{10}
+      \field{labeltitle}{{A brain-computer interface for long-term independent home use}}
+      \field{abstract}{Our objective was to develop and validate a new brain-computer interface (BCI) system suitable for long-term independent home use by people with severe motor disabilities. The BCI was used by a 51-year-old male with ALS who could no longer use conventional assistive devices. Caregivers learned to place the electrode cap, add electrode gel, and turn on the BCI. After calibration, the system allowed the user to communicate via EEG. Re-calibration was performed remotely (via the internet), and BCI accuracy assessed in periodic tests. Reports of BCI usefulness by the user and the family were also recorded. Results showed that BCI accuracy remained at 83\% (r = -.07, n.s.) for over 2.5 years (1.4\% expected by chance). The BCI user and his family state that the BCI had restored his independence in social interactions and at work. He uses the BCI to run his NIH-funded research laboratory and to communicate via e-mail with family, friends, and colleagues. In addition to this first user, several other similarly disabled people are now using the BCI in their daily lives. In conclusion, long-term independent home use of this BCI system is practical for severely disabled people, and can contribute significantly to quality of life and productivity.}
+      \field{issn}{1471-180X}
+      \field{journaltitle}{Amyotrophic lateral sclerosis}
+      \field{month}{10}
+      \field{number}{5}
+      \field{title}{{A brain-computer interface for long-term independent home use}}
+      \field{volume}{11}
+      \field{year}{2010}
+      \field{pages}{449\bibrangedash 455}
+      \verb{doi}
+      \verb 10.3109/17482961003777470
+      \endverb
+      \verb{file}
+      \verb :D$\backslash$:/KULeuven/PhD/MendeleyDB/Sellers et al. (2010) A brain-computer interface for long-term independent home use.pdf:pdf
+      \endverb
+      \verb{url}
+      \verb http://www.ncbi.nlm.nih.gov/pubmed/20583947
+      \endverb
+      \keyw{Amyotrophic Lateral Sclerosis,Amyotrophic Lateral Sclerosis: physiopathology,Brain,Brain: physiology,CiteNeuroImageArticle,Communication Aids for Disabled,Disabled Persons,Electroencephalography,Electroencephalography: instrumentation,Electroencephalography: methods,Event-Related Potentials,Homebound Persons,Humans,Male,Middle Aged,P300,Patient BCI,User-Computer Interface}
     \endentry
     \entry{Sutton1965}{article}{}
       \name{labelname}{4}{}{%

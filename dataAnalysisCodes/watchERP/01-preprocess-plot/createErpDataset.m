@@ -44,7 +44,7 @@ datasetFilename = fullfile(resultsDir, 'meanErpDataset.mat');
 
 % ========================================================================================================
 % ========================================================================================================
-updateDataset   = true;
+updateDataset   = false;
 sub             = unique( fileList.subjectTag );
 
 if updateDataset && exist(datasetFilename, 'file')

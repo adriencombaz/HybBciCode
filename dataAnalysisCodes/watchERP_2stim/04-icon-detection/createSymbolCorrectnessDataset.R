@@ -1,7 +1,6 @@
-setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2stim/04-icon-detection/")
-
-rm(list = ls())
-# library(plyr)
+createSymbolCorrectnessDataset <- function(aveClass, nRunsForTrain, FS, nFoldSvm)
+{
+  # library(plyr)
 library("reshape2")
 
 ########################################################################################################################################
@@ -27,11 +26,15 @@ harmonics <- c(0, 1)
 
 
 for (iS in 1:nSub){
-  # Load data
-  p3file <- file.path( "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP_2stim/02-classify-erps"
-                       , sprintf("linSvm_%dRunsForTrain", nRunsForTrain)
-                       , sprintf("subject_%s", sub[iS])
-                       , "Results_forLogisiticRegression.txt")
+  
+  #--------------------------------------------------------------------------------------------------------------
+  # Load correctness data caclulated with classifiers built on the same type of data as the test data 
+  p3Folder <- file.path( "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP_2stim/02-classify-erps"
+                       , sprintf("LinSvm_%dRunsForTrain_%dHz_%.2dcvSvm", nRunsForTrain, FS, nFoldSvm)
+                       , sprintf("subject_%s", sub[iS]) )
+  if (aveClass == 0){ textfile  <- "Results_forLogisiticRegression.txt" 
+  } else{ textfile  <- sprintf("Results_forLogisiticRegression_%.2dAveClassifier.txt", aveClass) }
+  p3file  <- file.path(p3Folder, textfile)
   p3Dataset_iS <- read.csv(p3file, header = TRUE, sep = ",", strip.white = TRUE)
   
   # Factorise
@@ -137,3 +140,4 @@ accDataset <- melt( temp
 # rownames(check2) <- NULL
 # identical(check, check2)
 
+}

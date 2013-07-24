@@ -1959,16 +1959,23 @@
     <bcf:citekey order="2">Sutton1965</bcf:citekey>
     <bcf:citekey order="3">Bianchi2010</bcf:citekey>
     <bcf:citekey order="3">Kaufmann2011</bcf:citekey>
-    <bcf:citekey order="4">Regan1966</bcf:citekey>
-    <bcf:citekey order="4">Herrmann2001</bcf:citekey>
-    <bcf:citekey order="4">Luck2005</bcf:citekey>
-    <bcf:citekey order="5">Perlstein2003</bcf:citekey>
-    <bcf:citekey order="6">Gray2003</bcf:citekey>
-    <bcf:citekey order="7">Vialatte2010</bcf:citekey>
-    <bcf:citekey order="8">Brainard1997</bcf:citekey>
-    <bcf:citekey order="8">Pelli1997</bcf:citekey>
-    <bcf:citekey order="9">Luck2005</bcf:citekey>
-    <bcf:citekey order="10">Keerthi2006</bcf:citekey>
+    <bcf:citekey order="4">Sellers2010</bcf:citekey>
+    <bcf:citekey order="4">Krusienski2008</bcf:citekey>
+    <bcf:citekey order="5">Regan1966</bcf:citekey>
+    <bcf:citekey order="5">Herrmann2001</bcf:citekey>
+    <bcf:citekey order="5">Luck2005</bcf:citekey>
+    <bcf:citekey order="6">Perlstein2003</bcf:citekey>
+    <bcf:citekey order="7">Gray2003</bcf:citekey>
+    <bcf:citekey order="8">Vialatte2010</bcf:citekey>
+    <bcf:citekey order="9">Friman.2007</bcf:citekey>
+    <bcf:citekey order="9">Allison2008</bcf:citekey>
+    <bcf:citekey order="10">Parini2009</bcf:citekey>
+    <bcf:citekey order="11">Pfurtscheller2010</bcf:citekey>
+    <bcf:citekey order="12">Brunner2011</bcf:citekey>
+    <bcf:citekey order="13">Brainard1997</bcf:citekey>
+    <bcf:citekey order="13">Pelli1997</bcf:citekey>
+    <bcf:citekey order="14">Luck2005</bcf:citekey>
+    <bcf:citekey order="15">Keerthi2006</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" type="entry" label="nyt">
   <bcf:sorting>

@@ -1,4 +1,4 @@
-function applySvmClassifier_perSubject_forLogisticRegression( iS, nAveClassifier, nRunsForTraining, targetFS, nFoldsSvm)
+function applySvmClassifier_perSubject_CompareNrepForTrain( iS, nRunsForTraining, targetFS, nFoldsSvm)
 
 %================================================================================================================================
 %================================================================================================================================
@@ -75,17 +75,12 @@ butterFilt.highMargin = 20;
 butterFilt.order = 3;
 
 %--------------------------------------------------------------------------
-textFilename = 'Results_forLogisiticRegression';
-if ~isempty( nAveClassifier )
-    textFilename = sprintf('%s_%.2dAveClassifier', textFilename, nAveClassifier);
-end
-textFilename = [textFilename '.txt'];
-fid = fopen( fullfile( resDir, textFilename),'wt' );
+fid = fopen( fullfile( resDir, 'Results_CompareNrepForTrain.txt' ),'wt' );
 fprintf(fid, 'subject, condition, foldInd, ');
 for i = 1:nRunsForTraining
     fprintf(fid, 'trainingRun_%d, ', i);
 end
-fprintf(fid, 'testingRun, roundNb, nRep, correctness\n');
+fprintf(fid, 'testingRun, roundNb, nAveragesTest, nAveragesTrain, correctness\n');
 
 
 %================================================================================================================================
@@ -157,66 +152,63 @@ for iC = 1:nCond
         %%
         %==============================================================================
         %==============================================================================
-        [concernedFolds, ~, ~] = find(listTestRuns == iRunTest);        
+        [concernedFolds, ~, ~] = find(listTestRuns == iRunTest);
         for iF = concernedFolds'
-            for iAve = 1:nAveMax
-            
-%                 fprintf('subject %s, test run %d out of %d, fold %d out of %d, %d ave out of %d\n', ...
-%                     sub{iS}, iRunTest, max(run), find(concernedFolds==iF), numel(concernedFolds), iAve, nAveMax);
-                                
-                % load the classifier
-                %------------------------------------------------------------------------------
-                if isempty( nAveClassifier )
-                    iAveClassifier = iAve;
-                else
-                    iAveClassifier = nAveClassifier;
-                end
-                classifierFilename  = fullfile( resDir, sprintf('svm-%s-%.2dAverages-fold%.2d.mat',  cond{iC}, iAveClassifier, iF) );
-                classifier          = load(classifierFilename);
-                
-                % 
-                %------------------------------------------------------------------------------
-                for iCue = 1:pars.nCuesToShow
-                
-                    meanCuts        = zeros(nbins, nChans, nP3item);
-                    indStart        = (iCue-1)*pars.nRepetitions*nP3item;
-                    indEvents       = indStart + (1:pars.nRepetitions*nP3item);
-                    for iIcon = 1:nP3item
+            for iAveTrain = 1:nAveMax
+                for iAve = 1:nAveMax
+                    
+                    %                 fprintf('subject %s, test run %d out of %d, fold %d out of %d, %d ave out of %d\n', ...
+                    %                     sub{iS}, iRunTest, max(run), find(concernedFolds==iF), numel(concernedFolds), iAve, nAveMax);
+                    
+                    % load the classifier
+                    %------------------------------------------------------------------------------
+                    classifierFilename  = fullfile( resDir, sprintf('svm-%s-%.2dAverages-fold%.2d.mat',  cond{iC}, iAveTrain, iF) );
+                    classifier          = load(classifierFilename);
+                    
+                    %
+                    %------------------------------------------------------------------------------
+                    for iCue = 1:pars.nCuesToShow
                         
-                        iIconFlashes = indStart + find( pars.realP3StateSeqOnsets(indEvents) == iIcon, iAve, 'first' );
-                        meanCuts( :, :, iIcon ) = mean( cuts_proc( :, :, iIconFlashes ), 3 );
+                        meanCuts        = zeros(nbins, nChans, nP3item);
+                        indStart        = (iCue-1)*pars.nRepetitions*nP3item;
+                        indEvents       = indStart + (1:pars.nRepetitions*nP3item);
+                        for iIcon = 1:nP3item
+                            
+                            iIconFlashes = indStart + find( pars.realP3StateSeqOnsets(indEvents) == iIcon, iAve, 'first' );
+                            meanCuts( :, :, iIcon ) = mean( cuts_proc( :, :, iIconFlashes ), 3 );
+                            
+                        end
                         
-                    end
-                    
-                    % reshape
-                    %------------------------------------------------------------------------------
-                    featTest     = reshape(meanCuts, size(meanCuts,1)*size(meanCuts,2), size(meanCuts,3))';
-                    
-                    % normalization
-                    %------------------------------------------------------------------------------
-                    Xtest       = bsxfun(@minus, featTest, classifier.minx);
-                    Xtest       = bsxfun(@rdivide, Xtest, classifier.maxx-classifier.minx);
-                    clear featTest
-                    
-                    % Apply classifier
-                    %------------------------------------------------------------------------------
-                    Xtest       = [Xtest ones(size(Xtest, 1),1)]; %#ok<AGROW>
-                    YlatTest    = Xtest*classifier.B;
-                    clear Xtest
-                    
-                    [ ~, winner ]   = max( YlatTest );
-                    targetIcon      = targetStateSeq( iCue );
-                    
-                    % Write in the output file
-                    %------------------------------------------------------------------------------
-                    fprintf(fid, '%s, %s, %d, ', sub{iS}, cond{iC}, iF);
-                    for i = 1:nRunsForTraining
-                        fprintf(fid, '%d, ', listTrainRuns(iF, i));
-                    end
-                    fprintf(fid, '%d, %d, %d, %d\n', iRunTest, iCue, iAve, winner == targetIcon);
-                    
-                end % OF iCUE LOOP                
-            end % OF iAVE LOOP
+                        % reshape
+                        %------------------------------------------------------------------------------
+                        featTest     = reshape(meanCuts, size(meanCuts,1)*size(meanCuts,2), size(meanCuts,3))';
+                        
+                        % normalization
+                        %------------------------------------------------------------------------------
+                        Xtest       = bsxfun(@minus, featTest, classifier.minx);
+                        Xtest       = bsxfun(@rdivide, Xtest, classifier.maxx-classifier.minx);
+                        clear featTest
+                        
+                        % Apply classifier
+                        %------------------------------------------------------------------------------
+                        Xtest       = [Xtest ones(size(Xtest, 1),1)]; %#ok<AGROW>
+                        YlatTest    = Xtest*classifier.B;
+                        clear Xtest
+                        
+                        [ ~, winner ]   = max( YlatTest );
+                        targetIcon      = targetStateSeq( iCue );
+                        
+                        % Write in the output file
+                        %------------------------------------------------------------------------------
+                        fprintf(fid, '%s, %s, %d, ', sub{iS}, cond{iC}, iF);
+                        for i = 1:nRunsForTraining
+                            fprintf(fid, '%d, ', listTrainRuns(iF, i));
+                        end
+                        fprintf(fid, '%d, %d, %d, %d, %d\n', iRunTest, iCue, iAve, iAveTrain, winner == targetIcon);
+                        
+                    end % OF iCUE LOOP
+                end % OF iAVE LOOP
+            end % OF iAVETRAIN LOOP
         end % CONCERNED CVFOLDS LOOP
     end % OF RUNTEST LOOP
 end % OF iCOND LOOP

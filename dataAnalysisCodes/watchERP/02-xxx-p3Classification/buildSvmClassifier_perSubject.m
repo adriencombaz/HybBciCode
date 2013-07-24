@@ -1,4 +1,4 @@
-function buildSvmClassifier_perSubject( iS, nRunsForTraining, targetFS, nFoldsSvm )
+function buildSvmClassifier_perSubject( iS, aveList, nRunsForTraining, targetFS, nFoldsSvm )
 
 useLibSvm = 0;
 
@@ -49,7 +49,7 @@ end
 %--------------------------------------------------------------------------
 cond    = unique( fileList.condition );
 nCond   = numel(cond);
-nAveMax = 10;
+% nAveMax = 10;
 sub     = unique( fileList.subjectTag );
 fileList= fileList( ismember( fileList.subjectTag, sub{iS} ), : );
 
@@ -75,7 +75,7 @@ end
 %--------------------------------------------------------------------------
 tBeforeOnset = 0;
 tAfterOnset = .6;
-nSPcomp = 4;
+% nSPcomp = 4;
 butterFilt.lowMargin = .5;
 % butterFilt.highMargin = 30;
 butterFilt.highMargin = 20;
@@ -107,9 +107,9 @@ for iC = 1:nCond
             fileList_iC_iR  = fileList_iC( ismember( fileList_iC.run, runId ), : );
             if size(fileList_iC_iR)~=1, error('size should be 1!!'); end
             sessionDir      = fullfile(dataDir, fileList_iC_iR.sessionDirectory{1});
-            [dum name ext]  = fileparts( ls(fullfile(sessionDir, [fileList_iC_iR.fileName{1} '*.bdf'])) );
+            [~, name, ext]  = fileparts( ls(fullfile(sessionDir, [fileList_iC_iR.fileName{1} '*.bdf'])) );
             filename        = strtrim( [name ext] );
-            [dum name ext]  = fileparts( ls(fullfile(sessionDir, [fileList_iC_iR.fileName{1}(1:19) '*.mat'])) );
+            [~, name, ext]  = fileparts( ls(fullfile(sessionDir, [fileList_iC_iR.fileName{1}(1:19) '*.mat'])) );
             paramFile       = strtrim( [name ext] );
             pars            = load( fullfile(sessionDir,paramFile), 'nCuesToShow', 'nRepetitions', 'lookHereStateSeq', 'realP3StateSeqOnsets', 'ssvepFreq', 'scenario' );
             
@@ -161,7 +161,7 @@ for iC = 1:nCond
         end
         
         
-        for iAve = nAveMax:-1:1
+        for iAve = aveList
             
             %==============================================================================
             %==============================================================================
@@ -258,7 +258,6 @@ for iC = 1:nCond
                 , 'B' ...
                 , 'tBeforeOnset' ...
                 , 'tAfterOnset' ...
-                , 'nSPcomp' ...
                 , 'iAve' ...
                 , 'trainingFileNames' ...
                 , 'testingFileNames' ...

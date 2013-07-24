@@ -18,7 +18,7 @@ switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-c\';
+        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-PSD\';
         codeDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
@@ -73,6 +73,25 @@ for iS = 1:nSub
         
     end
 end
+
+datasetFilename = fullfile(resDir, 'psdDataset.mat');
+
+% ========================================================================================================
+% ========================================================================================================
+updateDataset   = true;
+
+if updateDataset && exist(datasetFilename, 'file')
+    temp = load( datasetFilename );
+    treatedSub = unique( temp.psdDataset.subject );
+    sub(ismember(sub, treatedSub)) = [];
+end
+
+if isempty(sub),
+    fprintf('no need for update, all subject are already there!\n');
+    return
+end
+
+nSub    = numel( sub );
 
 % ========================================================================================================
 % ========================================================================================================
@@ -261,8 +280,11 @@ psdDataset = dataset( ...
     , harmonics ...
     );
 
+if updateDataset
+    psdDataset = vertcat( temp.psdDataset, psdDataset );
+end
 
-save(fullfile(resDir, 'psdDataset.mat'), 'psdDataset');
+save(datasetFilename, 'psdDataset');
 
 
 

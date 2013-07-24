@@ -69,7 +69,8 @@ Some of the earliest \ac{EEG}-\ac{BCI} systems were based on the P3 component of
 The P3 is a positive deflection in the EEG time-locked to salient stimuli presented in an oddball paradigm, typically evoked over the parietal cortex, and occurs between \SIlist[list-units = single]{200;500}{\ms} after stimulus onset \parencite{Sutton1965}.
 Although those \acp{BCI} rely mostly on the P3 component, other components (\emph{e.g.}, occipital N1 and/or N200) may also be used for ERP detection \parencite{Bianchi2010, Kaufmann2011}, for this reason we prefer here to use the term \emph{oddball-based \acp{BCI}}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% pluses and minuses %%%%%%%%%%%%%%%
+% pluses and minuses
+Such system have been shown to work successfully on both healthy and disabled patient \cite{Sellers2010, Krusienski2008} \hl{CITE PLOS ONE PAPER}, however, as they rely on several repetition of a stimuli sequence in order to increase the signal-to-noise ratio of the \ac{ERP}, they remain slow and the communication speed decreases as the number of stimuli (\emph{i.e.} number of choices available to the user) increases.
 
 % SSVEP BCI, definition, plus and minus
 Other systems of interest are \acp{BCI} based on \acp{SSVEP}.
@@ -78,10 +79,16 @@ When the periodic presentation is at a sufficiently high rate (\SI{>6}{\Hz}), st
 Such \acp{BCI} are particularly attractive because \acp{SSVEP} have high signal-to-noise ratios and are less susceptible to eye movement and blink artifacts \parencite{Perlstein2003} as well as electromyographic artifacts \parencite{Gray2003}.
 Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy subjects (see \cite{Vialatte2010} for a review).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% pluses and minuses %%%%%%%%%%%%%%%
+% pluses and minuses
+As for oddball-based \acp{BCI}, \ac{SSVEP} systems have been successfully test on healthy subject \parencite{Friman.2007, Allison2008} and only recently (to a lesser extend) with locked-in patients \parencite{Parini2009} \hl{CITE PLOS ONE PAPER}.
+on screen -> limited number of stimuli -> screen refresh rate, size of stimuli, distance between them and coamplification
 
 
 % Hybrid BCI: definition
+Recently, the \ac{BCI} community started to develop so-called hybrid \acp{BCI}, which combine different data acquisition techniques in order to improve the user experience of the system.
+As defined by \cite{Pfurtscheller2010}, \emph{``a typical hybrid BCI is composed of one BCI and another system (which might be another BCI), and must also achieve specific goals better than a conventional system''}.
+We focus here on the case where both system are \acp{BCI}.
+The improvement achieved by a hybrid system can be of different natures such as a higher accuracy, number of choice or selection speed, access to a no-control state, a better usability or higher number of person effectively able to use the system \parencite{Brunner2011}.
 
 % Hybrid BCI: general examples
 
@@ -217,6 +224,10 @@ Several \ac{SSVEP}-based \acp{BCI} have been successfully tested with healthy su
 
         \subsubsection{Experiment 3}
         \label{sec:2.3.3AnalysisExp3}
+
+
+
+
 
 %===================================================================================================================
 %                                             3 RESULTS

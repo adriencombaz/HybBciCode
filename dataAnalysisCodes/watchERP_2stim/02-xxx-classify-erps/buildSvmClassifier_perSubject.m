@@ -1,4 +1,4 @@
-function buildSvmClassifier_perSubject( iS, aveList, nRunsForTraining, targetFS, nFoldsSvm  )
+function buildSvmClassifier_perSubject( iS, aveList, targetFS, nFoldsSvm  )
 
 %% ========================================================================================================
 
@@ -15,14 +15,14 @@ switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP_2stim\';
-        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watchERP_2stim\02-classify-erps\';
+        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watchERP_2stim\02-xxx-classify-erps\';
         codeDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP_2stim\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP_2stim\';
-        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watchERP_2stim\02-classify-erps\';
+        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watchERP_2stim\02-xxx-classify-erps\';
         codeDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP_2stim\';
     case {'sunny', 'solaris', ''}
         addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );
@@ -49,17 +49,18 @@ end
 %--------------------------------------------------------------------------
 sub     = unique( fileList.subjectTag );
 fileList = fileList( ismember( fileList.subjectTag, sub{iS} ), : );
-resDir = fullfile( resDir, sprintf('LinSvm_%dRunsForTrain_%dHz_%.2dcvSvm', nRunsForTraining, targetFS, nFoldsSvm), sprintf('subject_%s', sub{iS}) );
+resDir = fullfile( resDir, sprintf('LinSvm_%dHz_%.2dcvSvm', targetFS, nFoldsSvm), sprintf('subject_%s', sub{iS}) );
 if ~exist( resDir, 'dir' ), mkdir(resDir); end
 
 %--------------------------------------------------------------------------
 run = unique( fileList.run );
 if ~isequal(run(:), (1:max(run))'), error('wrong run numbering'); end
-listTrainRuns = combntns(run, nRunsForTraining);
-nCv = size(listTrainRuns, 1);
-listTestRuns = zeros( nCv, numel(run)-size(listTrainRuns, 2) );
-for iCv = 1:nCv
-    listTestRuns(iCv, :) = run( ~ismember(run, listTrainRuns(iCv,:)) );
+listTrainRuns = {1, 2, 3, [1 2], [2 3], [3 4], [1 2 3], [2 3 4]};
+
+nClassifiers = numel(listTrainRuns);
+listTestRuns = cell( nClassifiers, 1 );
+for iCl = 1:nClassifiers
+    listTestRuns{iCl} = run( run > max(listTrainRuns{iCl}) );
 end
 
 %--------------------------------------------------------------------------
@@ -74,7 +75,7 @@ butterFilt.order = 3;
 
 %--------------------------------------------------------------------------
 
-for iCv = 1:nCv
+for iCl = 1:nClassifiers
     
     %==============================================================================
     %==============================================================================
@@ -83,22 +84,23 @@ for iCv = 1:nCv
     
     %==============================================================================
     %==============================================================================
-    cuts_proc   = cell(1, nRunsForTraining);
-    labels_cuts = cell(1, nRunsForTraining);
-    targetSquare= cell(1, nRunsForTraining);
+    nRunsForTraining    = numel( listTrainRuns{iCl} );
+    cuts_proc           = cell(1, nRunsForTraining);
+    labels_cuts         = cell(1, nRunsForTraining);
+    targetSquare        = cell(1, nRunsForTraining);
     for iR = 1:nRunsForTraining
         
         %
         %--------------------------------------------------------------------------
-        runId           = listTrainRuns(iCv, iR);
-        sessionDir      = fullfile(dataDir, fileList.sessionDirectory{runId});
-        [dum name ext]  = fileparts( ls(fullfile(sessionDir, [fileList.fileName{runId} '*.bdf'])) );
+        runId           = listTrainRuns{iCl}(iR);
+        sessionDir      = fullfile(dataDir, fileList.sessionDirectory{ ismember(fileList.run,runId) });
+        [~, name, ext]  = fileparts( ls(fullfile(sessionDir, [fileList.fileName{ ismember(fileList.run,runId) } '*.bdf'])) );
         filename        = strtrim( [name ext] );
-        [dum name ext]  = fileparts( ls(fullfile(sessionDir, [fileList.fileName{runId}(1:19) '*.mat'])) );
+        [~, name, ext]  = fileparts( ls(fullfile(sessionDir, [fileList.fileName{ ismember(fileList.run,runId) }(1:19) '*.mat'])) );
         paramFile       = strtrim( [name ext] );
         pars            = load( fullfile(sessionDir,paramFile), 'nP3item', 'nCuesToShow', 'nRepetitions', 'lookHereStateSeq', 'realP3StateSeqOnsets', 'ssvepFreq', 'scenario' );
 
-        pars.scenario = rmfield(pars.scenario, 'textures');
+        pars.scenario   = rmfield(pars.scenario, 'textures');
         
         onsetEventInd   = cellfun( @(x) strcmp(x, 'P300 stim on'), {pars.scenario.events(:).desc} );
         onsetEventValue = pars.scenario.events( onsetEventInd ).id;
@@ -149,7 +151,6 @@ for iCv = 1:nCv
                 
     end
     
-%     for iAve = 1:nAveMax
     for iAve = aveList
     
         %==============================================================================
@@ -159,8 +160,12 @@ for iCv = 1:nCv
 
         %==============================================================================
         %==============================================================================
-        fprintf('Subject %s, fold %d out of %d, %d averages\n', sub{iS}, iCv, nCv, iAve);
-        classifierFilename  = fullfile( resDir, sprintf('svm-%.2dAverages-fold%.2d.mat', iAve, iCv) );
+        fprintf('Subject %s, fold %d out of %d, %d averages\n', sub{iS}, iCl, nClassifiers, iAve);
+        classifierFilename = 'svm-train';
+        for iR = 1:nRunsForTraining
+            classifierFilename = sprintf('%s%d', classifierFilename, listTrainRuns{iCl}(iR));
+        end
+        classifierFilename  = fullfile( resDir, sprintf('%s-%.2dAverages.mat',classifierFilename, iAve) );
         
         % select/balance/average trials w.r.t. the desired number of repetitions
         %------------------------------------------------------------------------------
@@ -232,8 +237,12 @@ for iCv = 1:nCv
         [B iter_final]  = Lin_SVM_Keerthi(Xtrain,Ytrain,B_init,best_gamma);
         clear Xtrain
         
-        trainingFileNames = fileList.fileName( listTrainRuns( iCv, : ) );
-        testingFileNames = fileList.fileName( listTestRuns( iCv, : ) );
+        % save data
+        %------------------------------------------------------------------------------
+        trainingRuns        = listTrainRuns{iCl};
+        testingRuns         = listTestRuns{iCl};
+        trainingFileNames   = fileList.fileName( ismember(fileList.run, trainingRuns) );
+        testingFileNames    = fileList.fileName( ismember(fileList.run, testingRuns) );
         save( classifierFilename ...
             , 'butterFilt' ...
             , 'targetFS'...
@@ -244,6 +253,8 @@ for iCv = 1:nCv
             , 'tAfterOnset' ...
             , 'nSPcomp' ...
             , 'iAve' ...
+            , 'trainingRuns' ...
+            , 'testingRuns' ...
             , 'trainingFileNames' ...
             , 'testingFileNames' ...
             );

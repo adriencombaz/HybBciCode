@@ -1,4 +1,4 @@
-function buildPooledSvmClassifier_perSubject( iS, nRunsForTraining, targetFS, nFoldsSvm )
+function buildPooledSvmClassifier_perSubject( iS, aveList, nRunsForTraining, targetFS, nFoldsSvm )
 
 %================================================================================================================================
 %================================================================================================================================
@@ -166,7 +166,8 @@ for iCv = 1:nCv
     end % OF NRUNSFORTRAINING LOOP
     
     
-    for iAve = nAveMax:-1:1
+%     for iAve = nAveMax:-1:1
+    for iAve = aveList
         
         %==============================================================================
         %==============================================================================
@@ -192,7 +193,7 @@ for iCv = 1:nCv
                 
                 indTargetEvents = find( labels_cuts{iR, iC} == 1 );
                 for i = 1:nT_train_iR_iC
-                    ind = (iR-1)*nCond*nT_train_iR + (iC-1)*nT_train_iR + i;
+                    ind = (iR-1)*nCond*nT_train_iR_iC + (iC-1)*nT_train_iR_iC + i;
                     selection           = randperm( numel(indTargetEvents) );
                     selection           = selection(1:iAve);
                     SigTrainT(:,:,ind)  = mean( cuts_proc{iR, iC}( :, :, indTargetEvents(selection) ), 3 );
@@ -246,8 +247,8 @@ for iCv = 1:nCv
         [B iter_final]  = Lin_SVM_Keerthi(Xtrain,Ytrain,B_init,best_gamma);
         clear Xtrain
         
-        trainingFileNames = fileList_iC.fileName( ismember( fileList_iC.run, listTrainRuns( iCv, : ) ) );
-        testingFileNames = fileList_iC.fileName( ismember( fileList_iC.run, listTestRuns( iCv, : ) ) );
+        trainingFileNames = fileList.fileName( ismember( fileList.run, listTrainRuns( iCv, : ) ) );
+        testingFileNames = fileList.fileName( ismember( fileList.run, listTestRuns( iCv, : ) ) );
         save( classifierFilename ...
             , 'butterFilt' ...
             , 'targetFS'...

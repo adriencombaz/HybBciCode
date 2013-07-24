@@ -4,17 +4,18 @@ library(ggplot2)
 library(reshape2)
 library(grid)
 library(lme4)
+library(LMERConvenienceFunctions)
 library(languageR)
 
 source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanPlot.R")
 source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
 
-# filename <- "psdDataset_O1OzO2_1Ha"
+filename <- "psdDataset_SelChan_1Ha"
 
 ####################################################################################################################
 ####################################################################################################################
-linearReg <- function(filename)
-{
+# linearReg <- function(filename)
+# {
   
   fileDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/04-watchSSVEP-PSD"
   fullfilename <- file.path( fileDir, paste0(filename, ".csv") )
@@ -37,9 +38,21 @@ linearReg <- function(filename)
   allSubs   <- levels(psdData$subject)
   nSubs   <- length(allSubs)
   for (iS in 1:nSubs){
-    psdData[psdData$subject==allSubs[iS], ]$stimDurationWithinSub <- iS*1000 + psdData[psdData$subject==allSubs[iS], ]$stimDurationWithinSub
+    psdData[psdData$subject==allSubs[iS], ]$stimDurationWithinSub <- iS*1000 + psdData[psdData$subject==allSubs[iS], ]$stimDuration
   }
   psdData$stimDurationWithinSub <- as.factor(psdData$stimDurationWithinSub)
+
+
+  psdData$trialWithinSub <- numeric( nrow(psdData) )
+  psdData$trialPerSub <- numeric( nrow(psdData) )
+  allSubs   <- levels(psdData$subject)
+  nSubs   <- length(allSubs)
+  for (iS in 1:nSubs){
+    psdData[psdData$subject==allSubs[iS], ]$trialWithinSub <- iS*10000 + 1:nrow( psdData[psdData$subject==allSubs[iS], ] )
+    psdData[psdData$subject==allSubs[iS], ]$trialPerSub <- 1:nrow( psdData[psdData$subject==allSubs[iS], ] )
+  }
+  psdData$trialWithinSub <- as.factor(psdData$trialWithinSub)
+  psdData$trialPerSub <- as.factor(psdData$trialPerSub)
 
   str(psdData)
   summary(psdData)
@@ -88,6 +101,53 @@ linearReg <- function(filename)
     , Rep13VsRep14
   )
   
+####################################################################################################################
+#################################################################################################################
+lm1 <- lmer( psd ~ stimDuration * oddball * frequency + (stimDuration | subject/frequency/oddball/trial) , data = psdData )
+lm2 <- lmer( psd ~ stimDuration * frequency + (stimDuration | subject/frequency/oddball/trial) , data = psdData )
+
+
+####################################################################################################################
+#################################################################################################################
+lmH1 <- lmer( psd ~ stimDuration * oddball * frequency + (stimDuration | subject) , data = psdData )
+lmH2 <- lmer( psd ~ stimDuration * oddball * frequency + (1 | subject) , data = psdData )
+anova(lmH1, lmH2)
+
+lmH3 <- lmer( psd ~ stimDuration * oddball * frequency + (stimDuration | subject/frequency/oddball/trial), data = psdData )
+anova(lmH1, lmH3)
+
+lmH4 <- lmer( psd ~ stimDuration * frequency + (stimDuration | subject) , data = psdData )
+anova(lmH1, lmH4)
+
+lmH5 <- lmer( psd ~ stimDuration * oddball * frequency + (stimDuration | subject/trial), data = psdData )
+anova(lmH5, lmH3)
+
+lmH6 <- lmer( psd ~ stimDuration * frequency + (stimDuration | subject/trial), data = psdData )
+anova(lmH5, lmH6)
+
+toto <- lmer( psd ~ stimDuration * frequency + (stimDuration | subject) + (stimDuration | trialPerSub), data = psdData )
+tete <- lmer( psd ~ stimDuration * frequency + (stimDuration | subject) + (stimDuration | trialWithinSub), data = psdData )
+tata <- lmer( psd ~ stimDuration * frequency + (stimDuration | subject/trialPerSub), data = psdData )
+
+lmH1a <- lmer( psd ~ stimDuration * oddball * frequency + (1 | subject) + (0 + stimDuration | subject) , data = psdData )
+lmH4a <- lmer( psd ~ stimDuration * frequency  + (1 | subject) + (0 + stimDuration | subject) , data = psdData )
+anova(lmH1a, lmH4a)
+
+lmH2a <- lmer( psd ~ stimDuration + oddball + frequency 
+               + stimDuration:oddball + stimDuration:frequency + oddball:frequency
+               + (1 | subject) + (0 + stimDuration | subject) , data = psdData )
+anova(lmH1a, lmH2a)
+
+lmH3a <- lmer( psd ~ stimDuration + oddball + frequency 
+               + stimDuration:frequency + oddball:frequency
+               + (1 | subject) + (0 + stimDuration | subject) , data = psdData )
+anova(lmH3a, lmH2a)
+
+lmH4a <- lmer( psd ~ stimDuration + oddball + frequency 
+               + stimDuration:frequency
+               + (1 | subject) + (0 + stimDuration | subject) , data = psdData )
+anova(lmH3a, lmH4a)
+
   ####################################################################################################################
   #################################################################################################################
   lmH$mod004 <- lmer( psd ~ stimDuration * oddball * frequency + (1 | subject) + ( 1 | stimDurationWithinSub ), data = psdData )
@@ -172,35 +232,52 @@ linearReg <- function(filename)
 #   anova( lmH$mod000, lmH$mod001c, lmH$mod002a, lmH$mod003, lmH$mod004 )
 #   anova( lmH$mod000, lmH$mod001c, lmH$mod002c, lmH$mod003, lmH$mod004 )  
   
-  return(lmH)
+#   return(lmH)
 
-}
+# }
 
 
 ####################################################################################################################
 ####################################################################################################################
 
-filenames <- c( "psdDataset_O1OzO2_1Ha"
-                , "psdDataset_O1OzO2_2Ha"
-                , "psdDataset_Oz_1Ha"
-                , "psdDataset_Oz_2Ha"
-                , "psdDataset_SelChan_1Ha"
-                , "psdDataset_SelChan_2Ha"
-)
+# filenames <- c( "psdDataset_O1OzO2_1Ha"
+#                 , "psdDataset_O1OzO2_2Ha"
+#                 , "psdDataset_Oz_1Ha"
+#                 , "psdDataset_Oz_2Ha"
+#                 , "psdDataset_SelChan_1Ha"
+#                 , "psdDataset_SelChan_2Ha"
+# )
+# filenames <- c("psdDataset_SelChan_1Ha")
 
-
-for (iF in 1:length(filenames))
-{
-  lmem <- linearReg(filenames[iF])
-  
-  resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-PSD"
-  resDir <- file.path(resDir, filenames[iF])
-  dir.create(resDir, showWarnings=FALSE)  
-  
-  save(lmem, file=file.path(resDir, "linearModels.RData"))
-  
-#   save(lmem, file="d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-PSD/linearModels.RData")
-}
+# for (iF in 1:length(filenames))
+# {
+#   lmem <- linearReg(filenames[iF])
+#   
+#   resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-PSD"
+#   resDir <- file.path(resDir, filenames[iF])
+#   dir.create(resDir, showWarnings=FALSE)  
+#   
+#   save(lmem, file=file.path(resDir, "linearModels.RData"))
+#   
+# #   save(lmem, file="d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-PSD/linearModels.RData")
+# }
+# 
+# 
+# for (iF in 1:length(filenames))
+# {
+#   
+#   resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-PSD"
+#   resDir <- file.path(resDir, filenames[iF])
+#   dir.create(resDir, showWarnings=FALSE)  
+#   
+#   load( file.path(resDir, "linearModels.RData") )
+#   
+#   pp <- pvals.fnc(lmem$mod004)
+#   print(pp)
+#   
+#   
+#   #   save(lmem, file="d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-PSD/linearModels.RData")
+# }
 
 ####################################################################################################################
 ####################################################################################################################
