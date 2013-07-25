@@ -1,4 +1,4 @@
-setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2stim/02-classify-erps/")
+setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2stim/02-xxx-classify-erps/")
 # rm(list = ls())
 library(plyr)
 
@@ -19,7 +19,7 @@ listRunsForTrain <- list( c(1, 2) )
 listTestRun <- lapply( listRunsForTrain, function(x, param) y <- param[param>max(x)], 1:8 )
 
 ########################################################################################################################################
-resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP_2stim/02-classify-erps"
+resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP_2stim/02-xxx-classify-erps"
 for (iCond in 1:length(listRunsForTrain)){
 
   nRunsForTrain <- length( listRunsForTrain[[iCond]] )

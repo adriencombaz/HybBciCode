@@ -33,7 +33,7 @@ for (iCond in 1:length(listRunsForTrain)){
     
     # Load data
     p3file <- file.path( resDir
-                         , sprintf("linSvm_%dRunsForTrain", nRunsForTrain)
+                         , sprintf("linSvm_%dRunsForTrain_128Hz_10cvSVM", nRunsForTrain)
                          , sprintf("subject_%s", sub[iS])
                          , "Results_forLogisiticRegression.txt")
     p3Dataset_iS <- read.csv(p3file, header = TRUE, sep = ",", strip.white = TRUE)

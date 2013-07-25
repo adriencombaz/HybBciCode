@@ -194,7 +194,7 @@ for iRunTest = runsUsedForTest
                 
                 % Write down result
                 %------------------------------------------------------------------------------
-                fprintf(fid, '%s, %d, ', sub{iS}, iCl);
+                fprintf(fid, '%s, %d, train', sub{iS}, iCl);
                 for i = 1:nRunsForTraining
                     fprintf(fid, '%d', listTrainRuns{iCl}(i));
                 end
