@@ -151,12 +151,14 @@ for iCv = 1:nCv
             %------------------------------------------------------------------------------------------
             indTargetEvents = find( labels_cuts{iR, iC} == 1 );
             subsetInd       = randperm( numel(indTargetEvents) );
-            nIndsToKeep     = round( numel(indTargetEvents) / (nRunsForTraining*nCond) );
+%             nIndsToKeep     = round( numel(indTargetEvents) / (nRunsForTraining*nCond) );
+            nIndsToKeep     = round( numel(indTargetEvents) / nCond );
             indTargetEvents = indTargetEvents( subsetInd(1:nIndsToKeep) );
             
             indNonTargetEvents  = find( labels_cuts{iR, iC} == 0 );
             subsetInd           = randperm( numel(indNonTargetEvents) );
-            nIndsToKeep         = round( numel(indNonTargetEvents) / (nRunsForTraining*nCond) );
+%             nIndsToKeep         = round( numel(indNonTargetEvents) / (nRunsForTraining*nCond) );
+            nIndsToKeep         = round( numel(indNonTargetEvents) / nCond );
             indNonTargetEvents  = indNonTargetEvents( subsetInd(1:nIndsToKeep) );
             
             labels_cuts{iR, iC} = labels_cuts{iR, iC}( [indTargetEvents(:) ; indNonTargetEvents(:)] );
@@ -187,6 +189,8 @@ for iCv = 1:nCv
         SigTrainNT  = zeros( nbins, nChans, nNT_train ); %, 'single' );
         nT_train_iR_iC  = round( nT_train / (nRunsForTraining*nCond) );
         nNT_train_iR_iC = round( nNT_train / (nRunsForTraining*nCond) );
+        nT_train    = nT_train_iR_iC * nRunsForTraining * nCond;
+        nNT_train   = nNT_train_iR_iC * nRunsForTraining * nCond;
         
         for iR = 1:nRunsForTraining
             for iC = 1:nCond

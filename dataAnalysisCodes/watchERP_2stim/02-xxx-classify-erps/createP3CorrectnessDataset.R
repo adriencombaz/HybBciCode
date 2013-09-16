@@ -1,5 +1,5 @@
-setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2stim/02-xxx-classify-erps/")
-# rm(list = ls())
+createP3CorrectnessDataset <- function(Fs, nFoldSvm)
+{
 library(plyr)
 
 ########################################################################################################################################
@@ -11,71 +11,37 @@ sub <- unique(filelist$subjectTag)
 nSub <- length(sub)
 
 ########################################################################################################################################
-
-run = unique( filelist$run )
-if ( !identical(run, 1:max(run)) ){ stop("wrong run numbering") }
-# listRunsForTrain <- list( 1, 2, 3, c(1, 2), c(2, 3), c(3, 4) )
-listRunsForTrain <- list( c(1, 2) )
-listTestRun <- lapply( listRunsForTrain, function(x, param) y <- param[param>max(x)], 1:8 )
-
-########################################################################################################################################
 resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP_2stim/02-xxx-classify-erps"
-for (iCond in 1:length(listRunsForTrain)){
-
-  nRunsForTrain <- length( listRunsForTrain[[iCond]] )
+for (iS in 1:nSub){
   
-  condition <- "train"
-  for (iTr in 1:nRunsForTrain){condition <- sprintf("%s%d", condition, listRunsForTrain[[iCond]][iTr])}
-  condition <- sprintf("%s_test", condition)
-  for (iTs in 1:length( listTestRun[[iCond]] )){condition <- sprintf("%s%d", condition, listTestRun[[iCond]][iTs])}  
+  # Load data
+  p3file <- file.path( resDir
+                       , sprintf("linSvm_%dHz_%.2dcvSVM", Fs, nFoldSvm)
+                       , sprintf("subject_%s", sub[iS])
+                       , "ResultsClassification.txt")
+  p3Dataset_iS <- read.csv(p3file, header = TRUE, sep = ",", strip.white = TRUE)
   
-  for (iS in 1:6){
-    
-    # Load data
-    p3file <- file.path( resDir
-                         , sprintf("linSvm_%dRunsForTrain", nRunsForTrain)
-                         , sprintf("subject_%s", sub[iS])
-                         , "Results_forLogisiticRegression.txt")
-    p3Dataset_iS <- read.csv(p3file, header = TRUE, sep = ",", strip.white = TRUE)
-    
-    # Factorise
-    p3Dataset_iS$foldInd <- as.factor(p3Dataset_iS$foldInd)
-    p3Dataset_iS$testingRun <- as.factor(p3Dataset_iS$testingRun)
-    p3Dataset_iS$roundNb <- as.factor(p3Dataset_iS$roundNb)
-    p3Dataset_iS$targetFrequency <- as.factor(p3Dataset_iS$targetFrequency)
-    for (iTr in 1:nRunsForTrain){
-      p3Dataset_iS[ , sprintf("trainingRun_%d", iTr)] <- as.factor(p3Dataset_iS[ , sprintf("trainingRun_%d", iTr)])
-    }
-    
-    # select training run(s)
-    for (iTr in 1:nRunsForTrain){
-      factorname <- sprintf("trainingRun_%d", iTr)
-      factorvalue <- listRunsForTrain[[iCond]][iTr]
-      p3Dataset_iS <- p3Dataset_iS[ p3Dataset_iS[ , factorname] == factorvalue,  ]
-    }
-    
-    # select test runs
-    p3Dataset_iS <- p3Dataset_iS[ p3Dataset_iS$testingRun %in% listTestRun[[iCond]], ]
-    
-    # add condition field
-    p3Dataset_iS$condition <- condition
-
-    # some cleaning
-    p3Dataset_iS$run <- droplevels( p3Dataset_iS$testingRun )
-    p3Dataset_iS$nRep <- p3Dataset_iS$nAverages    
-    p3Dataset_iS <- p3Dataset_iS[c("condition", "subject", "run", "roundNb", "nRep", "targetFrequency", "correctness")]
-        
-    # concatenate subjects' data
-    if (iCond == 1 && iS == 1) { p3Dataset <- p3Dataset_iS }
-    else { p3Dataset <- rbind(p3Dataset, p3Dataset_iS) }   
-    
-  }
+  # Factorise
+  p3Dataset_iS$runsForTrain     <- as.factor(p3Dataset_iS$trainingRuns)
+  p3Dataset_iS$testingRun       <- as.factor(p3Dataset_iS$testingRun)
+  p3Dataset_iS$roundNb          <- as.factor(p3Dataset_iS$roundNb)
+  p3Dataset_iS$nRep             <- as.factor(p3Dataset_iS$nAverages)
+  p3Dataset_iS$targetFrequency  <- as.factor(p3Dataset_iS$targetFrequency)
+  p3Dataset_iS$trial            <- p3Dataset_iS$testingRun : p3Dataset_iS$roundNb
   
-#   p3Dataset <- p3Dataset[with(p3Dataset, order(condition, subject, run, roundNb, nRep)), ]
-
+  varList <- c("runsForTrain", "subject", "trial", "nRep", "correctness", "targetFrequency", "testingRun", "roundNb")
+  p3Dataset_iS <- p3Dataset_iS[, varList]
+  
+  # concatenate subjects' data
+  if (iS == 1) { p3Dataset <- p3Dataset_iS }
+  else { p3Dataset <- rbind(p3Dataset, p3Dataset_iS) }   
+  
 }
-p3Dataset$condition <- as.factor(p3Dataset$condition)
+
+p3Dataset <- p3Dataset[with(p3Dataset, order(runsForTrain, subject, trial, nRep)), ]
+
 row.names(p3Dataset)<-NULL
 
-rm(list=c("filelist", "p3Dataset_iS", "condition", "factorname", "factorvalue", "iCond", "iS", "iTr", "iTs"
-          ,"listRunsForTrain", "listTestRun", "nRunsForTrain", "nSub", "p3file", "resDir", "run", "sub", 'tablename'))
+return(p3Dataset)
+
+}

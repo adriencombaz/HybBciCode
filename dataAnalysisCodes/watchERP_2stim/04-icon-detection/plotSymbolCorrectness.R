@@ -2,13 +2,36 @@ setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2st
 
 rm(list = ls())
 library(ggplot2)
-source("createSymbolCorrectnessDataset.R")
+source("createSymbolCorrectnessDatasetFnc.R")
 source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanPlot.R")
 
 figDir = "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP_2stim/04-icon-detection/"
 
-accDataset$nRep <- as.numeric(accDataset$nRep)
+trainRuns     <- c(1,2)
+subsetChTag   <- "ch-CP-P-PO-O"
+harmonicsTag  <- "fund-ha1"
+FS            <- 128
+nFoldSvm      <- 10
+
+accDataset <- createSymbolCorrectnessDatasetFnc(trainRuns, subsetChTag, harmonicsTag, FS, nFoldSvm)
+
+accDataset$nRepFac <- as.factor(accDataset$nRep)
 symbData <- accDataset[ accDataset$type=="symbol", ]
+
+pp <- ggplot( symbData, aes(nRepFac, 100*correctness, colour=subject ) )
+pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.4), shape = 20, size = 3)
+pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4), aes(group=subject))
+pp <- pp + ylim(0, 100)
+pp <- cleanPlot(pp)
+print(pp)
+
+pp <- ggplot( accDataset, aes(nRepFac, 100*correctness, colour=type ) )
+pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.4), shape = 20, size = 3)
+pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4), aes(group=type))
+pp <- pp + facet_wrap(~subject)
+pp <- pp + ylim(0, 100)
+pp <- cleanPlot(pp)
+print(pp)
 
 #################################################################################################################
 #################################################################################################################
@@ -46,6 +69,14 @@ pp <- cleanPlot(pp)
 print(pp)
 dev.off()
 
+
+pp <- ggplot( symbData, aes(nRepFac, 100*correctness, colour=subject ) )
+pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.4), shape = 20, size = 3)
+pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4), aes(group=subject))
+pp <- pp + ylim(0, 100)
+pp <- cleanPlot(pp)
+print(pp)
+
 #################################################################################################################
 #################################################################################################################
 #                                 DETAILS PER RUN / ROUND
@@ -66,7 +97,7 @@ for (iS in 1:nSub){
   pp <- ggplot( subDataset_iS, aes(nRep, correctness, colour=targetFrequency ) )
   pp <- pp + geom_point(size = 3)
   pp <- pp + geom_line()
-  pp <- pp +facet_grid( run ~ roundNb )
+  pp <- pp +facet_grid( testingRun ~ roundNb )
   pp <- pp + ylim(0, 1)
   pp <- cleanPlot(pp)
   print(pp)
@@ -79,7 +110,7 @@ for (iS in 1:nSub){
 #                                 DETAILS PER RUN
 #################################################################################################################
 #################################################################################################################
-subjects <- levels(subDataset$subject)
+subjects <- levels(symbData$subject)
 nSub <- length(subjects)
 
 figfilename <- file.path(figDir, sprintf("detail_corr_perRun.png") )
@@ -90,7 +121,7 @@ png( filename = figfilename
 pp <- ggplot( symbData, aes(nRep, correctness, colour=targetFrequency) )
 pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.2), size = 3)
 pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.2))
-pp <- pp +facet_grid( subject ~ run )
+pp <- pp +facet_grid( subject ~ testingRun )
 pp <- pp + ylim(0, 1)
 pp <- cleanPlot(pp)
 print(pp)

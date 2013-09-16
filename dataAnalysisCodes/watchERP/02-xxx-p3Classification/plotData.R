@@ -14,12 +14,16 @@ source("createDataFrame.R")
 source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanPlot.R")
 source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
 
-aveClass <- 10
+aveClass <- 0
 nRunsForTrain <- 2
-FS <- 256
-nFoldSvm <- 5
+FS <- 128
+nFoldSvm <- 10
+
 
 accData <- createDataFrame(aveClass, nRunsForTrain, FS, nFoldSvm)
+
+accData <- accData[accData$subject != "S08",]
+accData$subject <- droplevels(accData$subject)
 
 str(accData)
 summary(accData)

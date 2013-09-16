@@ -75,7 +75,7 @@ butterFilt.highMargin = 20;
 butterFilt.order = 3;
 
 %--------------------------------------------------------------------------
-textFilename = 'Results_forLogisiticRegression';
+textFilename = 'ResultsClassification';
 if ~isempty( nAveClassifier )
     textFilename = sprintf('%s_%.2dAveClassifier', textFilename, nAveClassifier);
 end

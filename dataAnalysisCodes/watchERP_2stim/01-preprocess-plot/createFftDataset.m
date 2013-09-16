@@ -39,7 +39,7 @@ if ~exist(resultsDir, 'dir'), mkdir(resultsDir); end
 
 %% ====================================================================================================
 
-updateDataset   = false;
+updateDataset   = true;
 sub             = unique( fileList.subjectTag );
 nSubs           = numel(sub);
 indsToRemove    = [];

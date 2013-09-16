@@ -6,14 +6,13 @@ library(lme4)
 library(LMERConvenienceFunctions)
 library(languageR)
 
-source("createDataFrame.R")
-# source("createDataFrame_2RunsForTrain.R")
+# source("createDataFrame.R")
+source("createDataFrame_2RunsForTrain.R")
 source("cleanPlot.R")
 
 #################################################################################################################
 
 accData1 <- subset(accData, frequency!=0)
-accData1 <- subset(accData1, select = -c(foldTest))
 accData1$frequency <- droplevels(accData1)$frequency
 accData1$condition <- droplevels(accData1)$condition
 accData1$nRepFac <- as.factor(accData1$nRep)

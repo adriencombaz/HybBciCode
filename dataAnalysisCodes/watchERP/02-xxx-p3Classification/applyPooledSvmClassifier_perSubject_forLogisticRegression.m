@@ -73,7 +73,7 @@ butterFilt.highMargin = 20;
 butterFilt.order = 3;
 
 %--------------------------------------------------------------------------
-fid = fopen( fullfile( resDir, 'Results_forLogisiticRegression.txt' ),'wt' );
+fid = fopen( fullfile( resDir, 'ResultsClassification.txt' ),'wt' );
 fprintf(fid, 'subject, condition, foldInd, ');
 for i = 1:nRunsForTraining
     fprintf(fid, 'trainingRun_%d, ', i);
@@ -92,6 +92,9 @@ for iC = 1:nCond
     for iRT = 1:numel(run)
 
         iRunTest = run(iRT);        
+
+        fprintf('Subject %s, condition %s (%d out of %d), run %d out of %d\n', sub{iS}, cond{iC}, iC, nCond, iRT, max(run));
+        
         subFileList = fileList( ismember( fileList.condition, cond{iC} ) & ismember( fileList.run, iRunTest ), : );
         if size(subFileList)~=1, error('size should be 1!!'); end
         

@@ -3,8 +3,8 @@ function watchERPGenerateMovie
 addpath( '../deps' );
 addpath( '../deps/lptIO' );
 
-% desiredScreenID = 1;
-desiredScreenID = 0;
+desiredScreenID = 1;
+% desiredScreenID = 0;
 
 
 %%                        SCANNER PARAMETERS

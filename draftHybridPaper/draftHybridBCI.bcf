@@ -1952,6 +1952,7 @@
   <!-- SECTION 0 -->
   <bcf:bibdata section="0">
     <bcf:datasource type="file" datatype="bibtex">d:/KULeuven/PhD/MendeleyBiblio.bib</bcf:datasource>
+    <bcf:datasource type="file" datatype="bibtex">additionalBiblio.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
     <bcf:citekey order="1">Farwell1988</bcf:citekey>
@@ -1961,21 +1962,50 @@
     <bcf:citekey order="3">Kaufmann2011</bcf:citekey>
     <bcf:citekey order="4">Sellers2010</bcf:citekey>
     <bcf:citekey order="4">Krusienski2008</bcf:citekey>
+    <bcf:citekey order="4">Combaz2013</bcf:citekey>
     <bcf:citekey order="5">Regan1966</bcf:citekey>
     <bcf:citekey order="5">Herrmann2001</bcf:citekey>
     <bcf:citekey order="5">Luck2005</bcf:citekey>
-    <bcf:citekey order="6">Perlstein2003</bcf:citekey>
-    <bcf:citekey order="7">Gray2003</bcf:citekey>
-    <bcf:citekey order="8">Vialatte2010</bcf:citekey>
-    <bcf:citekey order="9">Friman.2007</bcf:citekey>
-    <bcf:citekey order="9">Allison2008</bcf:citekey>
-    <bcf:citekey order="10">Parini2009</bcf:citekey>
-    <bcf:citekey order="11">Pfurtscheller2010</bcf:citekey>
+    <bcf:citekey order="6">Vialatte2010</bcf:citekey>
+    <bcf:citekey order="7">Parini2009</bcf:citekey>
+    <bcf:citekey order="7">Combaz2013</bcf:citekey>
+    <bcf:citekey order="8">Bin2009</bcf:citekey>
+    <bcf:citekey order="9">Pfurtscheller2010</bcf:citekey>
+    <bcf:citekey order="10">Brunner2011</bcf:citekey>
+    <bcf:citekey order="11">Allison2010a</bcf:citekey>
     <bcf:citekey order="12">Brunner2011</bcf:citekey>
-    <bcf:citekey order="13">Brainard1997</bcf:citekey>
-    <bcf:citekey order="13">Pelli1997</bcf:citekey>
-    <bcf:citekey order="14">Luck2005</bcf:citekey>
-    <bcf:citekey order="15">Keerthi2006</bcf:citekey>
+    <bcf:citekey order="13">Xu2013</bcf:citekey>
+    <bcf:citekey order="14">Yin2013</bcf:citekey>
+    <bcf:citekey order="15">Allison2012</bcf:citekey>
+    <bcf:citekey order="16">Brainard1997</bcf:citekey>
+    <bcf:citekey order="16">Pelli1997</bcf:citekey>
+    <bcf:citekey order="17">R2013</bcf:citekey>
+    <bcf:citekey order="18">Pinheiro2000</bcf:citekey>
+    <bcf:citekey order="19">lme42013</bcf:citekey>
+    <bcf:citekey order="20">Luck2005</bcf:citekey>
+    <bcf:citekey order="21">multcomp2008</bcf:citekey>
+    <bcf:citekey order="22">Keerthi2006</bcf:citekey>
+    <bcf:citekey order="23">Jaeger2008a</bcf:citekey>
+    <bcf:citekey order="24">Pinheiro2000</bcf:citekey>
+    <bcf:citekey order="25">Jaeger2008a</bcf:citekey>
+    <bcf:citekey order="26">Pinheiro2000</bcf:citekey>
+    <bcf:citekey order="27">Friman.2007</bcf:citekey>
+    <bcf:citekey order="28">Pinheiro2000</bcf:citekey>
+    <bcf:citekey order="29">Pinheiro2000</bcf:citekey>
+    <bcf:citekey order="30">Friman.2007</bcf:citekey>
+    <bcf:citekey order="31">Chumerin2011</bcf:citekey>
+    <bcf:citekey order="31">Segers2011</bcf:citekey>
+    <bcf:citekey order="32">Friman.2007</bcf:citekey>
+    <bcf:citekey order="33">Friman.2007</bcf:citekey>
+    <bcf:citekey order="33">Chumerin2011</bcf:citekey>
+    <bcf:citekey order="34">Wolpaw2000</bcf:citekey>
+    <bcf:citekey order="34">McFarland2003</bcf:citekey>
+    <bcf:citekey order="34">Serby2005</bcf:citekey>
+    <bcf:citekey order="34">Nijboer2010</bcf:citekey>
+    <bcf:citekey order="35">Kubler2008</bcf:citekey>
+    <bcf:citekey order="35">Kubler2004</bcf:citekey>
+    <bcf:citekey order="35">Brunner2011</bcf:citekey>
+    <bcf:citekey order="35">Combaz2013</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" type="entry" label="nyt">
   <bcf:sorting>

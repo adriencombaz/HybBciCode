@@ -81,6 +81,7 @@
     </requires>
     <requires type="editable">
       <file>d:/KULeuven/PhD/MendeleyBiblio.bib</file>
+      <file>additionalBiblio.bib</file>
     </requires>
   </external>
 </requests>

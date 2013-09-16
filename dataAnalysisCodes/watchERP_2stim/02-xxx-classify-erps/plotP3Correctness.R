@@ -1,4 +1,4 @@
-setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2stim/02-classify-erps/")
+setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP_2stim/02-xxx-classify-erps/")
 rm(list = ls())
 
 library(ggplot2)
@@ -6,18 +6,15 @@ source("createP3CorrectnessDataset.R")
 source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanPlot.R")
 
 # figDir = "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP_2stim/02-classify-erps/"
-
-aveClass <- 10
-nRunsForTrain <- 2
 FS <- 128
 nFoldSvm <- 10
 source("createP3CorrectnessDataset.R")
-createP3CorrectnessDataset(aveClass, nRunsForTrain, FS, nFoldSvm)
+p3Dataset <- createP3CorrectnessDataset(FS, nFoldSvm)
 
-figDir  <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP_2stim/02-classify-erps"
+figDir  <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP_2stim/02-xxx-classify-erps"
 dir.create(figDir, showWarnings=FALSE)
-folder      <- sprintf("LinSvm_%dRunsForTrain_%dHz_%.2dcvSvm", nRunsForTrain, FS, nFoldSvm)
-if (aveClass != 0){ folder  <- sprintf("%s_%.2dAveClassifier.txt", folder, aveClass) }
+folder      <- sprintf("LinSvm_%dHz_%.2dcvSvm", FS, nFoldSvm)
+# if (aveClass != 0){ folder  <- sprintf("%s_%.2dAveClassifier.txt", folder, aveClass) }
 figDir  <- file.path(figDir, folder)
 dir.create(figDir, showWarnings=FALSE)
 
@@ -32,9 +29,9 @@ png( filename = figfilename
      , width=1920, height=1200, units="px"
 )
 
-pp <- ggplot( p3Dataset, aes(nRep, correctness, colour=condition ) )
+pp <- ggplot( p3Dataset, aes(nRep, correctness, colour=runsForTrain ) )
 pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.4), shape = 20, size = 3)
-pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4))
+pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4), aes(group=runsForTrain))
 pp <- pp + ylim(0, 1)
 pp <- cleanPlot(pp)
 print(pp)
@@ -57,9 +54,9 @@ figfilename <- file.path(figDir, "p3accuracy.png")
 png( filename = figfilename
      , width=1920, height=1200, units="px"
 )
-pp <- ggplot( p3Dataset, aes(nRep, correctness, colour=condition ) )
+pp <- ggplot( p3Dataset, aes(nRep, correctness, colour=runsForTrain ) )
 pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.4), shape = 20, size = 3)
-pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4))
+pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4), aes(group=runsForTrain))
 pp <- pp + facet_wrap( ~subject )
 pp <- pp + ylim(0, 1)
 pp <- cleanPlot(pp)
@@ -78,7 +75,7 @@ dev.off()
 #                   ACCURACIES PER SUBJECT / TARGET FREQ FOR EACH TRAIN/TEST SET
 #################################################################################################################
 #################################################################################################################
-conds <- levels(p3Dataset$condition)
+conds <- levels(p3Dataset$runsForTrain)
 nConds <- length(conds)
 for (iC in 1:nConds){
   
@@ -87,10 +84,10 @@ for (iC in 1:nConds){
        , width=1920, height=1200, units="px"
   )  
   
-  subDataset <- p3Dataset[ p3Dataset[ , "condition"] == conds[iC],  ]
+  subDataset <- p3Dataset[ p3Dataset$runsForTrain == conds[iC],  ]
   pp <- ggplot( subDataset, aes(nRep, correctness, colour=targetFrequency ) )
   pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.4), shape = 20, size = 3)
-  pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4))
+  pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.4), aes(group=targetFrequency))
   pp <- pp + facet_wrap( ~subject )
   pp <- pp + ylim(0, 1)
   pp <- cleanPlot(pp)
@@ -112,11 +109,11 @@ for (iC in 1:nConds){
 #################################################################################################################
 #################################################################################################################
 
-cond <- "train12_test345678"
+cond <- "train12"
 figDirCond <- file.path( figDir, cond )
 dir.create(figDirCond, showWarnings=FALSE)
 
-subDataset <- p3Dataset[ p3Dataset[ , "condition"] == cond,  ]
+subDataset <- p3Dataset[ p3Dataset[ , "runsForTrain"] == cond,  ]
 subjects <- levels(subDataset$subject)
 nSub <- length(subjects)
 
@@ -130,8 +127,8 @@ for (iS in 1:nSub){
   subDataset_iS <- subDataset[ subDataset[ , "subject"] == subjects[iS],  ]
   pp <- ggplot( subDataset_iS, aes(nRep, correctness, colour=targetFrequency ) )
   pp <- pp + geom_point(size = 3)
-  pp <- pp + geom_line()
-  pp <- pp +facet_grid( run ~ roundNb )
+  pp <- pp + geom_line(aes(group=targetFrequency))
+  pp <- pp +facet_grid( testingRun ~ roundNb )
   pp <- pp + ylim(0, 1)
   pp <- cleanPlot(pp)
   print(pp)
@@ -144,11 +141,11 @@ for (iS in 1:nSub){
 #                                 DETAILS PER RUN
 #################################################################################################################
 #################################################################################################################
-cond <- "train12_test345678"
+cond <- "train12"
 figDirCond <- file.path( figDir, cond )
 dir.create(figDirCond, showWarnings=FALSE)
 
-subDataset <- p3Dataset[ p3Dataset[ , "condition"] == cond,  ]
+subDataset <- p3Dataset[ p3Dataset[ , "runsForTrain"] == cond,  ]
 subjects <- levels(subDataset$subject)
 nSub <- length(subjects)
 
@@ -159,8 +156,8 @@ png( filename = figfilename
 
 pp <- ggplot( subDataset, aes(nRep, correctness, colour=targetFrequency) )
 pp <- pp + stat_summary(fun.y = mean, geom="point", position = position_dodge(0.2), size = 3)
-pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.2))
-pp <- pp +facet_grid( subject ~ run )
+pp <- pp + stat_summary(fun.y = mean, geom="line", position = position_dodge(0.2), aes(group=targetFrequency))
+pp <- pp +facet_grid( subject ~ testingRun )
 pp <- pp + ylim(0, 1)
 pp <- cleanPlot(pp)
 print(pp)

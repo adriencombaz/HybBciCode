@@ -1,5 +1,0 @@
-[0] Config.pm:387> INFO - This is Biber 1.6
-[0] Config.pm:390> INFO - Logfile is 'tablesAndFigures.blg'
-[132] biber-MSWIN:215> INFO - === Wed Jun , 2013, 17:53:12
-[254] Utils.pm:185> ERROR - Cannot find control file 'tablesAndFigures.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
-[255] Biber.pm:109> INFO - ERRORS: 1

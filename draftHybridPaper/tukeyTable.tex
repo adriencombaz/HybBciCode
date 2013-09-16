@@ -1,0 +1,63 @@
+\begin{table*}[t]\scriptsize
+\caption{
+Results from the post hoc pairwise comparisons of the linear mixed model built on the correlation data shown in \autoref{fig:corrERP}.
+The first column represents the tested hypothesis; ``odd'' represents the oddball condition while ``h08'', ``h10'', ``h12'' and ``h15'' represent the hybrid condition at \SIlist[list-units = single]{8.57;10;12;15}{\Hz}, respectively.
+Therefore ``corr(odd,h10)'' represents the correlation between oddball and \SI{10}{\Hz}-hybrid ERPs.
+The first line of the table tests for significance in the difference between, on the one hand, correlation values between ERPs recorded in the oddball and in the \SI{10}{\Hz}-hybrid conditions and, on the other hand, correlation values between ERPs recorded in the oddball and in the \SI{8.57}{\Hz}-hybrid conditions.
+The second column shows the estimate of the tested difference (reported in the first column), the third and fourth columns represent respectively the test statistic and the associated p-value.
+the symbol $^{**}$ denotes statistical significance below 0.01.
+}
+\label{table:TukeyTable}
+\centering
+\begin{tabular}{l r r r l}
+\toprule
+Null hypothesis & Estimate & z-value & p-value & \tabularnewline
+\toprule
+corr(odd,h10) - corr(odd,h08)  == 0 & $ -0.019706 $ & $ -3.152 $ & $ 0.05165 $ & \tabularnewline
+corr(odd,h12) - corr(odd,h08)  == 0 & $  0.004923 $ & $  0.787 $ & $ 0.99877 $ & \tabularnewline
+corr(odd,h15) - corr(odd,h08)  == 0 & $  0.020458 $ & $  3.272 $ & $ 0.03563 $ & \tabularnewline
+corr(h08,h10) - corr(odd,h08)  == 0 & $  0.105049 $ & $ 16.800 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h12) - corr(odd,h08)  == 0 & $  0.110026 $ & $ 17.596 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h15) - corr(odd,h08)  == 0 & $  0.095337 $ & $ 15.247 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h10,h12) - corr(odd,h08)  == 0 & $  0.108974 $ & $ 17.428 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h10,h15) - corr(odd,h08)  == 0 & $  0.093076 $ & $ 14.885 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h12,h15) - corr(odd,h08)  == 0 & $  0.108701 $ & $ 17.384 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(odd,h12) - corr(odd,h10)  == 0 & $  0.024629 $ & $  3.939 $ & $ 0.00331 $ & $^{**}$\tabularnewline
+corr(odd,h15) - corr(odd,h10)  == 0 & $  0.040164 $ & $  6.423 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h10) - corr(odd,h10)  == 0 & $  0.124755 $ & $ 19.952 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h12) - corr(odd,h10)  == 0 & $  0.129732 $ & $ 20.748 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h15) - corr(odd,h10)  == 0 & $  0.115043 $ & $ 18.399 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h10,h12) - corr(odd,h10)  == 0 & $  0.128680 $ & $ 20.580 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h10,h15) - corr(odd,h10)  == 0 & $  0.112782 $ & $ 18.037 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h12,h15) - corr(odd,h10)  == 0 & $  0.128407 $ & $ 20.536 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(odd,h15) - corr(odd,h12)  == 0 & $  0.015536 $ & $  2.485 $ & $ 0.27621 $ & \tabularnewline
+corr(h08,h10) - corr(odd,h12)  == 0 & $  0.100126 $ & $ 16.013 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h12) - corr(odd,h12)  == 0 & $  0.105104 $ & $ 16.809 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h15) - corr(odd,h12)  == 0 & $  0.090415 $ & $ 14.460 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h10,h12) - corr(odd,h12)  == 0 & $  0.104052 $ & $ 16.641 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h10,h15) - corr(odd,h12)  == 0 & $  0.088153 $ & $ 14.098 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h12,h15) - corr(odd,h12)  == 0 & $  0.103779 $ & $ 16.597 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h10) - corr(odd,h15)  == 0 & $  0.084591 $ & $ 13.528 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h12) - corr(odd,h15)  == 0 & $  0.089568 $ & $ 14.324 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h15) - corr(odd,h15)  == 0 & $  0.074879 $ & $ 11.975 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h10,h12) - corr(odd,h15)  == 0 & $  0.088516 $ & $ 14.156 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h10,h15) - corr(odd,h15)  == 0 & $  0.072618 $ & $ 11.614 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h12,h15) - corr(odd,h15)  == 0 & $  0.088243 $ & $ 14.112 $ & $< 0.001 $ & $^{**}$\tabularnewline
+corr(h08,h12) - corr(h08,h10)  == 0 & $  0.004977 $ & $  0.796 $ & $ 0.99866 $ & \tabularnewline
+corr(h08,h15) - corr(h08,h10)  == 0 & $ -0.009712 $ & $ -1.553 $ & $ 0.87030 $ & \tabularnewline
+corr(h10,h12) - corr(h08,h10)  == 0 & $  0.003925 $ & $  0.628 $ & $ 0.99980 $ & \tabularnewline
+corr(h10,h15) - corr(h08,h10)  == 0 & $ -0.011973 $ & $ -1.915 $ & $ 0.65867 $ & \tabularnewline
+corr(h12,h15) - corr(h08,h10)  == 0 & $  0.003652 $ & $  0.584 $ & $ 0.99989 $ & \tabularnewline
+corr(h08,h15) - corr(h08,h12)  == 0 & $ -0.014689 $ & $ -2.349 $ & $ 0.35713 $ & \tabularnewline
+corr(h10,h12) - corr(h08,h12)  == 0 & $ -0.001052 $ & $ -0.168 $ & $ 1.00000 $ & \tabularnewline
+corr(h10,h15) - corr(h08,h12)  == 0 & $ -0.016950 $ & $ -2.711 $ & $ 0.16927 $ & \tabularnewline
+corr(h12,h15) - corr(h08,h12)  == 0 & $ -0.001325 $ & $ -0.212 $ & $ 1.00000 $ & \tabularnewline
+corr(h10,h12) - corr(h08,h15)  == 0 & $  0.013637 $ & $  2.181 $ & $ 0.47005 $ & \tabularnewline
+corr(h10,h15) - corr(h08,h15)  == 0 & $ -0.002261 $ & $ -0.362 $ & $ 1.00000 $ & \tabularnewline
+corr(h12,h15) - corr(h08,h15)  == 0 & $  0.013364 $ & $  2.137 $ & $ 0.50087 $ & \tabularnewline
+corr(h10,h15) - corr(h10,h12)  == 0 & $ -0.015898 $ & $ -2.543 $ & $ 0.24536 $ & \tabularnewline
+corr(h12,h15) - corr(h10,h12)  == 0 & $ -0.000273 $ & $ -0.044 $ & $ 1.00000 $ & \tabularnewline
+corr(h12,h15) - corr(h10,h15)  == 0 & $  0.015625 $ & $  2.499 $ & $ 0.26860 $ & \tabularnewline
+\bottomrule
+\end{tabular}
+\end{table*}

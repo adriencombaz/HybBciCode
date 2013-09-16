@@ -1,0 +1,1 @@
+d:\KULeuven\PhD\Soft\Standalone\MPlayer-p4-svn-33883\mencoder.exe mf://*.png -mf fps=60 -o movie.avi -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=3600

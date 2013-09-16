@@ -28,7 +28,7 @@ switch hostName,
         addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );
         rmpath( genpath('~/PhD/hybridBCI-stuffs/deps/eeglab10_0_1_0b/external/SIFT_01_alpha') );
         dataDir = '~/PhD/hybridBCI-stuffs/watchERP_2stim/data/';
-        resDir = '~/PhD/hybridBCI-stuffs/watchERP_2stim/results/02-classify-erps/';
+        resDir = '~/PhD/hybridBCI-stuffs/watchERP_2stim/results/02-xxx-classify-erps/';
         codeDir = '~/PhD/hybridBCI-stuffs/watchERP_2stim/code/';
     otherwise,
         error('host not recognized');
@@ -175,6 +175,8 @@ for iCl = 1:nClassifiers
         SigTrainNT  = zeros( nbins, nChans, nNT_train ); %, 'single' );
         nT_train_iR_iF  = round( nT_train / (nRunsForTraining*numel(pars.ssvepFreq)) );
         nNT_train_iR_iF = round( nNT_train / (nRunsForTraining*numel(pars.ssvepFreq)) );
+        nT_train        = nT_train_iR_iF*nRunsForTraining*numel(pars.ssvepFreq);
+        nNT_train       = nNT_train_iR_iF*nRunsForTraining*numel(pars.ssvepFreq);
         
         for iR = 1:nRunsForTraining
             

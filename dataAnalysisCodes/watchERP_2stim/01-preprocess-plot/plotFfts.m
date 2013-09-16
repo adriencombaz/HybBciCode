@@ -70,7 +70,7 @@ fWidth = 50;
 fHeight = 31;
 
 
-for iS = 7%1:nSubs
+for iS = 8%1:nSubs
 
     load( fullfile( resultsDir, sprintf('fftDataset_sub%s.mat', sub{iS}) ) )
     

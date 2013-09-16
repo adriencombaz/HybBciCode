@@ -58,7 +58,7 @@ listTestRuns = cell( nClassifiers, 1 );
 runsUsedForTest = [];
 for iCl = 1:nClassifiers
     listTestRuns{iCl}   = run( run > max(listTrainRuns{iCl}) );
-    runsUsedForTest     = unique( [runsUsedForTest, listTestRuns{iCl}] );
+    runsUsedForTest     = unique( [runsUsedForTest; listTestRuns{iCl}] );
 end
 
 %--------------------------------------------------------------------------
@@ -73,13 +73,15 @@ butterFilt.order = 3;
 % nItemsPerSquare = 6;
 
 %--------------------------------------------------------------------------
-fid = fopen( fullfile( resDir, 'Results_forLogisiticRegression.txt' ),'wt' );
+fid = fopen( fullfile( resDir, 'ResultsClassification.txt' ),'wt' );
 fprintf(fid, 'subject, foldInd, trainingRuns, testingRun, roundNb, nAverages, targetFrequency, correctness\n');
 
 
 %% ========================================================================================================
-for iRunTest = runsUsedForTest
+% for iRunTest = runsUsedForTest
+for iRT = 1:numel(runsUsedForTest)
     
+    iRunTest = runsUsedForTest(iRT);
     fprintf('subject %s, test run %d out of %d\n', ...
         sub{iS}, iRunTest, max(run));
     

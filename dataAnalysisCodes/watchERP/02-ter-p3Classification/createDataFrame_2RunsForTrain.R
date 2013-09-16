@@ -9,7 +9,7 @@ rm(list = ls())
 #################################################################################################################
 
 # for (iS in 1:8)
-for (iS in 1:9)
+for (iS in 1:8)
   {
   #--------------------------------------------------------------------------------------------------------------
   # Load correctness data caclulated with classifiers built on the same type of data as the test data 
@@ -28,14 +28,18 @@ for (iS in 1:9)
   #--------------------------------------------------------------------------------------------------------------
   # Load correctness data caclulated with pooled classifiers
   
-#   filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvmPooled/subject_S%d/Results_forLogisiticRegression.txt", iS)
-#   accData2 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
-#   
-#   # Factorize what hes to be
-#   accData2$foldTest = as.factor(accData2$foldTest)
-#   # accData2$nAverages = as.factor(accData1$nAverages )
-#   
-#   # Consider only results from classifier built on first run and tested on the 2 next ones
+  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvmPooled_2RunsForTrain/subject_S%d/Results_forLogisiticRegression.txt", iS)
+  accData2 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
+  
+  # Factorize what hes to be
+  accData1$trainingRun_1  <- as.factor(accData1$trainingRun_1 )
+  accData1$trainingRun_2  <- as.factor(accData1$trainingRun_2 )
+  accData1$testingRun     <- as.factor(accData1$testingRun )
+  accData1$roundNb        <- as.factor(accData1$roundNb )
+  accData1$foldInd        <- as.factor(accData1$foldInd )
+  # accData2$nAverages = as.factor(accData1$nAverages )
+  
+  # Consider only results from classifier built on first run and tested on the 2 next ones
 #   if (iS == 8){
 #     temp1 <- subset( accData2, foldTrain == 1 )
 #     temp1 <- subset(temp1, conditionTest != "hybrid-12Hz")
@@ -46,8 +50,7 @@ for (iS in 1:9)
 #     temp2b <- subset( temp2b, foldTest == 2 )
 #     accData2 <- rbind(temp1, temp2a, temp2b)
 #     rm(temp1, temp2, temp2a, temp2b) 
-#   }
-#   else{
+#   }  else{
 #     accData2 <- subset( accData2, foldTrain == 1 )
 #   }
 #   accData2$foldTrain <- droplevels(accData2)$foldTrain
@@ -55,25 +58,24 @@ for (iS in 1:9)
 #   
 #   # Remove unnecessary columns
 #   accData2 <- subset(accData2, select = -c(conditionTest, foldTrain))
-#   
-#   
-#   #--------------------------------------------------------------------------------------------------------------
-#   # Concatenate the data frames
+  
+  
+  #--------------------------------------------------------------------------------------------------------------
+  # Concatenate the data frames
   accData1$classifier <- "normal"
-#   accData2$classifier <- "pooled"
-#   temp <- rbind(accData1, accData2)
-#   temp$classifier = as.factor(temp$classifier)
-#   
-#   if (iS == 1) { accData <- temp }
-#   else { accData <- rbind(accData, temp) }
-#   
-# }
-# rm(temp, accData1, accData2, filename, iS)
-
-
-  if (iS == 1) { accData <- accData1 }
-  else { accData <- rbind(accData, accData1) }  
+  accData2$classifier <- "pooled"
+  temp <- rbind(accData1, accData2)
+  temp$classifier = as.factor(temp$classifier)
+  
+  if (iS == 1) { accData <- temp } else { accData <- rbind(accData, temp) }
+  
 }
+rm(temp, accData1, accData2, filename, iS)
+
+
+#   if (iS == 1) { accData <- accData1 }
+#   else { accData <- rbind(accData, accData1) }  
+# }
 #--------------------------------------------------------------------------------------------------------------
 # relevel the condition factor
 accData$condition = relevel(accData$condition, "hybrid-15Hz")

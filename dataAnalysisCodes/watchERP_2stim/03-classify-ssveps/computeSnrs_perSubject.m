@@ -55,8 +55,19 @@ if numel(run) ~= size(fileList, 1), error('number of runs and files do not match
 
 %--------------------------------------------------------------------------
 nRepMax = 10;
-harmonics = [1 2];
-nHarmonics = numel(harmonics);
+channelsList = { ...
+            {'O1', 'Oz', 'O2'} ...
+            , {'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
+            , {'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
+            , {'CP5', 'CP1', 'CP2', 'CP6', 'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
+            , {'C3', 'Cz', 'C4', 'CP5', 'CP1', 'CP2', 'CP6', 'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
+            , 'all' ...
+            };
+channelsLabel = {'ch-O', 'ch-PO-O', 'ch-P-PO-O', 'ch-CP-P-PO-O', 'ch-C-CP-P-PO-O', 'ch-all'};
+harmonicList = { 1, [1 2] };
+harmonicLabel = {'fund', 'fund-ha1'};
+% harmonics = [1 2];
+% nHarmonics = numel(harmonics);
 
 refChanNames    = {'EXG1', 'EXG2'};
 discardChanNames= {'EXG3', 'EXG4', 'EXG5', 'EXG6', 'EXG7', 'EXG8'};
@@ -65,12 +76,20 @@ butterFilt.lowMargin = .2;
 butterFilt.highMargin = 40;
 butterFilt.order = 4;
 targetFS = 256;
-% nSquares = 2;
-% nItemsPerSquare = 6;
 
 %--------------------------------------------------------------------------
-fid = fopen( fullfile( resDir, sprintf('snrs_subject%s.txt', sub{iS}) ),'wt' );
-fprintf(fid, 'subject, run, roundNb, nRep, targetFrequency, watchedFrequency, channel, harmonic, snr, winnerFreq, correctness\n');
+fid = zeros(numel(channelsList), numel(harmonicList));
+for iChanList = 1:numel(channelsList)
+    for iHaList = 1:numel(harmonicList)
+        outDir = fullfile(resDir, [channelsLabel{iChanList} '_' harmonicLabel{iHaList}]);
+        if ~exist(outDir, 'dir'), mkdir(outDir); end
+        fid(iChanList, iHaList) = fopen( fullfile( outDir, sprintf('snrs_subject%s.txt', sub{iS}) ),'wt' );
+        fprintf(fid(iChanList, iHaList), 'subject, run, roundNb, nRep, targetFrequency, watchedFrequency, snr, winnerFreq, correctness, nCompSP\n');
+    end
+end
+
+% fid = fopen( fullfile( resDir, sprintf('snrs_subject%s.txt', sub{iS}) ),'wt' );
+% fprintf(fid, 'subject, run, roundNb, nRep, targetFrequency, watchedFrequency, channel, harmonic, snr, winnerFreq, correctness\n');
 
 %% ========================================================================================================
 for iRun = 1:max(run)
@@ -174,37 +193,49 @@ for iRun = 1:max(run)
             iSampleEnd  = p3Offsets_iCue( iRep * pars.nP3item );
             epochLenght = iSampleEnd - iSampleStart + 1;
             epoch       = sig( iSampleStart:iSampleEnd, : );
-            mcdObj      = myMCD( pars.ssvepFreq, targetFS, harmonics, epochLenght );
-            [Snr, ~]    = mcdObj.getSNRs( epoch' );
-            clear mcdObj
-            
-            for iFreq = 1:numel( pars.ssvepFreq )
-                for iCh = 1:nChan
-                    for iH = 1:nHarmonics
+            for iChanList = 1:numel(channelsList)
+                if strcmp(channelsList{iChanList}, 'all')
+                    chanInd = 1:nChan;
+                else
+                    chanInd = ismember( channels, channelsList{iChanList});
+                end
+                for iHaList = 1:numel(harmonicList)
+                    
+                    mcdObj = mecSsvepClassifier( ...
+                        'frequencies', pars.ssvepFreq ...
+                        , 'harmonics', harmonicList{iHaList} ...
+                        , 'fs', targetFS ...
+                        , 'windowsizeinsec', epochLenght/targetFS ...
+                        );
+                    [Snr, Ns]    = mcdObj.getSNRs( epoch(:, chanInd)' );
+                    Snr         = mean(Snr, 1);
+                    for iFreq = 1:numel( pars.ssvepFreq )
                         
-                        snr_iCh_iH = squeeze( Snr((iCh-1)*nHarmonics+iH, :) );
-                        if ~isequal(size(snr_iCh_iH), [1 2]), error('something wrong here!'); end
-                        winnerFreq = pars.ssvepFreq( snr_iCh_iH == max(snr_iCh_iH) );
-                        fprintf(fid, '%s, %d, %d, %d, %.2f, %.2f, %s, %d, %f, %.2f, %d\n' ...
+                        winnerFreq = pars.ssvepFreq( Snr == max(Snr) );
+                        fprintf(fid(iChanList, iHaList), '%s, %d, %d, %d, %.2f, %.2f, %f, %.2f, %d, %d\n' ...
                             , sub{iS} ...
                             , iRun ...
                             , iCue ...
                             , iRep ...
                             , targetFreq ...
                             , pars.ssvepFreq(iFreq) ...
-                            , channels{iCh} ...
-                            , iH-1 ...
-                            , snr_iCh_iH( iFreq ) ...
+                            , Snr( iFreq ) ...
                             , winnerFreq ...
                             , winnerFreq == targetFreq ...
+                            , Ns ...
                             );
-                    end % OF NHARMONICS LOOP
-                end % OF NCHANNELS LOOP
-            end % OF NFREQ LOOP
+                   
+                    end % OF NFREQ LOOP
+                end % OF NHARMONICS LOOP
+            end % OF NCHANNELS LOOP
         end % OF NREPETITIONS LOOP
     end % OF NCUES LOOP
 end % OF NRUNS LOOP
 
-fclose(fid);
+for iChanList = 1:numel(channelsList)
+    for iHaList = 1:numel(harmonicList)
+        fclose(fid(iChanList, iHaList));
+    end
+end
 
 end

@@ -73,7 +73,7 @@ fHeight = 31;
 %%                                        PER SUBJECT PLOTS
 %========================================================================================================
 %========================================================================================================
-for iS = 7%1:nSubjects
+for iS = 8%1:nSubjects
     
     meanErpDataset_iS = meanErpDataset( ismember(meanErpDataset.subject, sub{iS}), : );    
     

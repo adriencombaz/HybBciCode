@@ -10,7 +10,7 @@ library(languageR)
 source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanPlot.R")
 source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
 
-filename <- "psdDataset_SelChan_1Ha"
+filename <- "psdDataset_Oz_1Ha"
 
 ####################################################################################################################
 ####################################################################################################################

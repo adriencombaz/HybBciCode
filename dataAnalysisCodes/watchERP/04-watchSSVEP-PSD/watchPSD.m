@@ -78,7 +78,7 @@ datasetFilename = fullfile(resDir, 'psdDataset.mat');
 
 % ========================================================================================================
 % ========================================================================================================
-updateDataset   = true;
+updateDataset   = false;
 
 if updateDataset && exist(datasetFilename, 'file')
     temp = load( datasetFilename );
@@ -114,7 +114,7 @@ nData       = nTimes*nMaxTrials*nOdd*nFreq*nSub*nHarm;
 subject     = cell( nData, 1);
 frequency   = zeros( nData, 1); 
 oddball     = zeros( nData, 1);
-trial       = zeros( nData, 1);
+trial       = cell( nData, 1);
 fileNb      = zeros( nData, 1);
 stimDuration= zeros( nData, 1);
 % snr         = cell( nData, 1); 
@@ -239,7 +239,7 @@ for iS = 1:nSub,
                         frequency(iData)    = freq(iF);
                         oddball(iData)      = oddb(iOdd);
                         fileNb(iData)       = iFile;
-                        trial(iData)        = iTrial;
+                        trial{iData}        = sprintf('tr%.2d', iTrial);
                         stimDuration(iData) = timesInSec(iTime);
 %                         snr{iData}          = SNRs;
                         psd{iData}          = P;
@@ -354,82 +354,112 @@ export( psdDatasetSelChan, 'file', fullfile(resDir, 'psdDataset_SelChan_2Ha.csv'
 %% ========================================================================================================
 % =========================================================================================================
 
-sub    = unique( psdDataset.subject );
-freq    = unique( psdDataset.frequency );
-oddb    = unique( psdDataset.oddball );
-trial   = unique( psdDataset.trial );
-stimDur = unique( psdDataset.stimDuration );
-
-nSub    = numel( sub );
-nOdd    = numel( oddb );
-nFreq   = numel( freq );
-nTrial  = numel( trial);
-nStimDur = numel(stimDur);
+subsetChannels  = {...
+        'CP5',   'CP1',   'CP2',   'CP6', ...
+...
+      'P7',   'P3',   'Pz',   'P4',   'P8', ...
+...     
+               'PO3',       'PO4', ...
+                'O1', 'Oz', 'O2' ...
+};
 
 
-cmap = colormap; close(gcf);
-nCmap = size(cmap, 1);
-colorList = zeros(nFreq, 3);
-for i = 1:nFreq
-    colorList(i, :) = cmap( round((i-1)*(nCmap-1)/(nFreq-1)+1) , : );
-end
+for iCh = 1:numel(subsetChannels)
+    for iHa = 1:2
 
-
-lineStyles = {'--', '-.', ':', '-.', '--'};
-markers = {'o', '^', 's', 'd', 'v'};
-
-
-channels = {'O1', 'Oz', 'O2'}; 
-  
-nChan = numel(channels);
- 
-for iSub = 1:nSub
-    
-    figure;
-    
-    for iCh = 1:nChan
-        
-        subplot(nChan, 1, iCh);
-        hold on;
-        legStr = cell(1, nFreq*nOdd);
-        i = 1;
-        for iFreq = 1:nFreq
-            for iOdd = 1:nOdd
-                
-                toPlot = zeros( nStimDur, 1 );
-                for iSD = 1:nStimDur
-                    
-                    subDataset = psdDataset( ...
-                        ismember( psdDataset.subject, sub{iSub} ) ...
-                        & ismember( psdDataset.frequency, freq(iFreq) ) ...
-                        & ismember( psdDataset.oddball, oddb(iOdd) ) ...
-                        & ismember( psdDataset.stimDuration, stimDur(iSD) ) ...
-                        , :);
-                    
-%                     toPlot(iSD) = mean( cellfun( @(x, y) x( ismember( y, channels{iCh} ) ), subDataset.psd, subDataset.chanList ) );
-                    toPlot(iSD) = mean( cellfun( @(x, y) sum( x( ismember( y, channels{iCh} ), : ), 2 ), subDataset.psd, subDataset.chanList ) );
-                    
-                end
-                
-                plot(stimDur, toPlot ...
-                    , 'LineStyle', lineStyles{iOdd} ...
-                    , 'Color', colorList(iFreq, :) ...
-                    , 'LineWidth', 2 ...
-                    , 'Marker', markers{iOdd} ...
-                    , 'MarkerFaceColor', colorList(iFreq, :) ...
-                    , 'MarkerEdgeColor', colorList(iFreq, :) ...
-                    , 'MarkerSize', 2 ...
-                    );
-                
-                legStr{i} = sprintf('freq %.2d, oddball %d', freq(iFreq), oddb(iOdd));
-                i = i+1;
-            end
-        end
+        psdDataset_iCh_iHa            = psdDataset;
+        psdDataset_iCh_iHa.psd        = cellfun(@(x, y) x( ismember( y, subsetChannels{iCh} ), iHa ), psdDataset.psd, psdDataset.chanList );
+        psdDataset_iCh_iHa.chanList   = [];
+        psdDataset_iCh_iHa.harmonics  = [];
+        psdDataset_iCh_iHa.channel    = repmat(subsetChannels(iCh), size(psdDataset_iCh_iHa, 1), 1);
+        psdDataset_iCh_iHa.harmonic   = iHa*ones( size(psdDataset_iCh_iHa, 1), 1 );
+        filename = sprintf('psdDataset_%s_Ha%d.csv', subsetChannels{iCh}, iHa);
+        export( psdDataset_iCh_iHa, 'file', fullfile(resDir, filename), 'delimiter', ',' );
         
         
     end
-    legend(legStr)
-    
 end
 
+
+%% ========================================================================================================
+% =========================================================================================================
+
+% sub    = unique( psdDataset.subject );
+% freq    = unique( psdDataset.frequency );
+% oddb    = unique( psdDataset.oddball );
+% trial   = unique( psdDataset.trial );
+% stimDur = unique( psdDataset.stimDuration );
+% 
+% nSub    = numel( sub );
+% nOdd    = numel( oddb );
+% nFreq   = numel( freq );
+% nTrial  = numel( trial);
+% nStimDur = numel(stimDur);
+% 
+% 
+% cmap = colormap; close(gcf);
+% nCmap = size(cmap, 1);
+% colorList = zeros(nFreq, 3);
+% for i = 1:nFreq
+%     colorList(i, :) = cmap( round((i-1)*(nCmap-1)/(nFreq-1)+1) , : );
+% end
+% 
+% 
+% lineStyles = {'--', '-.', ':', '-.', '--'};
+% markers = {'o', '^', 's', 'd', 'v'};
+% 
+% 
+% channels = {'O1', 'Oz', 'O2'}; 
+%   
+% nChan = numel(channels);
+%  
+% for iSub = 1:nSub
+%     
+%     figure;
+%     
+%     for iCh = 1:nChan
+%         
+%         subplot(nChan, 1, iCh);
+%         hold on;
+%         legStr = cell(1, nFreq*nOdd);
+%         i = 1;
+%         for iFreq = 1:nFreq
+%             for iOdd = 1:nOdd
+%                 
+%                 toPlot = zeros( nStimDur, 1 );
+%                 for iSD = 1:nStimDur
+%                     
+%                     subDataset = psdDataset( ...
+%                         ismember( psdDataset.subject, sub{iSub} ) ...
+%                         & ismember( psdDataset.frequency, freq(iFreq) ) ...
+%                         & ismember( psdDataset.oddball, oddb(iOdd) ) ...
+%                         & ismember( psdDataset.stimDuration, stimDur(iSD) ) ...
+%                         , :);
+%                     
+% %                     toPlot(iSD) = mean( cellfun( @(x, y) x( ismember( y, channels{iCh} ) ), subDataset.psd, subDataset.chanList ) );
+%                     toPlot(iSD) = mean( cellfun( @(x, y) sum( x( ismember( y, channels{iCh} ), : ), 2 ), subDataset.psd, subDataset.chanList ) );
+%                     
+%                 end
+%                 
+%                 plot(stimDur, toPlot ...
+%                     , 'LineStyle', lineStyles{iOdd} ...
+%                     , 'Color', colorList(iFreq, :) ...
+%                     , 'LineWidth', 2 ...
+%                     , 'Marker', markers{iOdd} ...
+%                     , 'MarkerFaceColor', colorList(iFreq, :) ...
+%                     , 'MarkerEdgeColor', colorList(iFreq, :) ...
+%                     , 'MarkerSize', 2 ...
+%                     );
+%                 
+%                 legStr{i} = sprintf('freq %.2d, oddball %d', freq(iFreq), oddb(iOdd));
+%                 i = i+1;
+%             end
+%         end
+%         
+%         
+%     end
+%     legend(legStr)
+%     
+% end
+% 
 

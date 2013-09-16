@@ -1,4 +1,4 @@
-function watchERP_2stim
+function watchERP_2stim_genereateMovie
 
 addpath( '../deps' );
 addpath( '../deps/lptIO' );

@@ -1,13 +1,19 @@
 [0] Config.pm:387> INFO - This is Biber 1.6
-[1] Config.pm:390> INFO - Logfile is 'draftHybridBCI.blg'
-[136] biber-MSWIN:215> INFO - === Tue Jul , 2013, 11:35:12
-[137] Biber.pm:325> INFO - Reading 'draftHybridBCI.bcf'
-[294] Biber.pm:623> INFO - Found 21 citekeys in bib section 0
-[322] Biber.pm:2995> INFO - Processing section 0
-[373] Biber.pm:3129> INFO - Looking for bibtex format file 'd:/KULeuven/PhD/MendeleyBiblio.bib' for section 0
-[389] bibtex.pm:775> INFO - Found BibTeX data source 'd:/KULeuven/PhD/MendeleyBiblio.bib'
-[891] Biber.pm:2881> INFO - Overriding locale 'English_United States.1252' default tailoring 'variable = shifted' with 'variable = non-ignorable'
-[891] Biber.pm:2887> INFO - Sorting 'entry' list 'nyt' keys
-[891] Biber.pm:2891> INFO - No sort tailoring available for locale 'English_United States.1252'
-[1243] bbl.pm:472> INFO - Writing 'draftHybridBCI.bbl' with encoding 'ascii'
-[1256] bbl.pm:545> INFO - Output to draftHybridBCI.bbl
+[0] Config.pm:390> INFO - Logfile is 'draftHybridBCI.blg'
+[132] biber-MSWIN:215> INFO - === Mon Sep , 2013, 15:39:04
+[133] Biber.pm:325> INFO - Reading 'draftHybridBCI.bcf'
+[281] Biber.pm:623> INFO - Found 37 citekeys in bib section 0
+[306] Biber.pm:2995> INFO - Processing section 0
+[350] Biber.pm:3129> INFO - Looking for bibtex format file 'd:/KULeuven/PhD/MendeleyBiblio.bib' for section 0
+[367] bibtex.pm:775> INFO - Found BibTeX data source 'd:/KULeuven/PhD/MendeleyBiblio.bib'
+[397] Utils.pm:169> WARN - Duplicate entry key: 'DalSeno2010a' in file 'd:/KULeuven/PhD/MendeleyBiblio.bib', skipping ...
+[398] Utils.pm:169> WARN - Duplicate entry key: 'DalSeno2010a' in file 'd:/KULeuven/PhD/MendeleyBiblio.bib', skipping ...
+[409] Utils.pm:169> WARN - Duplicate entry key: 'Guger2003' in file 'd:/KULeuven/PhD/MendeleyBiblio.bib', skipping ...
+[531] Biber.pm:3129> INFO - Looking for bibtex format file 'additionalBiblio.bib' for section 0
+[534] bibtex.pm:775> INFO - Found BibTeX data source 'additionalBiblio.bib'
+[1219] Biber.pm:2881> INFO - Overriding locale 'English_United States.1252' default tailoring 'variable = shifted' with 'variable = non-ignorable'
+[1219] Biber.pm:2887> INFO - Sorting 'entry' list 'nyt' keys
+[1219] Biber.pm:2891> INFO - No sort tailoring available for locale 'English_United States.1252'
+[1859] bbl.pm:472> INFO - Writing 'draftHybridBCI.bbl' with encoding 'ascii'
+[1881] bbl.pm:545> INFO - Output to draftHybridBCI.bbl
+[1884] Biber.pm:105> INFO - WARNINGS: 3
