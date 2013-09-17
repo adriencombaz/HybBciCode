@@ -98,15 +98,15 @@ A last example of hybrid design is where each modality provides the system with 
 For example, \textcite{Allison2012} developed a \ac{BCI} where the user could control a cursor on a two dimensional screen where \ac{ERD} activity encoded vertical movement of the cursor and \ac{SSVEP} activity encoded horizontal movement.
 
 To our knowledge, no design of such \emph{independent hybrid \ac{BCI}} combining the detection of \ac{SSVEP} activity and oddball \ac{ERP} has been reported on in the literature.
-Neither has been proposed a study reporting on the influence of \ac{SSVEP} stimulation on an oddball response and the influence of visual oddball stimulation on \ac{SSVEP} responses with respect to the frequency used for the \ac{SSVEP} stimulation.
+Neither has been proposed a study reporting on the influence of \ac{SSVEP} stimulation on the oddball response and the influence of visual oddball stimulation on \ac{SSVEP} responses with respect to the frequency used for the \ac{SSVEP} stimulation.
 %This is what we propose in the present study.
 
-It could be possible to combine those two modalities in a way that would results in a system being able to operate faster than a purely oddball-based \ac{BCI} and encoding more targets than a purely \ac{SSVEP}-based \ac{BCI} would.
+We investigate the possibility to combine those two modalities in a way that would results in a system being able to operate faster than a purely oddball-based \ac{BCI} and encoding more targets than a purely \ac{SSVEP}-based \ac{BCI} would.
 We aim here at studying the interactions between the two types of brain responses and the possibility of such a hybrid \ac{BCI} in a series of experiments where \ac{EEG} data are analysed offline.
 This is a necessary first step before studying the differences in online performances between a hybrid system and purely oddball and \ac{SSVEP} based ones.
 
 We report in this study on three series of experiment aiming at
-1) studying the effect of \ac{SSVEP} stimulation at different frequencies on the oddball response and its detection accuracy,
+1) studying the effect of a \ac{SSVEP} stimulation at different frequencies on the oddball response and its detection accuracy,
 2) studying the effect of oddball stimulation on the \ac{SSVEP} response for different frequencies,
 3) assessing the possibility to detect simultaneously both type of brain activity in a proof-of-concept experiment.
 
@@ -225,7 +225,7 @@ We report in this study on three series of experiment aiming at
         For each participant, averaged \acp{ERP} were observed and compared with respect to the experimental condition.
         We particularly looked for differences between the baseline condition (pure oddball) and the hybrid conditions (4 other condition with flickering square) %and within the hybrid conditions themselves for an eventual influence of the flickering frequency over the \ac{ERP} response.
 
-        To assess differences and similarities, we calculated for each subject and EEG channel the correlation coefficient between average ERPs for all \emph{conditions pair} (5~experimental condition, 10~condition pairs, \emph{e.g.} oddball/hybrid-10Hz, hybrid-12Hz/hybrid-10Hz, \emph{etc}).
+        To assess differences and similarities, we calculated for each subject and EEG channel the correlation coefficient between average ERPs for all \emph{conditions pairs} (5~experimental condition, 10~condition pairs, \emph{e.g.} oddball/hybrid-10Hz, hybrid-12Hz/hybrid-10Hz, \emph{etc}).
         Those correlation data were modelled with a linear-mixed effect model with the channels nested within subjects as a random effect and the condition pair as a fixed effect.
         Post-hoc pairwise comparisons for each level of the \emph{conditions pair} factor were conducted via Tukey's test (using the \emph{multcomp} R package, \cite{multcomp2008}).
         %The p-values obtained from the model were obtained via Markov-chain Monte Carlo (MCMC) sampling \parencite{Baayen2008}.
@@ -257,12 +257,12 @@ We report in this study on three series of experiment aiming at
         \label{sec:2.3.1AnalysisExp1ter}
         In the previous section, we measure performances by building one classifier for each subject and condition.
         More specifically, for each hybrid condition (\SIlist[list-units = single]{8.57;10;12;15}{\Hz}), a specific oddball ERP classifier is trained.
-        In a hybrid oddball-SSVEP BCI, where several visual oddball paradigm occur simultaneously within SSVEP stimuli flickering at different frequencies, it does not seem convenient to have as many ERP classifiers as stimulation frequencies.
+        In a hybrid oddball-SSVEP BCI, where several visual oddball paradigms occur simultaneously within SSVEP stimuli flickering at different frequencies, it does not seem convenient to have as many ERP classifiers as stimulation frequencies.
         First it would compromise the usability of the BCI by increasing the time needed for training, and second, as the target frequency is not known (this is the role of the SSVEP classifier to find it out), one would have to either rely on the SSVEP classifier to decide which ERP classifier to apply or to find an optimal design that combines the different ERP (and eventually SSVEP) classifiers in order to identify the target ERP.
 
         Ideally, it would be more appropriate to have a single ERP classifier trained on data recorded in all conditions.
         However this should not be done at the expense of a loss in detection accuracy.
-        We thus compared accuracies of oddball ERP detection for data recorded in the hybrid condition obtained from classifiers built individually for each condition (as described in the previous section)p to the accuracies resulting from a single classifier trained on all data recorded in the different hybrid conditions.
+        We thus compared accuracies of oddball ERP detection for data recorded in the hybrid condition obtained from classifiers built individually for each condition (as described in the previous section) to the accuracies resulting from a single classifier trained on all data recorded in the different hybrid conditions.
 
         As in the previous section, we modelled the correctness data using a logistic mixed effect models \parencite{Jaeger2008a} with the number of repetitions nested within subjects as random factors.
         As fixed effects, we considered the experimental condition (4~levels factor), the number of repetitions (10~levels factor), the type of classifier (2~levels factor) and all interactions between those 3~factors.
@@ -455,7 +455,7 @@ We report in this study on three series of experiment aiming at
     \label{sec:4Discuss2}
     The second experiment showed that adding a visual oddball paradigm on top of a SSVEP stimulation did not affect significantly the power of the EEG response to the SSVEP stimulation in the concerned frequency.
     The SSVEP classification procedure described in \autoref{sec:2.3.3AnalysisExp3} relies on computing scores associated to different competing stimuli in order to attempt to identify the target stimulus.
-    As our second experiment did not consider multiple competing stimuli (for each run, only one SSVEP stimulus at a specific frequency was shown on the screen), we did not try to classify the SSVEP response.
+    As our second experiment did not consider multiple competing stimuli (for each run, only one SSVEP stimulus at a specific frequency was shown on the screen), we did not attempt to classify the SSVEP responses.
 
 
     \subsection{}

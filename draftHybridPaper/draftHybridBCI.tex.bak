@@ -98,7 +98,7 @@ A last example of hybrid design is where each modality provides the system with 
 For example, \textcite{Allison2012} developed a \ac{BCI} where the user could control a cursor on a two dimensional screen where \ac{ERD} activity encoded vertical movement of the cursor and \ac{SSVEP} activity encoded horizontal movement.
 
 To our knowledge, no design of such \emph{independent hybrid \ac{BCI}} combining the detection of \ac{SSVEP} activity and oddball \ac{ERP} has been reported on in the literature.
-Neither has been proposed a study reporting on the influence of \ac{SSVEP} stimulation on an oddball response and the influence of visual oddball stimulation on \ac{SSVEP} responses with respect to the frequency used for the \ac{SSVEP} stimulation.
+Neither has been proposed a study reporting on the influence of \ac{SSVEP} stimulation on the oddball response and the influence of visual oddball stimulation on \ac{SSVEP} responses with respect to the frequency used for the \ac{SSVEP} stimulation.
 %This is what we propose in the present study.
 
 It could be possible to combine those two modalities in a way that would results in a system being able to operate faster than a purely oddball-based \ac{BCI} and encoding more targets than a purely \ac{SSVEP}-based \ac{BCI} would.
@@ -454,13 +454,14 @@ We report in this study on three series of experiment aiming at
     \subsection{}
     \label{sec:4Discuss2}
     The second experiment showed that adding a visual oddball paradigm on top of a SSVEP stimulation did not affect significantly the power of the EEG response to the SSVEP stimulation in the concerned frequency.
-
+    The SSVEP classification procedure described in \autoref{sec:2.3.3AnalysisExp3} relies on computing scores associated to different competing stimuli in order to attempt to identify the target stimulus.
+    As our second experiment did not consider multiple competing stimuli (for each run, only one SSVEP stimulus at a specific frequency was shown on the screen), we did not try to classify the SSVEP response.
 
 
     \subsection{}
     \label{sec:4Discuss3}
     The results from our 2~first experiments suggest the possibility of building a hybrid visual oddball-SSVEP BCI where both stimulations would physically overlap without compromising the detection of any of the 2~types of evoked response.
-    Our third experiment confirmed those results showing the possibility of detecting both oddball ERPs and SSVEP activity simultaneously, and suggest not only the feasibility of such hybrid BCI system but also a possible advantage of those systems over pure oddball and SSVEP ones in terms of communication rate.
+    Our third experiment confirmed those results showing the possibility of detecting both oddball ERPs and SSVEP activity simultaneously, and the results obtained suggest not only the feasibility of such hybrid BCI system but also a possible advantage of those systems over pure oddball and SSVEP ones in terms of communication rate.
 
 
 

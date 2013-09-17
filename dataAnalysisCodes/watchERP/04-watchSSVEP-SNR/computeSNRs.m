@@ -18,18 +18,18 @@ switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-PSD\';
+        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-SNR\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-PSD\';
+        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\04-watchSSVEP-SNR\';
     case {'sunny', 'solaris', ''}
         addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );
         rmpath( genpath('~/PhD/hybridBCI-stuffs/deps/eeglab10_0_1_0b/external/SIFT_01_alpha') );
         dataDir = '~/PhD/hybridBCI-stuffs/data/';
-        resDir = '~/PhD/hybridBCI-stuffs/results/04-watchSSVEP-PSD/';
+        resDir = '~/PhD/hybridBCI-stuffs/results/04-watchSSVEP-SNR/';
     otherwise,
         error('host not recognized');
 end
@@ -76,19 +76,18 @@ if ~isequal( oddb, [0 ; 1] ), error('not the expected oddball condition'); end
 
 % ========================================================================================================
 % ========================================================================================================
-% channelsList = { ...
-%             {'O1', 'Oz', 'O2'} ...
-%             , {'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
-%             , {'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
-%             , {'CP5', 'CP1', 'CP2', 'CP6', 'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
-%             , {'C3', 'Cz', 'C4', 'CP5', 'CP1', 'CP2', 'CP6', 'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
-%             , 'all' ...
-%             };
-% channelsLabel = {'ch-O', 'ch-PO-O', 'ch-P-PO-O', 'ch-CP-P-PO-O', 'ch-C-CP-P-PO-O', 'ch-all'};
+channelsList = { ...
+            {'O1', 'Oz', 'O2'} ...
+            , {'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
+            , {'CP5', 'CP1', 'CP2', 'CP6', 'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
+            , {'C3', 'Cz', 'C4', 'CP5', 'CP1', 'CP2', 'CP6', 'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} ...
+            , 'all' ...
+            };
+channelsLabel = {'ch-O', 'ch-PO-O', 'ch-CP-P-PO-O', 'ch-C-CP-P-PO-O', 'ch-all'};
 % harmonicList = { 1, [1 2] };
 % harmonicLabel = {'fund', 'fund-ha1'};
-channelsList = { {'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} };
-channelsLabel = {'ch-P-PO-O'};
+% channelsList = { {'P7', 'P3', 'Pz', 'P4', 'P8', 'PO3', 'PO4', 'O1', 'Oz', 'O2'} };
+% channelsLabel = {'ch-P-PO-O'};
 harmonicList = { [1 2] };
 harmonicLabel = {'fund-ha1'};
 
@@ -122,17 +121,15 @@ end
 
 % ========================================================================================================
 % ========================================================================================================
-mcdObj = cell(numel(channelsList), numel(harmonicList), nTimes);
-for iChanList = 1:numel(channelsList)
-    for iHaList = 1:numel(harmonicList)
-        for iT = 1:nTimes
-            mcdObj{iChanList, iHaList, iT} = mecSsvepClassifier( ...
-                'frequencies', freq ...
-                , 'harmonics', harmonicList{iHaList} ...
-                , 'fs', targetFS ...
-                , 'windowsizeinsec', timesInSec(iT) ...
-                );
-        end
+mcdObj = cell(numel(harmonicList), nTimes);
+for iHaList = 1:numel(harmonicList)
+    for iT = 1:nTimes
+        mcdObj{iHaList, iT} = mecSsvepClassifier( ...
+            'frequencies', freq ...
+            , 'harmonics', harmonicList{iHaList} ...
+            , 'fs', targetFS ...
+            , 'windowsizeinsec', timesInSec(iT) ...
+            );
     end
 end
 
@@ -162,8 +159,18 @@ for iF = 1:nFreq,
             statusChannel = bitand(hdr.BDF.ANNONS, 255);
         end
         
+        if strcmp(filename, '2013-04-09-15-20-00-ssvep-15Hz.bdf') || strcmp(filename, '2013-04-09-15-06-44-hybrid-15Hz.bdf')
+            ind = find(statusChannel == 1, 1, 'first');
+            statusChannel(1:ind-10) = [];
+        end
         hdr.BDF         = rmfield(hdr.BDF, 'ANNONS'); % just saving up some space...
         [sig hdr]       = sread(hdr);
+        if strcmp(filename, '2013-04-09-15-20-00-ssvep-15Hz.bdf') || strcmp(filename, '2013-04-09-15-06-44-hybrid-15Hz.bdf')
+            sig(1:ind-10,:) = [];
+        end
+        
+        
+        
         samplingRate    = hdr.SampleRate;
         [filter.a filter.b] = butter(filter.order, [filter.fr_low_margin filter.fr_high_margin]/(samplingRate/2));
         
@@ -212,6 +219,7 @@ for iF = 1:nFreq,
         minEpochLenght  = min( stimOffsets - stimOnsets + 1 ) / targetFS;
         if max(timesInSec) > minEpochLenght, error('Time to watch is larger (%g sec) than smallest SSVEP epoch lenght (%g sec)', max(timesInSec), minEpochLenght); end
         nTrials         = numel(stimOnsets);
+        clear eventChan
         
         %-------------------------------------------------------------------------------------------
         for iTrial = 1:nTrials
@@ -235,7 +243,7 @@ for iF = 1:nFreq,
                     for iHaList = 1:numel(harmonicList)
                         
                         epoch       = sig( stimOnsets(iTrial):stimOnsets(iTrial)+epochLenght-1, chanInd )';
-                        [Snr, Ns]   = mcdObj{iChanList, iHaList, iTime}.getSNRs( epoch );
+                        [Snr, Ns]   = mcdObj{iHaList, iTime}.getSNRs( epoch );
                         Snr         = mean(Snr, 1);
                         
                         for iWFreq = 1:nFreq
@@ -261,6 +269,11 @@ for iF = 1:nFreq,
     end % of loop over oddball condition
 end % of loop over frequency condition
 
-fclose(fid(:));
+for iChanList = 1:numel(channelsList)
+    for iHaList = 1:numel(harmonicList)
+        fclose( fid(iChanList, iHaList) );
+    end
+end
+
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.26)  16 SEP 2013 15:39
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2013.6.26)  16 SEP 2013 23:57
 entering extended mode
 **D:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/draftHybridBCI.te
 x
@@ -1170,7 +1170,7 @@ although it is yet undefined on input line 241.
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\tukeyTable.tex)
 [12]
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\tablesAndFigures.t
-ex <pix/stimulationSequence2.pdf, id=317, 484.209pt x 284.74379pt>
+ex <pix/stimulationSequence2.pdf, id=318, 484.209pt x 284.74379pt>
 File: pix/stimulationSequence2.pdf Graphic file (type pdf)
 
 <use pix/stimulationSequence2.pdf>
@@ -1181,40 +1181,40 @@ Overfull \hbox (53.84955pt too wide) in paragraph at lines 55--56
  [][] 
  []
 
-<pix/img0000332.png, id=318, 1927.2pt x 1204.5pt>
+<pix/img0000332.png, id=319, 1927.2pt x 1204.5pt>
 File: pix/img0000332.png Graphic file (type png)
  <use pix/img0000332.png>
 Package pdftex.def Info: pix/img0000332.png used on input line 65.
 (pdftex.def)             Requested size: 215.17912pt x 134.48036pt.
 
-<pix/targetERPs_1.png, id=319, 1422.9963pt x 872.058pt>
+<pix/targetERPs_1.png, id=320, 1422.9963pt x 872.058pt>
 File: pix/targetERPs_1.png Graphic file (type png)
 
 <use pix/targetERPs_1.png>
 Package pdftex.def Info: pix/targetERPs_1.png used on input line 75.
 (pdftex.def)             Requested size: 430.35826pt x 263.73515pt.
 
-<pix/targetERPs_2.png, id=320, 1422.9963pt x 872.058pt>
+<pix/targetERPs_2.png, id=321, 1422.9963pt x 872.058pt>
 File: pix/targetERPs_2.png Graphic file (type png)
 
 <use pix/targetERPs_2.png>
 Package pdftex.def Info: pix/targetERPs_2.png used on input line 83.
 (pdftex.def)             Requested size: 430.35826pt x 263.73515pt.
 
-<pix/correlationPoints.png, id=321, 903.375pt x 602.25pt>
+<pix/correlationPoints.png, id=322, 903.375pt x 602.25pt>
 File: pix/correlationPoints.png Graphic file (type png)
 
 <use pix/correlationPoints.png>
 Package pdftex.def Info: pix/correlationPoints.png used on input line 93.
 (pdftex.def)             Requested size: 430.35826pt x 286.90797pt.
 
-<pix/P3Accuracy.png, id=322, 903.375pt x 602.25pt>
+<pix/P3Accuracy.png, id=323, 903.375pt x 602.25pt>
 File: pix/P3Accuracy.png Graphic file (type png)
  <use pix/P3Accuracy.png>
 Package pdftex.def Info: pix/P3Accuracy.png used on input line 106.
 (pdftex.def)             Requested size: 430.35826pt x 286.90797pt.
 
-<pix/P3AccuracyPerClassifierPerFreq.png, id=323, 903.375pt x 602.25pt>
+<pix/P3AccuracyPerClassifierPerFreq.png, id=324, 903.375pt x 602.25pt>
 File: pix/P3AccuracyPerClassifierPerFreq.png Graphic file (type png)
 
 <use pix/P3AccuracyPerClassifierPerFreq.png>
@@ -1222,33 +1222,33 @@ Package pdftex.def Info: pix/P3AccuracyPerClassifierPerFreq.png used on input l
 ine 126.
 (pdftex.def)             Requested size: 430.35826pt x 286.90797pt.
 
-<pix/meanPsdPlots.png, id=324, 903.375pt x 602.25pt>
+<pix/meanPsdPlots.png, id=325, 903.375pt x 602.25pt>
 File: pix/meanPsdPlots.png Graphic file (type png)
 
 <use pix/meanPsdPlots.png>
 Package pdftex.def Info: pix/meanPsdPlots.png used on input line 138.
 (pdftex.def)             Requested size: 430.35826pt x 286.90797pt.
 
-<pix/psdPlotsAllTrials.png, id=325, 903.375pt x 602.25pt>
+<pix/psdPlotsAllTrials.png, id=326, 903.375pt x 602.25pt>
 File: pix/psdPlotsAllTrials.png Graphic file (type png)
 
 <use pix/psdPlotsAllTrials.png>
 Package pdftex.def Info: pix/psdPlotsAllTrials.png used on input line 151.
 (pdftex.def)             Requested size: 430.35826pt x 286.90797pt.
 
-<pix/exp3-acc.png, id=326, 903.375pt x 602.25pt>
+<pix/exp3-acc.png, id=327, 903.375pt x 602.25pt>
 File: pix/exp3-acc.png Graphic file (type png)
  <use pix/exp3-acc.png>
 Package pdftex.def Info: pix/exp3-acc.png used on input line 163.
 (pdftex.def)             Requested size: 430.35826pt x 286.90797pt.
 
-<pix/exp3-ITR.png, id=327, 903.375pt x 602.25pt>
+<pix/exp3-ITR.png, id=328, 903.375pt x 602.25pt>
 File: pix/exp3-ITR.png Graphic file (type png)
  <use pix/exp3-ITR.png>
 Package pdftex.def Info: pix/exp3-ITR.png used on input line 177.
 (pdftex.def)             Requested size: 430.35826pt x 286.90797pt.
 
-<pix/P3AccuracyPerClassifierPerFreqSubset.png, id=328, 903.375pt x 602.25pt>
+<pix/P3AccuracyPerClassifierPerFreqSubset.png, id=329, 903.375pt x 602.25pt>
 File: pix/P3AccuracyPerClassifierPerFreqSubset.png Graphic file (type png)
 
 <use pix/P3AccuracyPerClassifierPerFreqSubset.png>
@@ -1270,15 +1270,15 @@ CI/HybBciCode/draftHybridPaper/pix/psdPlotsAllTrials.png>] [20 <D:/KULeuven/PhD
 n/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/pix/exp3-ITR.png>] [22 <D:/KU
 Leuven/PhD/Work/Hybrid-BCI/HybBciCode/draftHybridPaper/pix/P3AccuracyPerClassif
 ierPerFreqSubset.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 490.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 490.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 491.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 491.
 
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\draftHybridBCI.aux
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\tukeyTable.aux)
 (D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\draftHybridPaper\tablesAndFigures.a
 ux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 490.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 490.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 491.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 491.
 Package rerunfilecheck Info: File `draftHybridBCI.out' has not changed.
 (rerunfilecheck)             Checksum: 5C993C0DF83F2A5D15AFF96B25FBE22F;1878.
 Package logreq Info: Writing requests to 'draftHybridBCI.run.xml'.
@@ -1286,11 +1286,11 @@ Package logreq Info: Writing requests to 'draftHybridBCI.run.xml'.
 Here is how much of TeX's memory you used:
  22399 strings out of 493921
  432701 string characters out of 3147225
- 794031 words of memory out of 3000000
+ 794032 words of memory out of 3000000
  25264 multiletter control sequences out of 15000+200000
  16647 words of font info for 64 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 48i,10n,61p,2189b,1479s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 48i,10n,61p,2189b,1481s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Documents and Settings\Adrien\Local Settings\Application Data\MiKTeX\2.9
 \fonts\pk\ljfour\jknappen\ec\dpi600\tcrm0700.pk><C:/Program Files/MiKTeX 2.9/fo
 nts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
@@ -1309,9 +1309,9 @@ ts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9
 /Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Program 
 Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on draftHybridBCI.pdf (22 pages, 2378781 bytes).
+Output written on draftHybridBCI.pdf (22 pages, 2379341 bytes).
 PDF statistics:
- 475 PDF objects out of 1000 (max. 8388607)
+ 476 PDF objects out of 1000 (max. 8388607)
  108 named destinations out of 1000 (max. 500000)
  253 words of extra memory for PDF output out of 10000 (max. 10000000)
 

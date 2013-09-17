@@ -5,151 +5,108 @@ library(reshape2)
 library(grid)
 
 source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanPlot.R")
-source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
+source("createSnrDatasetFnc.R")
+# subsetChLabel <- c("ch-O", "ch-PO-O", "ch-P-PO-O", "ch-CP-P-PO-O", "ch-C-CP-P-PO-O", "ch-all")
+# harmonicsLabel <- c("fund","fund-ha1")
+subsetChLabel <- c("ch-P-PO-O")
+harmonicsLabel <- c("fund-ha1")
 
-####################################################################################################################
-####################################################################################################################
-generatePlots <- function(filename)
-{
+snrData <- createSnrDatasetFnc(subsetChLabel, harmonicsLabel)
+snrData <- snrData[snrData$watchedFrequency == snrData$targetFrequency,]
 
-  fileDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/04-watchSSVEP-SNR"
-  fullfilename <- file.path( fileDir, paste0(filename, ".csv") )
-  
-  resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-SNR"
-  resDir <- file.path(resDir, filename)
-  dir.create(resDir, showWarnings=FALSE)
-  
-  snrData <- read.csv(fullfilename, header = TRUE)
-  
-  snrData$frequency = as.factor(snrData$frequency)
-  snrData$oddball = as.factor(snrData$oddball)
-  snrData$fileNb = as.factor(snrData$fileNb)
-  snrData$trial = as.factor(snrData$trial)
-  snrData$snr = sqrt(snrData$snr/1000)
-  str(snrData)
-  summary(snrData)
-  
-  ####################################################################################################################
+snrData$trialInSub <- snrData$run : snrData$roundNb
+str(snrData)
 
-  pp <- ggplot( snrData, aes(stimDuration, snr, colour=oddball ) )
-  pp <- pp + stat_summary(fun.data = mean_cl_normal, geom="pointrange", position = position_dodge(0.2))
-  pp <- pp + facet_grid( subject ~ frequency, scales = "free_y"  )
-  pp <- cleanPlot(pp)
-  # pp
-  
-  figname = paste0("compareOddball", ".png")
-  ggsave( figname 
-          , plot = pp
-          , path = resDir
-          , width = 30
-          , height = 20
-          , units = "cm"
-  )
-  
-  ####################################################################################################################
-  
-  pp2 <- ggplot( snrData, aes(stimDuration, snr, colour=frequency ) )
-  pp2 <- pp2 + stat_summary(fun.data = mean_cl_normal, geom="pointrange", position = position_dodge(0.4))
-  pp2 <- pp2 + facet_grid( oddball ~ subject, scales = "free_y"  )
-  pp2 <- cleanPlot(pp2)
-  # pp2
-  
-  figname = paste0("compareFrequencies2", ".png")
-  ggsave( figname 
-          , plot = pp2
-          , path = resDir
-          , width = 30
-          , height = 20
-          , units = "cm"
-  )
-  
-  ####################################################################################################################
-  
-  pp3 <- ggplot( snrData, aes(stimDuration, snr, colour=frequency ) )
-  pp3 <- pp3 + stat_summary(fun.data = mean_cl_normal, geom="pointrange", position = position_dodge(0.4))
-  pp3 <- pp3 + facet_grid( subject ~ oddball, scales = "free_y"  )
-  pp3 <- cleanPlot(pp3)
-  # pp2
-  
-  figname = paste0("compareFrequencies", ".png")
-  ggsave( figname 
-          , plot = pp3
-          , path = resDir
-          , width = 30
-          , height = 20
-          , units = "cm"
-  )
+#############################################################################################################
+#############################################################################################################
 
-  ####################################################################################################################
-  
-  factorList <- c("stimDuration", "frequency", "oddball")
-  outcome <- "snr"
-  dataframe <- snrData
-  # source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
-  
-  png(filename = file.path(resDir, "interactionGraph.png")
-      , width = 30
-      , height = 20
-      , units = "cm"
-      , res = 300
-  )
-  plotFactorMeans_InteractionGraphs(dataframe, factorList, outcome)
-  dev.off()
-  
-  
-  ####################################################################################################################
-  
-  source("d:/KULeuven/PhD/rLibrary/plotInteractionGraphs_level2.R")
-  dataframe <- snrData
-  outcome <- "snr"
-  xFactor <- "stimDuration"
-  factorList <- c("oddball", "frequency")
-  
-  png(filename = file.path(resDir, "interactionGraph_level2.png")
-      , width = 30
-      , height = 20
-      , units = "cm"
-      , res = 300
-  )
-  plotInteractionGraphs_level2(dataframe, xFactor, outcome, factorList)
-  dev.off()
-  
-  ####################################################################################################################
-  
-#   allSub <- levels(dataframe$subject)
-#   for (iS in 1:length(allSub)){
-#     dataToPlotSub <- subset(dataframe, subject==allSub[iS])
-#     
-#     png(filename = file.path(resDir, sprintf("interactionGraph_S%d.png", iS))
-#         , width = 30
-#         , height = 20
-#         , units = "cm"
-#         , res = 300
-#     )
-#     plotFactorMeans_InteractionGraphs(dataToPlotSub, factorList, outcome)
-#     dev.off()  
-#   }
+pp <- ggplot( snrData, aes(time, snr, colour=oddball ) )
+pp <- pp + stat_summary(fun.data = mean_cl_normal, geom="pointrange", position = position_dodge(0.2))
+pp <- pp + stat_summary(fun.y = mean, geom="line", aes(group=oddball), position = position_dodge(0.2))
+pp <- pp + facet_wrap( ~targetFrequency )
+pp <- cleanPlot(pp)
+print(pp)
 
-}
+pp2 <- pp + facet_wrap( ~subject )
+print(pp2)
 
-####################################################################################################################
-####################################################################################################################
+pp3 <- pp + facet_grid( targetFrequency~subject )
+print(pp3)
 
-filenames <- c( 
-                "snrDataset_Oz_1Ha"
-                , "snrDataset_Oz_2Ha"
-                , "snrDataset_occipital_1Ha"
-                , "snrDataset_occipital_2Ha"
-                , "snrDataset_occipito-parietal_1Ha"
-                , "snrDataset_occipito-parietal_2Ha"
-                , "snrDataset_all-scalp_1Ha"
-                , "snrDataset_all-scalp_2Ha"
-                )
+#############################################################################################################
+#############################################################################################################
+library(lme4)
+library(LMERConvenienceFunctions)
+library(languageR)
 
-for (iF in 1:length(filenames))
-{
-  generatePlots(filenames[iF])
-}
 
-####################################################################################################################
-####################################################################################################################
+fm1 <- lmer( snr ~ (time+I(time^2))*targetFrequency*oddball
+              + ((time+I(time^2))|subject/trialInSub)
+              , snrData
+              , REML = FALSE
+)
+
+fm1b <- lmer( snr ~ (time+I(time^2)) + targetFrequency + oddball
+              + (time+I(time^2)) : targetFrequency + (time+I(time^2)) : oddball
+             + ((time+I(time^2))|subject/trialInSub)
+             , snrData
+             , REML = FALSE
+)
+
+
+fm2 <- lmer( snr ~ (time+I(time^2))*targetFrequency
+               + ((time+I(time^2))|subject/trialInSub)
+               , snrData
+               , REML = FALSE
+)
+fm3 <- lmer( snr ~ (time+I(time^2))*oddball
+               + ((time+I(time^2))|subject/trialInSub)
+               , snrData
+               , REML = FALSE
+)
+fm4 <- lmer( snr ~ (time+I(time^2))
+               + ((time+I(time^2))|subject/trialInSub)
+               , snrData
+               , REML = FALSE
+)
+
+anova(fm1, fm2)
+anova(fm1, fm3)
+anova(fm2, fm4)
+anova(fm3, fm4)
+
+
+fm <- fm1
+snrData$fitted  <- fitted(fm)
+snrData$res     <- residuals(fm, type="normalized")
+
+pp4 <- ggplot( snrData, aes(time, snr, colour=oddball) )
+pp4 <- pp4 + geom_point(size=1) + geom_line( aes(time, snr, group=trialInSub) , linetype=2, size=0.3)
+pp4 <- pp4 + geom_point() + geom_line( aes(time, fitted, group=trialInSub) )
+pp4 <- pp4 + facet_grid( subject~targetFrequency, scales="free" )
+# pp4 <- pp4 + facet_wrap( ~subject )
+pp4 <- cleanPlot(pp4)
+pp4
+
+plot( fitted(fm), residuals(fm) )
+abline(h=0)
+
+# t<-4
+# pp6 <- ggplot(snrData[snrData$time==t,], aes(fitted, res))
+pp6 <- ggplot(snrData, aes(fitted, res))
+pp6 <- pp6 + geom_point()
+pp6 <- cleanPlot(pp6)
+pp6
+
+snrData$timeFac <- as.factor(snrData$time)
+pp7 <- pp6 + facet_wrap(~timeFac, scales="free")
+pp7
+
+mcp.fnc(fm, trim = 2.5, col = "red")
+tete <- pacf( resid( fm ) )
+
+pp5 <- ggplot( snrData, aes(time, res) )
+pp5 <- pp5 + geom_point()
+pp5 <- cleanPlot(pp5)
+pp5
+
