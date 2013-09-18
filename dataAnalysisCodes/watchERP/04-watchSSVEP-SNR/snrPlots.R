@@ -8,7 +8,7 @@ source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanP
 source("createSnrDatasetFnc.R")
 # subsetChLabel <- c("ch-O", "ch-PO-O", "ch-P-PO-O", "ch-CP-P-PO-O", "ch-C-CP-P-PO-O", "ch-all")
 # harmonicsLabel <- c("fund","fund-ha1")
-subsetChLabel <- c("ch-P-PO-O")
+subsetChLabel <- c("ch-all")
 harmonicsLabel <- c("fund-ha1")
 
 snrData <- createSnrDatasetFnc(subsetChLabel, harmonicsLabel)

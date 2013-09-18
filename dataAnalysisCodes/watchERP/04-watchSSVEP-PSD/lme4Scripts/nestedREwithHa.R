@@ -1,6 +1,6 @@
 setwd("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/watchERP/04-watchSSVEP-PSD/lme4Scripts/")
 # detach("package:nlme", unload=TRUE)
-source("initData.R")
+source("initDataWithHa.R")
 library(lme4)
 library(LMERConvenienceFunctions)
 library(languageR)
@@ -13,15 +13,16 @@ library(languageR)
 ##############################################################################################
 pp2 <- ggplot( psdData, aes(stimDuration, psd, colour=oddball) )
 pp2 <- pp2 + geom_point() + geom_line( aes(stimDuration, psd, group=trialInSubAndFreq) )
-pp2 <- pp2 + facet_grid( subject~frequency, scales="free" )
+pp2 <- pp2 + facet_grid( subject~frequency*harmonic, scales="free" )
 pp2 <- cleanPlot(pp2)
 pp2
 
-pp3 <- ggplot( psdData, aes(stimDuration, psd, colour=subject) )
-pp3 <- pp3 + geom_point() + geom_line(aes(stimDuration, psd, group=trial))# aes(stimDuration, psd, group=trialInSubAndFreqAndCond) )
-pp3 <- pp3 + facet_grid( oddball~frequency, scales="free" )
-pp3 <- cleanPlot(pp3)
-pp3
+pp2b <- ggplot( psdData, aes(stimDuration, psd, colour=oddball) )
+pp2b <- pp2b + stat_summary(fun.data=mean_cl_normal, geom="pointrange", aes(stimDuration, psd, group=oddball))
+# pp2b <- pp2b + geom_point() + geom_line( aes(stimDuration, psd, group=trialInSubAndFreq) )
+pp2b <- pp2b + facet_grid( subject~frequency*harmonic, scales="free" )
+pp2b <- cleanPlot(pp2b)
+pp2b
 
 ##############################################V################################################
 ##############################################################################################
@@ -61,47 +62,33 @@ pp3
 #               , REML = FALSE
 # )
 
-
-# fm1z <- lmer( psd ~ (stimDuration+I(stimDuration^2)+I(stimDuration^3))*frequency*oddball
-#               + ((stimDuration+I(stimDuration^2))|subject/trialInSub)
-#               , psdData
-#               , REML = FALSE
-# )
-# 
-# fm1z1 <- lmer( psd ~ (stimDuration+I(stimDuration^2)+I(stimDuration^3))*frequency*oddball
-#               + ((stimDuration+I(stimDuration^2))|subject/trialInSub)
-#               , psdData
-#               , REML = TRUE
-# )
-# fm1z2 <- lmer( psd ~ (stimDuration+I(stimDuration^2)+I(stimDuration^3))*frequency*oddball
-#               + ((stimDuration+I(stimDuration^2)+I(stimDuration^3))|subject/trialInSub)
-#               , psdData
-#               , REML = TRUE
-# )
-
 fm1a <- lmer( psd ~ (stimDuration+I(stimDuration^2))*frequency*oddball
               + ((stimDuration+I(stimDuration^2))|subject/trialInSub)
               , psdData
               , REML = FALSE
 )
-# fm1b <- lmer( psd ~ ((stimDuration+I(stimDuration^2))+frequency+oddball)^2
-#               + ((stimDuration+I(stimDuration^2))|subject/trialInSub)
-#               , psdData
-#               , REML = FALSE
-# )
-# fm1c <- lmer( psd ~ ((stimDuration+I(stimDuration^2))*frequency)+oddball
-#               + ((stimDuration+I(stimDuration^2))|subject/trialInSub)
-#               , psdData
-#               , REML = FALSE
-# )
+fm1b <- lmer( psd ~ ((stimDuration+I(stimDuration^2))+frequency+oddball)^2
+              + ((stimDuration+I(stimDuration^2))|subject/trialInSub)
+              , psdData
+              , REML = FALSE
+)
+fm1c <- lmer( psd ~ ((stimDuration+I(stimDuration^2))*frequency)+oddball
+              + ((stimDuration+I(stimDuration^2))|subject/trialInSub)
+              , psdData
+              , REML = FALSE
+)
 fm1d <- lmer( psd ~ (stimDuration+I(stimDuration^2))*frequency
               + ((stimDuration+I(stimDuration^2))|subject/trialInSub)
               , psdData
               , REML = FALSE
 )
 
-# anova(fm1z, fm1a, fm1b, fm1c, fm1d)
+anova(fm1a, fm1b, fm1c, fm1d)
 anova(fm1a, fm1d)
+
+mcmc <- pvals.fnc( fm1a, nsim=5000, withMCMC=TRUE )
+mcmc$fixed
+mcmc$random
 
 ###########################################################################################################################
 ###########################################################################################################################

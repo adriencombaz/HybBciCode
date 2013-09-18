@@ -8,7 +8,7 @@ createSnrDatasetFnc <- function(subsetChTag, harmonicsTag){
   sub <- unique(filelist$subjectTag)
   nSub <- length(sub)
   
-  resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/04-watchSSVEP-PSD/"
+  resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/04-watchSSVEP-SNR"
   
   ########################################################################################################################################
   ########################################################################################################################################

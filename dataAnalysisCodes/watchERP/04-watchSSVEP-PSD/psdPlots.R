@@ -25,7 +25,7 @@ generatePlots <- function(filename)
   psdData$oddball = as.factor(psdData$oddball)
   psdData$fileNb = as.factor(psdData$fileNb)
   psdData$trial = as.factor(psdData$trial)
-  psdData$psd = sqrt(psdData$psd)
+#   psdData$psd = sqrt(psdData$psd)
   str(psdData)
   summary(psdData)
   
@@ -134,14 +134,14 @@ generatePlots <- function(filename)
 ####################################################################################################################
 ####################################################################################################################
 
-filenames <- c( "psdDataset_O1OzO2_1Ha"
-                , "psdDataset_O1OzO2_2Ha"
-                , "psdDataset_Oz_1Ha"
-                , "psdDataset_Oz_2Ha"
-                , "psdDataset_SelChan_1Ha"
-                , "psdDataset_SelChan_2Ha"
-                )
-# filenames <- c( "psdDataset_Oz_1Ha" )
+# filenames <- c( "psdDataset_O1OzO2_1Ha"
+#                 , "psdDataset_O1OzO2_2Ha"
+#                 , "psdDataset_Oz_1Ha"
+#                 , "psdDataset_Oz_2Ha"
+#                 , "psdDataset_SelChan_1Ha"
+#                 , "psdDataset_SelChan_2Ha"
+#                 )
+filenames <- c( "psdDataset_Oz_Ha1", "psdDataset_Oz_Ha2", "psdDataset_Oz_Ha12" )
 
 for (iF in 1:length(filenames))
 {
