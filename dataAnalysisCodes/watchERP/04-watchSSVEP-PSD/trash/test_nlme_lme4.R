@@ -10,7 +10,7 @@ source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanP
 source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
 source("d:/KULeuven/PhD/rLibrary/plotInteractionGraphs_level2.R")
 
-fileDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/04-watchSSVEP-PSD"
+fileDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/04-watchSSVEP-PSD"
 filename <- "psdDataset_Oz_Ha1"
 
 fullfilename <- file.path( fileDir, paste0(filename, ".csv") )

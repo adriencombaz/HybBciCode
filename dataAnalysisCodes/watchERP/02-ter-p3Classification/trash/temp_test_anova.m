@@ -2,7 +2,7 @@ cl;
 
 for iS = 1:6
 
-    filename    = sprintf( 'd:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvm/subject_S%d/Results.txt', iS );
+    filename    = sprintf( 'd:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/02-ter-p3Classification/LinSvm/subject_S%d/Results.txt', iS );
     temp        = dataset( 'File', filename, 'Delimiter', ',' );
     accDataSi   = temp( strcmp( temp.conditionTest, temp.conditionTrain ), : );
     accDataSi.condition = accDataSi.conditionTrain;

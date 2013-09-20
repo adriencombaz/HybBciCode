@@ -6,7 +6,7 @@ library(ggplot2)
 
 for (iS in 8:8)
 {
-  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvm/subject_S%d/Results_forLogisiticRegression.txt", iS)
+  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/02-ter-p3Classification/LinSvm/subject_S%d/Results_forLogisiticRegression.txt", iS)
   accData1 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
   accData1$nAverages = as.factor(accData1$nAverages )
   accData1$foldTrain = as.factor(accData1$foldTrain )

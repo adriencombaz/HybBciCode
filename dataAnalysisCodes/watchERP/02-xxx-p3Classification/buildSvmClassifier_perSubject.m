@@ -24,7 +24,7 @@ switch hostName,
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\';
+        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watchERP\';
         codeDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case {'sunny', 'solaris', ''}
         addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );

@@ -31,8 +31,8 @@ figure('Units', 'centimeters', 'Position', [1 1 fWidth fHeight]);
 
 for iS = 1:numel(iSList)
     
-    datafile1 = fullfile( sprintf('d:\\KULeuven\\PhD\\Work\\Hybrid-BCI\\HybBciProcessedData\\watch-ERP\\02-ter-p3Classification\\LinSvm\\subject_S%d\\', iSList(iS)), 'Results.txt' );
-    datafile2 = fullfile( sprintf('d:\\KULeuven\\PhD\\Work\\Hybrid-BCI\\HybBciProcessedData\\watch-ERP\\02-ter-p3Classification\\LinSvmPooled\\subject_S%d\\', iSList(iS)), 'Results.txt' );
+    datafile1 = fullfile( sprintf('d:\\KULeuven\\PhD\\Work\\Hybrid-BCI\\HybBciProcessedData\\watchERP\\02-ter-p3Classification\\LinSvm\\subject_S%d\\', iSList(iS)), 'Results.txt' );
+    datafile2 = fullfile( sprintf('d:\\KULeuven\\PhD\\Work\\Hybrid-BCI\\HybBciProcessedData\\watchERP\\02-ter-p3Classification\\LinSvmPooled\\subject_S%d\\', iSList(iS)), 'Results.txt' );
     
     results1 = dataset('File', datafile1, 'Delimiter' ,',');
     results1 = results1( cellfun(@isequal, results1.conditionTrain, results1.conditionTest), : );

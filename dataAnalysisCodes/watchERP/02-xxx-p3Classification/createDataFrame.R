@@ -18,7 +18,7 @@ for (iS in 1:nSub)
   {
   #--------------------------------------------------------------------------------------------------------------
   # Load correctness data caclulated with classifiers built on the same type of data as the test data 
-  dataDir   <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-xxx-p3Classification"
+  dataDir   <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/02-xxx-p3Classification"
   folder    <- sprintf("LinSvm_%dRunsForTrain_%dHz_%.2dcvSvm", nRunsForTrain, FS, nFoldSvm)
   subFolder <- sprintf("subject_%s", allSub[iS])
   if (aveClass == 0){ textfile  <- "ResultsClassification.txt" 

@@ -11,7 +11,7 @@ source("d:/KULeuven/PhD/rLibrary/plotInteractionGraphs_level2.R")
 channels  = c("CP5",   "CP1",   "CP2",   "CP6", "P7",   "P3",   "Pz",   "P4",   "P8",  "PO3", "PO4", "O1", "Oz", "O2")
 harmonics = c(1, 2)
 
-fileDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/04-watchSSVEP-PSD"
+fileDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/04-watchSSVEP-PSD"
 resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-PSD/interactionGraphsPerChanPerHa"
 dir.create(resDir, showWarnings=FALSE)
 

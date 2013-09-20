@@ -13,7 +13,7 @@ for (iS in 1:8)
   #--------------------------------------------------------------------------------------------------------------
   # Load correctness data caclulated with classifiers built on the same type of data as the test data 
   
-  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvm/subject_S%d/Results_forLogisiticRegression.txt", iS)
+  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/02-ter-p3Classification/LinSvm/subject_S%d/Results_forLogisiticRegression.txt", iS)
   accData1 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
 
   # Factorize what hes to be
@@ -62,7 +62,7 @@ for (iS in 1:8)
   #--------------------------------------------------------------------------------------------------------------
   # Load correctness data caclulated with pooled classifiers
   
-  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvmPooled/subject_S%d/Results_forLogisiticRegression.txt", iS)
+  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/02-ter-p3Classification/LinSvmPooled/subject_S%d/Results_forLogisiticRegression.txt", iS)
   accData2 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
   
   # Factorize what hes to be

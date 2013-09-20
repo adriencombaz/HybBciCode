@@ -13,7 +13,7 @@ source("d:/KULeuven/PhD/rLibrary/plot_set.R")
 
 for (iS in 1:7)
 {
-  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/02-ter-p3Classification/LinSvm/subject_S%d/Results.txt", iS)
+  filename <- sprintf("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/02-ter-p3Classification/LinSvm/subject_S%d/Results.txt", iS)
   accData1 <- read.csv(filename, header = TRUE, sep = ",", strip.white = TRUE)
   accData1$nAverages = as.factor(accData1$nAverages)
   accData1 <- subset( accData1, conditionTrain == conditionTest)

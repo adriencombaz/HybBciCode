@@ -8,7 +8,7 @@ source("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciCode/dataAnalysisCodes/deps/cleanP
 
 fontsize <- 12;
 
-snrDataOz <- read.csv("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watch-ERP/04-watchSSVEP-SNR/snrDatasetOz.csv", header = TRUE)
+snrDataOz <- read.csv("d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/04-watchSSVEP-SNR/snrDatasetOz.csv", header = TRUE)
 
 snrDataOz$frequency = as.factor(snrDataOz$frequency)
 snrDataOz$oddball = as.factor(snrDataOz$oddball)
