@@ -1,12 +1,14 @@
 function fixMfiles
 
-d = dir('D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP');
+originFolder = 'D:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP';
+d = dir(originFolder);
 isub = [d(:).isdir]; %# returns logical vector
 nameFolds = {d(isub).name}';
 nameFolds(ismember(nameFolds,{'.','..'})) = [];
 
 for iFold = 1:numel(nameFolds)
-    fixMFilesRecursive(nameFolds{iFold});
+    fullfolfder = fullfile(originFolder, nameFolds{iFold});
+    fixMFilesRecursive(fullfolfder);
 end
 
 end
@@ -15,17 +17,19 @@ function fixMFilesRecursive(folder)
 
 d = dir(folder);
 
-nameFiles = {d(~isub).name}';
-namefileM = nameFiles( ~cellfun(@isempty, cellfun(@(x) strfind(x, '.m'), nameFiles, 'UniformOutput', false)) );
-namefileR = nameFiles( ~cellfun(@isempty, cellfun(@(x) strfind(x, '.R'), nameFiles, 'UniformOutput', false)) );
-fixMfilesInDir([namefileM ; namefileR])
+nameFiles = {d.name}';
+[~, ~, ext] = cellfun(@fileparts, {d.name}, 'UniformOutput', false);
+namefile = nameFiles( ismember(ext, {'.m', '.R'}) );
+fileList = cellfun(@(x) fullfile(folder, x), namefile, 'UniformOutput', false);
+fixMfilesInDir(fileList)
 
 isub = [d(:).isdir]; %# returns logical vector
 nameFolds = {d(isub).name}';
 nameFolds(ismember(nameFolds,{'.','..'})) = [];
 if ~isempty(nameFolds)
     for iFold = 1:numel(nameFolds)
-        fixMFilesRecursive(nameFolds{iFold});
+        fullfolfder = fullfile(folder, nameFolds{iFold});
+        fixMFilesRecursive(fullfolfder);
     end
 end
 
@@ -34,14 +38,16 @@ end
 function fixMfilesInDir(fileList)
 
 for ii= 1:length(fileList)
-    l = textread(fileList{ii},'%s', 'delimiter', '\n');
-    l = regexprep(l, 'HybBciProcessedData\watch-ERP', 'HybBciProcessedData\watchERP');
-    % note this will overwrite the original file
-    fid=fopen(fileList{ii}, 'wt');
-    for jj=1:length(l)
-        fprintf (fid, '%s\n', l{jj});
+    
+    text = fileread(fileList{ii});
+    textNew = regexprep(text, 'watch-ERP', 'watchERP');
+    if ~isequal(text, textNew)
+        fprintf('editing %s\n', fileList{ii});
+        fid = fopen(fileList{ii}, 'w');
+        fwrite(fid, textNew, '*char');              %# write characters (bytes)
+        fclose(fid);
     end
-    fclose(fid);
+    
 end
 
 end
