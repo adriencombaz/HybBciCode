@@ -1,6 +1,6 @@
 cl;
-% rmpath(genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps'));
-% rmpath(genpath('d:\KULeuven\PhD\Matlab\MatlabPath\eeglab10_0_1_0b'));
+rmpath(genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps'));
+rmpath(genpath('d:\KULeuven\PhD\Matlab\MatlabPath\eeglab10_0_1_0b'));
 addpath('d:\KULeuven\PhD\Matlab\MatlabPath\spm8\');
 
 resultsDir  = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciResults\watchERP\01-preprocess-plot\';

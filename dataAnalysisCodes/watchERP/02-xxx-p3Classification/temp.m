@@ -2,7 +2,7 @@ cl;
 
 for iS = 1:8
     
-    folder = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\02-ter-p3Classification\LinSvm\';
+    folder = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watchERP\02-ter-p3Classification\LinSvm\';
     folder = fullfile(folder, sprintf('subject_S%d', iS));
     filename = what( folder );
     filename = filename.mat;
@@ -14,7 +14,7 @@ for iS = 1:8
     
     fileSet = dataset( dates, conditions, nAve, filename );
     
-    newFolder = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\02-xxx-p3Classification\LinSvm_1RunsForTrain_128Hz_10cvSvm\';
+    newFolder = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watchERP\02-xxx-p3Classification\LinSvm_1RunsForTrain_128Hz_10cvSvm\';
     newFolder = fullfile(newFolder, sprintf('subject_S%d', iS));
     if ~exist( newFolder, 'dir'), mkdir(newFolder); end
     conds = unique(conditions);
@@ -39,12 +39,12 @@ end
 
 for iS = 1:8
     
-    folder = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\02-ter-p3Classification\LinSvmPooled\';
+    folder = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watchERP\02-ter-p3Classification\LinSvmPooled\';
     folder = fullfile(folder, sprintf('subject_S%d', iS));
     filename = what( folder );
     filename = filename.mat;
     
-    newFolder = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watch-ERP\02-xxx-p3Classification\LinSvmPooled_1RunsForTrain_128Hz_10cvSvm\';
+    newFolder = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watchERP\02-xxx-p3Classification\LinSvmPooled_1RunsForTrain_128Hz_10cvSvm\';
     newFolder = fullfile(newFolder, sprintf('subject_S%d', iS));
     if ~exist( newFolder, 'dir'), mkdir(newFolder); end
     for iF = 1:numel(filename)
