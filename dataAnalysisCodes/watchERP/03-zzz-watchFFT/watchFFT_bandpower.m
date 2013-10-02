@@ -18,14 +18,14 @@ switch hostName,
     case 'kuleuven-24b13c',
         addpath( genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         dataDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watchERP\04-watchSSVEP-PSD\';
+        resDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciProcessedData\watchERP\03-zzz-watchFFT\';
         codeDir = 'd:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case 'neu-wrk-0158',
         addpath( genpath('d:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps\') );
         addpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\') );
         rmpath( genpath('d:\Adrien\matlabToolboxes\eeglab10_0_1_0b\external\SIFT_01_alpha') );
         dataDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciRecordedData\watchERP\';
-        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watchERP\04-watchSSVEP-PSD\';
+        resDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciProcessedData\watchERP\03-zzz-watchFFT\';
         codeDir = 'd:\Adrien\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\watchERP\';
     case {'sunny', 'solaris', ''}
         addpath( genpath( '~/PhD/hybridBCI-stuffs/deps/' ) );
@@ -49,13 +49,14 @@ sub     = unique( fileList.subjectTag );
 freq    = unique( fileList.frequency );
 oddb    = unique( fileList.oddball );
 cond    = unique( fileList.condition );
-harm	= [1 2];
+
+minFreq = 1;
+maxFreq = 35;
 
 nSub    = numel( sub );
 nFreq   = numel( freq );
 nOdd    = numel( oddb );
 nCond   = numel( cond );
-nHarm   = numel( harm );
 if nCond ~= nFreq*nOdd, error('conditions are not entirely determined by frequency and oddball'); end
 if ~isequal( oddb, [0 ; 1] ), error('not the expected oddball condition'); end
 
@@ -77,12 +78,12 @@ end
 
 % targetFS    = 256;
 targetFS    = 1024;
-datasetFilename = fullfile(resDir, sprintf('psdDataset_%dfs.mat', targetFS));
+datasetFilename = fullfile(resDir, sprintf('fftDataset_%dfs.mat', targetFS));
 
 % ========================================================================================================
 % ========================================================================================================
-updateDataset   = true;
-% updateDataset   = false;
+% updateDataset   = true;
+updateDataset   = false;
 
 if updateDataset && exist(datasetFilename, 'file')
     temp = load( datasetFilename );
@@ -107,27 +108,30 @@ filter.fr_high_margin  = 40;
 filter.order           = 4;
 filter.type            = 'butter'; % Butterworth IIR filter
 
+bandwidth   = 1; % Hz
 nMaxTrials  = 36;
-timesInSec  = 1:14;
+timesInSec  = 14;
+nHarm       = 2;
 nTimes      = numel( timesInSec );
 indTrial    = zeros(nSub, nFreq, nOdd);
-nData       = nTimes*nMaxTrials*nOdd*nFreq*nSub*nHarm;
 
-
-subject     = cell( nData, 1);
-frequency   = zeros( nData, 1); 
-oddball     = zeros( nData, 1);
-trial       = cell( nData, 1);
-fileNb      = zeros( nData, 1);
-stimDuration= zeros( nData, 1);
-% snr         = cell( nData, 1); 
-psd         = cell( nData, 1); 
-psdNorm     = cell( nData, 1); 
-chanList    = cell( nData, 1);
-harmonics   = cell( nData, 1);
-iData     = 1;
 
 for iS = 1:nSub,
+    
+    datasetFilename = fullfile(resDir, sprintf('fftDataset_%s_%dfs.mat',sub{iS}, targetFS));
+    nData       = nTimes*nMaxTrials*nOdd*nFreq*nHarm;
+    
+    subject     = cell( nData, 1);
+    frequency   = zeros( nData, 1);
+    oddball     = zeros( nData, 1);
+    trial       = cell( nData, 1);
+    fileNb      = zeros( nData, 1);
+    stimDuration= zeros( nData, 1);
+    harmonic    = zeros( nData, 1);
+    fftVals     = cell( nData, 1);
+    chanList    = cell( nData, 1);
+    iData     = 1;
+
     for iF = 1:nFreq,
         for iOdd = 1:nOdd,
             
@@ -176,6 +180,7 @@ for iS = 1:nSub,
                 refSig = mean(sig(:,refChanInd), 2);
                 sig(:, [discardChanInd refChanInd])  = [];
                 sig = bsxfun( @minus, sig, refSig );
+                clear refSig
                 for i = 1:size(sig, 2)
                     sig(:,i) = filtfilt( filter.a, filter.b, sig(:,i) );
                 end
@@ -186,10 +191,12 @@ for iS = 1:nSub,
                 %-------------------------------------------------------------------------------------------
                 DSF = samplingRate / targetFS;
                 if DSF ~= floor(DSF), error('something wrong with the sampling rate'); end
-
-                subsamplingLPfilter = fspecial( 'gaussian', [1 DSF*2-1], 1 );
-                sig                 = conv2( sig', subsamplingLPfilter, 'same' )';
-                sig                 = sig(1:DSF:end,:);
+                
+                if DSF > 1
+                    subsamplingLPfilter = fspecial( 'gaussian', [1 DSF*2-1], 1 );
+                    sig                 = conv2( sig', subsamplingLPfilter, 'same' )';
+                    sig                 = sig(1:DSF:end,:);
+                end
                 
                 eventChan       = eventChan(1:DSF:end,:);
                 stimOnsets      = find( diff( eventChan ) == 1 ) + 1;
@@ -211,47 +218,27 @@ for iS = 1:nSub,
                     
                     
                     epochLenght = timesInSec(iTime)*targetFS;
-                    
-                    % Prepare martrix X for signal power [Pxx] estimation
-                    X = freq(iF) * repmat( (1:epochLenght)'*2*pi/targetFS, [1 2 nHarm] );
-                    % adjust harmonic slices
-                    for iHarm = 1:nHarm, % in the paper iHarm <-> k
-                        X(:,:,iHarm) = X(:,:,iHarm) * harm(iHarm);
-                    end
-                    % apply sin and cos
-                    X(:,1,:) = sin( X(:,1,:) );
-                    X(:,2,:) = cos( X(:,2,:) );
-                    
-%                     mcdObj      = myMCD( freq(iF), targetFS, harm, epochLenght );
-                    
                     for iTrial = 1:nTrials
-                        epoch       = sig( stimOnsets(iTrial):stimOnsets(iTrial)+epochLenght-1, : );
+                        epoch = sig( stimOnsets(iTrial):stimOnsets(iTrial)+epochLenght-1, : );
                         
-                        P = zeros( nChan, nHarm );
-                        for iCh = 1:nChan,
-                            for iHarm = 1:nHarm,
-                                P(iCh,iHarm) = norm( epoch(:,iCh)' * X(:,:,iHarm) );
+                        fftVals{iData}    = zeros(nChan, 1 );
+                       
+                        for iHarm = 1:nHarm
+                            for iCh = 1:nChan,
+                                fftVals{iData}(iCh) = bandpower( epoch(:, iCh), targetFS, [iHarm*freq(iF)-bandwidth/2 iHarm*freq(iF)+bandwidth/2] );
                             end
+                            
+                            subject{iData}      = sub{iS};
+                            frequency(iData)    = freq(iF);
+                            oddball(iData)      = oddb(iOdd);
+                            fileNb(iData)       = iFile;
+                            trial{iData}        = sprintf('tr%.2d', iTrial);
+                            stimDuration(iData) = timesInSec(iTime);
+                            chanList{iData}     = channels;
+                            harmonic(iData)     = iHarm;
+                            iData               = iData + 1;
+                            
                         end
-                        P = P .^ 2;
-                        
-%                         [SNRs Ns]   = mcdObj.getSNRs( epoch' );
-%                         SNRs        = reshape(SNRs, nHarm, nChan)';
-                        
-                        
-                        subject{iData}      = sub{iS};
-                        frequency(iData)    = freq(iF);
-                        oddball(iData)      = oddb(iOdd);
-                        fileNb(iData)       = iFile;
-                        trial{iData}        = sprintf('tr%.2d', iTrial);
-                        stimDuration(iData) = timesInSec(iTime);
-%                         snr{iData}          = SNRs;
-                        psd{iData}          = P;
-                        psdNorm{iData}      = P / (epochLenght^2);
-                        chanList{iData}     = channels;
-                        harmonics{iData}    = harm;
-                        iData               = iData + 1;
-                        
                     end
                 end
                 
@@ -259,143 +246,73 @@ for iS = 1:nSub,
             end % of loop over files
         end % of loop over oddball condition
     end % of loop over frequency condition
+    
+    
+    subject(iData:end)      = [];
+    frequency(iData:end)    = [];
+    oddball(iData:end)      = [];
+    fileNb(iData:end)       = [];
+    trial(iData:end)        = [];
+    stimDuration(iData:end) = [];
+    fftVals(iData:end)      = [];
+    chanList(iData:end)     = [];
+    harmonic(iData:end)     = [];
+    
+    fftDataset = dataset( ...
+        subject ...
+        , frequency ...
+        , oddball ...
+        , fileNb ...
+        , trial ...
+        , stimDuration ...
+        , fftVals ...
+        , chanList ...
+        , harmonic ...
+        );
+    
+    if updateDataset
+        fftDataset = vertcat( temp.psdDataset, fftDataset );
+    end
+    
+    save(datasetFilename, 'fftDataset');
+    
 end % of loop over subject
-
-
-subject(iData:end)      = [];
-frequency(iData:end)    = [];
-oddball(iData:end)      = [];
-fileNb(iData:end)       = [];
-trial(iData:end)        = [];
-stimDuration(iData:end) = [];
-% snr(iData:end)          = [];
-psd(iData:end)          = [];
-psdNorm(iData:end)      = [];
-chanList(iData:end)     = [];
-harmonics(iData:end)    = [];
-
-psdDataset = dataset( ...
-    subject ...
-    , frequency ...
-    , oddball ...
-    , fileNb ...
-    , trial ...
-    , stimDuration ...
-    , psd ...
-    , psdNorm ...
-    , chanList ...
-    , harmonics ...
-    );
-
-if updateDataset
-    psdDataset = vertcat( temp.psdDataset, psdDataset );
-end
-
-save(datasetFilename, 'psdDataset');
-
-
 
 %% ========================================================================================================
 % =========================================================================================================
-% 
-% psdDatasetOz            = psdDataset;
-% psdDatasetOz.psd        = cellfun(@(x, y) x( ismember( y, 'Oz' ), 1 ), psdDataset.psd, psdDataset.chanList );
-% psdDatasetOz.chanList   = [];
-% psdDatasetOz.harmonics  = [];
-% export( psdDatasetOz, 'file', fullfile(resDir, 'psdDataset_Oz_1Ha.csv'), 'delimiter', ',' );
-% 
-% %----------------------------------------------------------------------------------------------------------
-% 
-% psdDatasetOz            = psdDataset;
-% psdDatasetOz.psd        = cellfun(@(x, y) mean( x( ismember( y, 'Oz' ), : ), 2 ), psdDataset.psd, psdDataset.chanList );
-% psdDatasetOz.chanList   = [];
-% psdDatasetOz.harmonics  = [];
-% export( psdDatasetOz, 'file', fullfile(resDir, 'psdDataset_Oz_2Ha.csv'), 'delimiter', ',' );
-% 
-% %----------------------------------------------------------------------------------------------------------
-% 
-% 
-% subsetChannels  = {'O1', 'Oz', 'O2'};
-% 
-% psdDatasetOcciptial            = psdDataset;
-% psdDatasetOcciptial.psd        = cellfun(@(x, y) mean( x( ismember( y, subsetChannels ), 1 ), 1), psdDataset.psd, psdDataset.chanList, 'UniformOutput', false );
-% psdDatasetOcciptial.chanList   = [];
-% psdDatasetOcciptial.harmonics  = [];
-% export( psdDatasetOcciptial, 'file', fullfile(resDir, 'psdDataset_O1OzO2_1Ha.csv'), 'delimiter', ',' );
-% 
-% %----------------------------------------------------------------------------------------------------------
-% 
-% psdDatasetOcciptial            = psdDataset;
-% psdDatasetOcciptial.psd        = cellfun(@(x, y) mean( mean( x( ismember( y, subsetChannels ), : ), 2 ), 1), psdDataset.psd, psdDataset.chanList, 'UniformOutput', false );
-% psdDatasetOcciptial.chanList   = [];
-% psdDatasetOcciptial.harmonics  = [];
-% export( psdDatasetOcciptial, 'file', fullfile(resDir, 'psdDataset_O1OzO2_2Ha.csv'), 'delimiter', ',' );
-% 
-% 
-% %----------------------------------------------------------------------------------------------------------
-% 
-% subsetChannels  = {...
-%         'CP5',   'CP1',   'CP2',   'CP6', ...
-% ...
-%       'P7',   'P3',   'Pz',   'P4',   'P8', ...
-% ...     
-%                'PO3',       'PO4', ...
-%                 'O1', 'Oz', 'O2' ...
-% };
-% 
-% psdDatasetSelChan            = psdDataset;
-% psdDatasetSelChan.psd        = cellfun(@(x, y) mean( x( ismember( y, subsetChannels ), 1 ), 1), psdDataset.psd, psdDataset.chanList, 'UniformOutput', false );
-% psdDatasetSelChan.chanList   = [];
-% psdDatasetSelChan.harmonics  = [];
-% export( psdDatasetSelChan, 'file', fullfile(resDir, 'psdDataset_SelChan_1Ha.csv'), 'delimiter', ',' );
-% 
-% %----------------------------------------------------------------------------------------------------------
-% 
-% psdDatasetSelChan            = psdDataset;
-% psdDatasetSelChan.psd        = cellfun(@(x, y) mean( mean( x( ismember( y, subsetChannels ), : ), 2 ), 1), psdDataset.psd, psdDataset.chanList, 'UniformOutput', false );
-% psdDatasetSelChan.chanList   = [];
-% psdDatasetSelChan.harmonics  = [];
-% export( psdDatasetSelChan, 'file', fullfile(resDir, 'psdDataset_SelChan_2Ha.csv'), 'delimiter', ',' );
-% 
+
 
 %% ========================================================================================================
 % =========================================================================================================
 
 subsetChannels  = {...
-        'CP5',   'CP1',   'CP2',   'CP6', ...
-...
-      'P7',   'P3',   'Pz',   'P4',   'P8', ...
-...     
-               'PO3',       'PO4', ...
                 'O1', 'Oz', 'O2' ...
 };
 
 
 for iCh = 1:numel(subsetChannels)
-    for iHa = 1:2
+    
+    for iS = 1:nSub
 
-        psdDataset_iCh_iHa            = psdDataset;
-        psdDataset_iCh_iHa.psd        = cellfun(@(x, y) x( ismember( y, subsetChannels{iCh} ), iHa ), psdDataset.psd, psdDataset.chanList );
-        psdDataset_iCh_iHa.psdNorm    = cellfun(@(x, y) x( ismember( y, subsetChannels{iCh} ), iHa ), psdDataset.psdNorm, psdDataset.chanList );
-        psdDataset_iCh_iHa.chanList   = [];
-        psdDataset_iCh_iHa.harmonics  = [];
-        psdDataset_iCh_iHa.channel    = repmat(subsetChannels(iCh), size(psdDataset_iCh_iHa, 1), 1);
-        psdDataset_iCh_iHa.harmonic   = iHa*ones( size(psdDataset_iCh_iHa, 1), 1 );
-        filename = sprintf('psdDataset_%s_Ha%d_%dfs.csv', subsetChannels{iCh}, iHa, targetFS);
-        export( psdDataset_iCh_iHa, 'file', fullfile(resDir, filename), 'delimiter', ',' );
+        datasetFilename = fullfile(resDir, sprintf('fftDataset_%s_%dfs.mat',sub{iS}, targetFS));
+        load(datasetFilename, 'fftDataset');
+
+        fftDataset_iCh_iS            = fftDataset;
+        fftDataset_iCh_iS.fftVals    = cellfun(@(x, y) x( ismember( y, subsetChannels{iCh} ) ), fftDataset_iCh_iS.fftVals, fftDataset_iCh_iS.chanList, 'UniformOutput', false );
+        fftDataset_iCh_iS.chanList   = [];
+        fftDataset_iCh_iS.channel    = repmat(subsetChannels(iCh), size(fftDataset_iCh_iS, 1), 1);
+
+        if iS == 1
+            fftDataset_iCh = fftDataset_iCh_iS;
+        else
+            fftDataset_iCh = [ fftDataset_iCh ; fftDataset_iCh_iS ];
+        end
         
         
     end
-
-    psdDataset_iCh            = psdDataset;
-    psdDataset_iCh.psd        = cellfun(@(x, y) mean( x( ismember( y, subsetChannels{iCh} ), : ), 2 ), psdDataset.psd, psdDataset.chanList );
-    psdDataset_iCh.psdNorm    = cellfun(@(x, y) mean( x( ismember( y, subsetChannels{iCh} ), : ), 2 ), psdDataset.psdNorm, psdDataset.chanList );
-    psdDataset_iCh.chanList   = [];
-    psdDataset_iCh.harmonics  = [];
-    psdDataset_iCh_iHa.channel    = repmat(subsetChannels(iCh), size(psdDataset_iCh_iHa, 1), 1);
-    filename = sprintf('psdDataset_%s_Ha12_%dfs.csv', subsetChannels{iCh}, targetFS);
-    export( psdDataset_iCh, 'file', fullfile(resDir, filename), 'delimiter', ',' );
-
-
+        
+    filename = sprintf('fftDataset_%s_%dfs.csv', subsetChannels{iCh}, targetFS);
+    export( fftDataset_iCh, 'file', fullfile(resDir, filename), 'delimiter', ',' );
+        
 end
 

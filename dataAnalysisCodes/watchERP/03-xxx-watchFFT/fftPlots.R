@@ -12,10 +12,10 @@ source("d:/KULeuven/PhD/rLibrary/plotFactorMeans_InteractionGraphs.R")
 generatePlots <- function(filename)
 {
 
-  fileDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/04-watchSSVEP-PSD"
+  fileDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciProcessedData/watchERP/03-xxx-watchFFT"
   fullfilename <- file.path( fileDir, paste0(filename, ".csv") )
   
-  resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/04-watchSSVEP-PSD"
+  resDir <- "d:/KULeuven/PhD/Work/Hybrid-BCI/HybBciResults/watchERP/03-xxx-watchFFT"
   resDir <- file.path(resDir, sprintf("%s_norm", filename))
   dir.create(resDir, showWarnings=FALSE)
   
@@ -25,7 +25,7 @@ generatePlots <- function(filename)
   psdData$oddball = as.factor(psdData$oddball)
   psdData$fileNb = as.factor(psdData$fileNb)
   psdData$trial = as.factor(psdData$trial)
-  psdData$psd = sqrt(psdData$psdNorm)
+  psdData$psd = psdData$fftVals
   str(psdData)
   summary(psdData)
   
@@ -134,16 +134,8 @@ generatePlots <- function(filename)
 ####################################################################################################################
 ####################################################################################################################
 
-# filenames <- c( "psdDataset_O1OzO2_1Ha"
-#                 , "psdDataset_O1OzO2_2Ha"
-#                 , "psdDataset_Oz_1Ha"
-#                 , "psdDataset_Oz_2Ha"
-#                 , "psdDataset_SelChan_1Ha"
-#                 , "psdDataset_SelChan_2Ha"
-#                 )
-# filenames <- c( "psdDataset_Oz_Ha1", "psdDataset_Oz_Ha2", "psdDataset_Oz_Ha12" )
-filenames <- c( "psdDataset_Oz_Ha1_1024fs", "psdDataset_Oz_Ha2_1024fs", "psdDataset_Oz_Ha12_1024fs" )
-filenames <- c( "psdDataset_Oz_Ha1")
+
+filenames <- c( "fftDataset_Oz_1024fs")
 for (iF in 1:length(filenames))
 {
   generatePlots(filenames[iF])

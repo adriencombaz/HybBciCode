@@ -1,4 +1,9 @@
 cl;
+
+% cmdirs = regexp([matlabpath pathsep],['.[^' pathsep ']*' pathsep],'match')';
+% eeglabPath = cmdirs(ismember(cmdirs, '\MatlabPath\eeglab10_0_1_0b'))
+% otherPath = cmdirs(ismember(cmdirs, '\MatlabPath\eeglab10_0_1_0b'))
+
 % rmpath(genpath('d:\KULeuven\PhD\Work\Hybrid-BCI\HybBciCode\dataAnalysisCodes\deps'));
 % rmpath(genpath('d:\KULeuven\PhD\Matlab\MatlabPath\eeglab10_0_1_0b'));
 % addpath('d:\KULeuven\PhD\Matlab\MatlabPath\spm8\');
@@ -20,7 +25,10 @@ nCond = numel(conditions);
 spm('defaults', 'eeg');
 
 
-for iS = 1%:nSub
+for iS = 1:nSub
+    fprintf('=====================================================================================================================\n');
+    fprintf('=============================================SUBJECT %s (%d OUT OF %d)\n', subjects{iS}, iS, nSub);
+    fprintf('=====================================================================================================================\n');
     resultsDirSi = fullfile(resultsDir, sprintf('subject_%s', subjects{iS}));
     if ~exist(resultsDirSi, 'dir'), mkdir(resultsDirSi); end
     for iC = 1:nCond
@@ -90,9 +98,9 @@ for iS = 1%:nSub
             tempFilename = fullfile(resultsDirSi, D.fname);
             S = [];
             S.D = fullfile(resultsDirSi, D.fname);
-            S.pretrig = 0;
+            S.pretrig = -200;
             S.posttrig = 800;
-            S.trialdef(1).conditionlabel = sprintf('target-%s', conditions{iC});
+            S.trialdef(1).conditionlabel = sprintf('%s-%s', subjects{iS}, conditions{iC});
             S.trialdef(1).eventvalue = targetValue;
             S.trialdef(1).eventtype = 'STATUS';
 %             S.trialdef(2).conditionlabel = 'non-target';
@@ -107,7 +115,7 @@ for iS = 1%:nSub
             %--------------------------------------------------------------------------------------------------------------------------------
             % downsample
             %--------------------------------------------------------------------------------------------------------------------------------
-            fprintf('\nepoch\n');
+            fprintf('\ndownsample\n');
             tempFilename = fullfile(resultsDirSi, D.fname);
             S = [];
             S.D = fullfile(resultsDirSi, D.fname);
@@ -144,6 +152,7 @@ for iS = 1%:nSub
         S.methods.channels = {'all'};
         S.methods.fun = 'peak2peak';
         S.methods.settings.threshold = 50;
+        if strcmp( subjects{iS}, 'S07'), S.badchanthresh = 0.4; S.methods.settings.threshold = 100; end
         D = spm_eeg_artefact(S);
         delete(tempFilename);
         delete([tempFilename(1:end-4) '.dat']);
