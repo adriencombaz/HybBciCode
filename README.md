@@ -1,3 +1,3 @@
 ## HybBciCode
 
-* These codes contains a BLDA BCI classifier.
+* These codes contain a BLDA BCI classifier.
